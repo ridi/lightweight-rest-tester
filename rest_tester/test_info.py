@@ -8,14 +8,16 @@ class TestInfo(object):
 
     PATH_TESTS = 'tests'
 
+    DEFAULT_TIME_OUT = 10
+
     @classmethod
     def read(cls, json_data):
         """Read test information from JSON data."""
         api_data = json_data[cls.PATH_API]
 
         url = api_data[cls.PATH_API_URL]
-        params = api_data[cls.PATH_API_PARAMS]
-        timeout = api_data[cls.PATH_API_TIMEOUT]
+        params = api_data[cls.PATH_API_PARAMS] if cls.PATH_API_PARAMS in api_data.keys() else {}
+        timeout = api_data[cls.PATH_API_TIMEOUT] if cls.PATH_API_TIMEOUT in api_data.keys() else cls.DEFAULT_TIME_OUT
 
         test_cases = json_data[cls.PATH_TESTS]
 

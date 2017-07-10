@@ -48,9 +48,6 @@ if __name__ == '__main__':
             continue
 
         param_set_list = ParameterSet.generate(params)
-        if len(param_set_list) <= 0:
-            print('Cannot generate parameter sets with the given parameters ' + str(params))
-            continue
 
         file_name = os.path.basename(test_case_file)
         for param_set in param_set_list:

@@ -8,7 +8,7 @@ class ParameterSet(object):
         """Generate all the possible combinations of given parameters."""
         param_keys = [key for key in params.keys()]
         if len(param_keys) <= 0:
-            return []
+            return [{}]
 
         return cls.generate_inner(params, param_keys, {})
 
