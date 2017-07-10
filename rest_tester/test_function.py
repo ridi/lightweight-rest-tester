@@ -50,8 +50,8 @@ class TestFunction(object):
             jsonschema.validate(actual, expected)
 
         test_functions = {
-            'status_code': test_status_code,
-            'json_schema': test_json_schema
+            'statusCode': test_status_code,
+            'jsonSchema': test_json_schema
         }
 
         """If test cases are not supported, let them cause assert error."""

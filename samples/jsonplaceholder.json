@@ -8,9 +8,9 @@
     "timeout" : 10
   },
   "tests": {
-    "status_code": 200,
+    "statusCode": 200,
 
-    "json_schema": {
+    "jsonSchema": {
       "type": "array",
       "minItems": 0,
 
