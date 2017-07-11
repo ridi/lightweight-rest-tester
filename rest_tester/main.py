@@ -19,6 +19,13 @@ def identify_files_in_dir(path):
     return [target for file_path in os.walk(path) for target in glob.glob(os.path.join(file_path[0], '*.json'))]
 
 
+def add_fail_function(file_path, msg):
+    """Add fail function when cannot read test information."""
+    fail_function_name = TestFailFunction.generate_name(os.path.basename(file_path))
+    fail_function = TestFailFunction.make(msg)
+    setattr(TestsContainer, fail_function_name, fail_function)
+
+
 if __name__ == '__main__':
     # Read test_suites_dir from the arguments.
     try:
@@ -32,25 +39,19 @@ if __name__ == '__main__':
         try:
             json_file = open(test_case_file)
         except FileNotFoundError:
-            test_function_name = TestFailFunction.generate_name(os.path.basename(test_case_file))
-            test_function = TestFailFunction.make('Cannot find the json file.')
-            setattr(TestsContainer, test_function_name, test_function)
+            add_fail_function(test_case_file, 'Cannot find the json file.')
             continue
 
         try:
             json_data = json.load(json_file)
         except Exception:
-            test_function_name = TestFailFunction.generate_name(os.path.basename(test_case_file))
-            test_function = TestFailFunction.make('Cannot parse the json file.')
-            setattr(TestsContainer, test_function_name, test_function)
+            add_fail_function(test_case_file, 'Cannot parse the json file.')
             continue
 
         try:
             url, params, timeout, test_cases = TestInfo.read(json_data)
         except KeyError as e:
-            test_function_name = TestFailFunction.generate_name(os.path.basename(test_case_file))
-            test_function = TestFailFunction.make('Essential test information is missing: %s' % str(e))
-            setattr(TestsContainer, test_function_name, test_function)
+            add_fail_function(test_case_file, 'Essential test information is missing: %s' % str(e))
             continue
 
         param_set_list = ParameterSet.generate(params)
