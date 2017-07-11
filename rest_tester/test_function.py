@@ -21,16 +21,9 @@ class TestFunction(object):
     @staticmethod
     def generate_name(file_name, test_key, params):
         """Test function name should start with 'test' since we use unit test."""
-        param_str = None
-        for key in params.keys():
-            curr_str = key + "=" + str(params[key])
-            if param_str is None:
-                param_str = '?' + curr_str
-            else:
-                param_str += "&" + curr_str
-
-        if param_str is None:
-            param_str = ''
+        param_str = '&'.join([key + "=" + str(params[key]) for key in params.keys()])
+        if param_str != '':
+            param_str = '?' + param_str
 
         return 'test_%s_%s%s' % (file_name, test_key, param_str)
 
