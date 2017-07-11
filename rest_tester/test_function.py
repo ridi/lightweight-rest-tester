@@ -62,3 +62,19 @@ class TestFunction(object):
             return test_unsupported_case
 
         return test_functions[test_key]
+
+
+class TestFailFunction(object):
+    @staticmethod
+    def generate_name(file_name):
+        """Test function name should start with 'test' since we use unit test."""
+        return 'test_%s' % file_name
+
+    @staticmethod
+    def make(msg):
+        """Make a test function"""
+
+        def test_fail(self):
+            self.fail(msg)
+
+        return test_fail

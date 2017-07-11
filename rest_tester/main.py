@@ -6,7 +6,7 @@ import sys
 
 from rest_tester.test_info import TestInfo
 from rest_tester.parameters import ParameterSet
-from rest_tester.test_function import TestFunction
+from rest_tester.test_function import TestFunction, TestFailFunction
 
 
 class TestsContainer(unittest.TestCase):
@@ -32,19 +32,25 @@ if __name__ == '__main__':
         try:
             json_file = open(test_case_file)
         except FileNotFoundError:
-            print('Cannot find the json file: "%s".' % test_case_file)
+            test_function_name = TestFailFunction.generate_name(os.path.basename(test_case_file))
+            test_function = TestFailFunction.make('Cannot find the json file.')
+            setattr(TestsContainer, test_function_name, test_function)
             continue
 
         try:
             json_data = json.load(json_file)
         except Exception:
-            print('Cannot parse the json file: "%s".' % test_case_file)
+            test_function_name = TestFailFunction.generate_name(os.path.basename(test_case_file))
+            test_function = TestFailFunction.make('Cannot parse the json file.')
+            setattr(TestsContainer, test_function_name, test_function)
             continue
 
         try:
             url, params, timeout, test_cases = TestInfo.read(json_data)
         except KeyError as e:
-            print('Essential test information is missing: %s' % str(e))
+            test_function_name = TestFailFunction.generate_name(os.path.basename(test_case_file))
+            test_function = TestFailFunction.make('Essential test information is missing: %s' % str(e))
+            setattr(TestsContainer, test_function_name, test_function)
             continue
 
         param_set_list = ParameterSet.generate(params)
