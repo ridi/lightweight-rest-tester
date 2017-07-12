@@ -122,7 +122,3 @@ class TestParameterSet(unittest.TestCase):
     def are_equal_lists(list1, list2):
         """Check if two lists are identical."""
         return len(list1) == len(list2) and all(list1.count(i) == list2.count(i) for i in list1)
-
-
-if __name__ == '__main__':
-    unittest.main()

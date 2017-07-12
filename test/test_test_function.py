@@ -1,5 +1,6 @@
 import unittest
 import json
+import os
 
 from jsonschema import ValidationError
 
@@ -8,6 +9,8 @@ from rest_tester.test_info import TestInfo
 
 
 class TestTestFunction(unittest.TestCase):
+    current_dir_path = os.path.dirname(__file__)
+
     def test_generate_name_with_no_params(self):
         file_name = 'file_name'
         test_key = 'test_key'
@@ -38,7 +41,7 @@ class TestTestFunction(unittest.TestCase):
             self.assertTrue(actual.find(expected_param) >= 0)
 
     def test_make_test_status_code(self):
-        json_file = './resources/status_code_success.json'
+        json_file = '%s/resources/status_code_success.json' % self.current_dir_path
         url, params, timeout, test_cases = self.load_test_info(json_file)
 
         test_key = 'statusCode'
@@ -46,7 +49,7 @@ class TestTestFunction(unittest.TestCase):
         self.run_success_function(url, params, timeout, test_key, test_cases[test_key])
 
     def test_make_test_status_code_fail(self):
-        json_file = './resources/status_code_fail.json'
+        json_file = '%s/resources/status_code_fail.json' % self.current_dir_path
         url, params, timeout, test_cases = self.load_test_info(json_file)
 
         test_key = 'statusCode'
@@ -54,7 +57,7 @@ class TestTestFunction(unittest.TestCase):
         self.run_fail_function(url, params, timeout, test_key, test_cases[test_key], AssertionError)
 
     def test_make_test_json_schema(self):
-        json_file = './resources/json_schema_success.json'
+        json_file = '%s/resources/json_schema_success.json' % self.current_dir_path
         url, params, timeout, test_cases = self.load_test_info(json_file)
 
         test_key = 'jsonSchema'
@@ -62,7 +65,7 @@ class TestTestFunction(unittest.TestCase):
         self.run_success_function(url, params, timeout, test_key, test_cases[test_key])
 
     def test_make_test_json_schema_fail(self):
-        json_file = './resources/json_schema_fail.json'
+        json_file = '%s/resources/json_schema_fail.json' % self.current_dir_path
         url, params, timeout, test_cases = self.load_test_info(json_file)
 
         test_key = 'jsonSchema'
@@ -70,7 +73,7 @@ class TestTestFunction(unittest.TestCase):
         self.run_fail_function(url, params, timeout, test_key, test_cases[test_key], ValidationError)
 
     def test_make_test_unsupported_case(self):
-        json_file = './resources/unsupported_case.json'
+        json_file = '%s/resources/unsupported_case.json' % self.current_dir_path
         url, params, timeout, test_cases = self.load_test_info(json_file)
 
         test_key = 'unsupportedCase'
@@ -97,6 +100,3 @@ class TestTestFunction(unittest.TestCase):
         with open(json_file, 'r') as json_file:
             json_data = json.load(json_file)
             return TestInfo.read(json_data)
-
-if __name__ == '__main__':
-    unittest.main()

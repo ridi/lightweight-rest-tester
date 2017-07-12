@@ -1,12 +1,15 @@
 import unittest
 import json
+import os
 
 from rest_tester.test_info import TestInfo
 
 
 class TestTestInfo(unittest.TestCase):
+    current_dir_path = os.path.dirname(__file__)
+
     def test_read_all(self):
-        json_file = './resources/test_info_success_all.json'
+        json_file = '%s/resources/test_info_success_all.json' % self.current_dir_path
         json_data = self.load_json_data(json_file)
 
         url, params, timeout, test_cases = TestInfo.read(json_data)
@@ -17,7 +20,7 @@ class TestTestInfo(unittest.TestCase):
         self.assertEqual(json_data['tests'], test_cases)
 
     def test_read_partial(self):
-        json_file = './resources/test_info_success_partial.json'
+        json_file = '%s/resources/test_info_success_partial.json' % self.current_dir_path
         json_data = self.load_json_data(json_file)
 
         url, params, timeout, test_cases = TestInfo.read(json_data)
@@ -26,13 +29,13 @@ class TestTestInfo(unittest.TestCase):
         self.assertEqual(json_data['tests'], test_cases)
 
     def test_read_fail_missing_url(self):
-        json_file = './resources/test_info_fail_missing_url.json'
+        json_file = '%s/resources/test_info_fail_missing_url.json' % self.current_dir_path
         json_data = self.load_json_data(json_file)
 
         self.run_fail_function(json_data, KeyError)
 
     def test_read_fail_missing_tests(self):
-        json_file = './resources/test_info_fail_missing_tests.json'
+        json_file = '%s/resources/test_info_fail_missing_tests.json' % self.current_dir_path
         json_data = self.load_json_data(json_file)
 
         self.run_fail_function(json_data, KeyError)
@@ -49,6 +52,3 @@ class TestTestInfo(unittest.TestCase):
             self.fail('Should throw AssertionError!')
         except error:
             pass
-
-if __name__ == '__main__':
-    unittest.main()
