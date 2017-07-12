@@ -19,7 +19,7 @@ class ParameterSet(object):
         curr_value = params[curr_key]
 
         """Convert to list (if not) to simplify the rest of parts."""
-        value_list = params[curr_key] if type(curr_value) is list else [curr_value]
+        value_list = curr_value if isinstance(curr_value, list) else [curr_value]
 
         param_set_list = []
         for value in value_list:

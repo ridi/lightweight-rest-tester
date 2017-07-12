@@ -32,7 +32,7 @@ class TestFunction(object):
         """Make a test function"""
         def test_status_code(self):
             actual = Response.get_response_status_code(url, params, timeout)
-            expected = test_case if type(test_case) is list else [test_case]
+            expected = test_case if isinstance(test_case, list) else [test_case]
 
             self.assertIn(actual, expected, 'Unexpected status code.')
 
