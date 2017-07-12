@@ -1,7 +1,6 @@
 import unittest
 
 from rest_tester.parameters import ParameterSet
-from test.utils import compare_two_lists
 
 
 class TestParameterSet(unittest.TestCase):
@@ -15,7 +14,7 @@ class TestParameterSet(unittest.TestCase):
         actual = ParameterSet.generate(params)
         expected = [params]
 
-        self.assertTrue(compare_two_lists(actual, expected))
+        self.assertTrue(self.are_equal_lists(actual, expected))
 
     def test_generate_lists(self):
         params = {
@@ -65,7 +64,7 @@ class TestParameterSet(unittest.TestCase):
             {'param_1': 3, 'param_2': 'c', 'param_3': 'hij'}
         ]
 
-        self.assertTrue(compare_two_lists(actual, expected))
+        self.assertTrue(self.are_equal_lists(actual, expected))
 
     def test_generate_lists_with_non_list(self):
         params = {
@@ -117,7 +116,13 @@ class TestParameterSet(unittest.TestCase):
             {'param_4': 'non_list_4', 'param_2': 'non_list_2', 'param_1': 3, 'param_5': 'hij', 'param_3': 'c'}
         ]
 
-        self.assertTrue(compare_two_lists(actual, expected))
+        self.assertTrue(self.are_equal_lists(actual, expected))
+
+    @staticmethod
+    def are_equal_lists(list1, list2):
+        """Check if two lists are identical."""
+        return len(list1) == len(list2) and all(list1.count(i) == list2.count(i) for i in list1)
+
 
 if __name__ == '__main__':
     unittest.main()

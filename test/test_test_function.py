@@ -1,9 +1,10 @@
 import unittest
+import json
 
 from jsonschema import ValidationError
 
 from rest_tester.test_function import TestFunction
-from test.utils import load_test_info
+from rest_tester.test_info import TestInfo
 
 
 class TestTestFunction(unittest.TestCase):
@@ -38,7 +39,7 @@ class TestTestFunction(unittest.TestCase):
 
     def test_make_test_status_code(self):
         json_file = './resources/status_code_success.json'
-        url, params, timeout, test_cases = load_test_info(json_file)
+        url, params, timeout, test_cases = self.load_test_info(json_file)
 
         test_key = 'statusCode'
 
@@ -46,7 +47,7 @@ class TestTestFunction(unittest.TestCase):
 
     def test_make_test_status_code_fail(self):
         json_file = './resources/status_code_fail.json'
-        url, params, timeout, test_cases = load_test_info(json_file)
+        url, params, timeout, test_cases = self.load_test_info(json_file)
 
         test_key = 'statusCode'
 
@@ -54,7 +55,7 @@ class TestTestFunction(unittest.TestCase):
 
     def test_make_test_json_schema(self):
         json_file = './resources/json_schema_success.json'
-        url, params, timeout, test_cases = load_test_info(json_file)
+        url, params, timeout, test_cases = self.load_test_info(json_file)
 
         test_key = 'jsonSchema'
 
@@ -62,7 +63,7 @@ class TestTestFunction(unittest.TestCase):
 
     def test_make_test_json_schema_fail(self):
         json_file = './resources/json_schema_fail.json'
-        url, params, timeout, test_cases = load_test_info(json_file)
+        url, params, timeout, test_cases = self.load_test_info(json_file)
 
         test_key = 'jsonSchema'
 
@@ -70,19 +71,19 @@ class TestTestFunction(unittest.TestCase):
 
     def test_make_test_unsupported_case(self):
         json_file = './resources/unsupported_case.json'
-        url, params, timeout, test_cases = load_test_info(json_file)
+        url, params, timeout, test_cases = self.load_test_info(json_file)
 
         test_key = 'unsupportedCase'
 
         self.run_fail_function(url, params, timeout, test_key, test_cases[test_key], AssertionError)
 
     def run_success_function(self, url, params, timeout, test_key, test_case):
-        """Helper function for successful run"""
+        """Helper function for successful run."""
         test_function = TestFunction.make(url, params, timeout, test_key, test_case)
         test_function(self)
 
     def run_fail_function(self, url, params, timeout, test_key, test_case, error):
-        """Helper function for unsuccessful run; should throw given error"""
+        """Helper function for unsuccessful run; should throw given error."""
         test_function = TestFunction.make(url, params, timeout, test_key, test_case)
         try:
             test_function(self)
@@ -90,6 +91,12 @@ class TestTestFunction(unittest.TestCase):
         except error:
             pass
 
+    @staticmethod
+    def load_test_info(json_file):
+        """Load test information from JSON file."""
+        with open(json_file, 'r') as json_file:
+            json_data = json.load(json_file)
+            return TestInfo.read(json_data)
 
 if __name__ == '__main__':
     unittest.main()
