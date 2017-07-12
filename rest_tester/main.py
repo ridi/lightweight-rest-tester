@@ -58,9 +58,9 @@ if __name__ == '__main__':
 
         file_name = os.path.basename(test_case_file)
         for param_set in param_set_list:
-            for test_key in test_cases.keys():
+            for test_key, test_value in test_cases.items():
                 test_function_name = TestFunction.generate_name(file_name, test_key, param_set)
-                test_function = TestFunction.make(url, param_set, timeout, test_key, test_cases[test_key])
+                test_function = TestFunction.make(url, param_set, timeout, test_key, test_value)
                 setattr(TestsContainer, test_function_name, test_function)
 
                 print('%s is added to the test container.' % test_function_name)

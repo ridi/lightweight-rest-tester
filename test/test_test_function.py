@@ -36,8 +36,8 @@ class TestTestFunction(unittest.TestCase):
         expected_prefix = 'test_%s_%s?' % (file_name, test_key)
         self.assertEqual(actual.find(expected_prefix), 0)
 
-        for param_key in params.keys():
-            expected_param = '%s=%s' % (param_key, params[param_key])
+        for key, value in params.items():
+            expected_param = '%s=%s' % (key, value)
             self.assertTrue(actual.find(expected_param) >= 0)
 
     def test_make_test_status_code(self):
