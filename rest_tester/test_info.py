@@ -13,11 +13,12 @@ class TestInfo(object):
     @classmethod
     def read(cls, json_data):
         """Read test information from JSON data."""
+        """Use get for only 'params' and 'timeout' to raise KeyError if keys do not exist."""
         api_data = json_data[cls.PATH_API]
 
         url = api_data[cls.PATH_API_URL]
-        params = api_data[cls.PATH_API_PARAMS] if cls.PATH_API_PARAMS in api_data.keys() else {}
-        timeout = api_data[cls.PATH_API_TIMEOUT] if cls.PATH_API_TIMEOUT in api_data.keys() else cls.DEFAULT_TIME_OUT
+        params = api_data.get(cls.PATH_API_PARAMS, {})
+        timeout = api_data.get(cls.PATH_API_TIMEOUT, cls.DEFAULT_TIME_OUT)
 
         test_cases = json_data[cls.PATH_TESTS]
 

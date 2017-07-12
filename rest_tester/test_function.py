@@ -21,16 +21,9 @@ class TestFunction(object):
     @staticmethod
     def generate_name(file_name, test_key, params):
         """Test function name should start with 'test' since we use unit test."""
-        param_str = None
-        for key in params.keys():
-            curr_str = key + "=" + str(params[key])
-            if param_str is None:
-                param_str = '?' + curr_str
-            else:
-                param_str += "&" + curr_str
-
-        if param_str is None:
-            param_str = ''
+        param_str = '&'.join([key + "=" + str(params[key]) for key in params.keys()])
+        if param_str != '':
+            param_str = '?' + param_str
 
         return 'test_%s_%s%s' % (file_name, test_key, param_str)
 
@@ -39,7 +32,7 @@ class TestFunction(object):
         """Make a test function"""
         def test_status_code(self):
             actual = Response.get_response_status_code(url, params, timeout)
-            expected = test_case if type(test_case) is list else [test_case]
+            expected = test_case if isinstance(test_case, list) else [test_case]
 
             self.assertIn(actual, expected, 'Unexpected status code.')
 
@@ -62,3 +55,19 @@ class TestFunction(object):
             return test_unsupported_case
 
         return test_functions[test_key]
+
+
+class TestFailFunction(object):
+    @staticmethod
+    def generate_name(file_name):
+        """Test function name should start with 'test' since we use unit test."""
+        return 'test_%s' % file_name
+
+    @staticmethod
+    def make(msg):
+        """Make a test function"""
+
+        def test_fail(self):
+            self.fail(msg)
+
+        return test_fail
