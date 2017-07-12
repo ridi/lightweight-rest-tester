@@ -1,0 +1,29 @@
+{
+  "api": {
+    "url": "https://api.github.com/orgs/ridibooks/members"
+  },
+  "tests": {
+    "statusCode": 200,
+
+    "jsonSchema": {
+      "type": "array",
+      "minItems": 1,
+
+      "items": {
+        "type": "object",
+
+        "properties": {
+          "login": {
+            "type": "string"
+          },
+          "id": {
+            "type": "number"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

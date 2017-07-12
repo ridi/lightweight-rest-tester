@@ -1,0 +1,40 @@
+{
+  "api": {
+    "url": "https://jsonplaceholder.typicode.com/comments",
+    "params": {
+      "postId": [1, 2],
+      "id": [1, 3, 5, 7, 9]
+    },
+    "timeout" : 10
+  },
+  "tests": {
+    "statusCode": 200,
+
+    "jsonSchema": {
+      "type": "array",
+      "minItems": 0,
+
+      "items": {
+        "type": "object",
+
+        "properties": {
+          "postId": {
+            "type": "number"
+          },
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
