@@ -1,6 +1,7 @@
 import unittest
 
 from rest_tester.parameters import ParameterSet
+from test.utils import compare_two_lists
 
 
 class TestParameterSet(unittest.TestCase):
@@ -14,7 +15,7 @@ class TestParameterSet(unittest.TestCase):
         actual = ParameterSet.generate(params)
         expected = [params]
 
-        self.assertTrue(self.compare_two_lists(actual, expected))
+        self.assertTrue(compare_two_lists(actual, expected))
 
     def test_generate_lists(self):
         params = {
@@ -64,7 +65,7 @@ class TestParameterSet(unittest.TestCase):
             {'param_1': 3, 'param_2': 'c', 'param_3': 'hij'}
         ]
 
-        self.assertTrue(self.compare_two_lists(actual, expected))
+        self.assertTrue(compare_two_lists(actual, expected))
 
     def test_generate_lists_with_non_list(self):
         params = {
@@ -116,12 +117,7 @@ class TestParameterSet(unittest.TestCase):
             {'param_4': 'non_list_4', 'param_2': 'non_list_2', 'param_1': 3, 'param_5': 'hij', 'param_3': 'c'}
         ]
 
-        self.assertTrue(self.compare_two_lists(actual, expected))
-
-    @staticmethod
-    def compare_two_lists(list1, list2):
-        return len(list1) == len(list2) and \
-               all(list1.count(i) == list2.count(i) for i in list1)
+        self.assertTrue(compare_two_lists(actual, expected))
 
 if __name__ == '__main__':
     unittest.main()
