@@ -1,0 +1,8 @@
+{
+  "api": {
+    "url": "https://jsonplaceholder.typicode.com/comments"
+  },
+  "tests": {
+    "statusCode": 400
+  }
+}
