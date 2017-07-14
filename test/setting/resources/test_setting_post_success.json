@@ -1,0 +1,27 @@
+{
+  "method": "post",
+  "post": {
+    "request": {
+      "url": "http://jsonplaceholder.typicode.com/posts",
+      "data": {
+        "title": "foo"
+      },
+      "timeout" : 10
+    },
+    "response": {
+      "statusCode": 201
+    }
+  },
+  "get": {
+    "request": {
+      "url": "http://jsonplaceholder.typicode.com/posts",
+      "params": {
+        "userId": 1
+      },
+      "timeout" : 10
+    },
+    "response": {
+      "statusCode": 200
+    }
+  }
+}

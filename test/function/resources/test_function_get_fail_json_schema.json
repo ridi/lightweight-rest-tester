@@ -4,8 +4,7 @@
     "request": {
       "url": "https://jsonplaceholder.typicode.com/comments",
       "params": {
-        "postId": [1, 2],
-        "id": [1, 3, 5, 7, 9]
+        "postId": 1
       },
       "timeout" : 10
     },
@@ -14,7 +13,6 @@
 
       "jsonSchema": {
         "type": "array",
-        "minItems": 0,
 
         "items": {
           "type": "object",
@@ -27,13 +25,13 @@
               "type": "number"
             },
             "name": {
-              "type": "string"
+              "type": "number"
             },
             "email": {
-              "type": "string"
+              "type": "number"
             },
             "body": {
-              "type": "string"
+              "type": "number"
             }
           }
         }
