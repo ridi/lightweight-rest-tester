@@ -1,10 +1,11 @@
+from abc import ABCMeta, abstractmethod
 import jsonschema
 
 from rest_tester.setting.parameters import ParameterSet
 from rest_tester.utils import convert_to_list
 
 
-class TestFunction(object):
+class TestFunction(metaclass=ABCMeta):
     @staticmethod
     def test_status_code(self, expected_response, actual_response):
         """Check if the given status code is identical to the expected."""
@@ -16,10 +17,10 @@ class TestFunction(object):
     @staticmethod
     def test_json_schema(self, expected_response, actual_response):
         """Use jsonschema to validate the given JSON data is identical to the expected."""
-        actual = actual_response.json()
-        expected = expected_response.json_schema
+        actual_json = actual_response.json()
+        json_schema = expected_response.json_schema
 
-        jsonschema.validate(actual, expected)
+        jsonschema.validate(actual_json, json_schema)
 
     @classmethod
     def make_test_function(cls, request, expected_response):
@@ -49,5 +50,6 @@ class TestFunction(object):
         return 'test_%s%s' % (base_name, param_str)
 
     @classmethod
+    @abstractmethod
     def get_actual_response(cls, request, params):
         raise NotImplementedError

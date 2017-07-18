@@ -4,6 +4,7 @@ import os
 
 from rest_tester.function import TestFunction
 from rest_tester.setting import Request
+from test.helper import are_equal_lists
 
 
 class TestTestFunction(unittest.TestCase):
@@ -26,12 +27,19 @@ class TestTestFunction(unittest.TestCase):
         file_name = 'file_name'
         actual = TestFunction.generate_name(file_name, request)
 
-        expected_prefix = 'test_%s?' % file_name
-        self.assertEqual(actual.find(expected_prefix), 0)
+        split_to_url_and_parameters = actual.split('?')
+        self.assertEqual(len(split_to_url_and_parameters), 2)
 
-        for key, value in params.items():
-            expected_param = '%s=%s' % (key, value)
-            self.assertTrue(actual.find(expected_param) >= 0)
+        actual_url = split_to_url_and_parameters[0]
+        actual_parameters = split_to_url_and_parameters[1]
+
+        expected_url = 'test_%s' % file_name
+        self.assertEqual(actual_url, expected_url)
+
+        actual_parameter_list = actual_parameters.split('&')
+        expected_parameter_list = ['%s=%s' % (key, value) for key, value in params.items()]
+
+        self.assertTrue(are_equal_lists(actual_parameter_list, expected_parameter_list))
 
     def test_generate_name_no_param(self):
         request_data = {

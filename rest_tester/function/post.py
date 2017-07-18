@@ -1,10 +1,13 @@
 import requests
+import json
 
 from . import TestFunction
 from .get import GetTestFunction
 
 
 class PostTestFunction(TestFunction):
+    headers = {'Content-Type': 'application/json'}
+
     @classmethod
     def make(cls, post_request, post_response, get_request, get_response):
         def test_function(self):
@@ -20,4 +23,5 @@ class PostTestFunction(TestFunction):
 
     @classmethod
     def get_actual_response(cls, request, params):
-        return requests.post(url=request.url, params=params, timeout=request.timeout, data=request.data)
+        return requests.post(url=request.url, params=params, timeout=request.timeout, data=json.dumps(request.data),
+                             headers=cls.headers)
