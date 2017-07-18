@@ -2,9 +2,8 @@
   "method": "put",
   "put": {
     "request": {
-      "url": "http://jsonplaceholder.typicode.com/posts/1",
+      "url": "http://localhost:3000/posts/1",
       "data": {
-        "id": 1,
         "title": "foo",
         "body": "bar",
         "userId": 1
@@ -17,7 +16,7 @@
   },
   "get": {
     "request": {
-      "url": "http://jsonplaceholder.typicode.com/posts/1",
+      "url": "http://localhost:3000/posts/1",
       "params": {
         "userId": 1
       },

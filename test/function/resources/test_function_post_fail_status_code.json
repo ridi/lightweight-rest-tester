@@ -2,7 +2,7 @@
   "method": "post",
   "post": {
     "request": {
-      "url": "http://jsonplaceholder.typicode.com/posts",
+      "url": "http://localhost:3000/posts",
       "data": {
         "title": "foo",
         "body": "bar",
