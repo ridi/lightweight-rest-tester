@@ -1,6 +1,6 @@
 import unittest
 
-from rest_tester.setting import TestMethod
+from rest_tester.setting import TestMethod, SettingMethodError
 
 
 class TestTestMethod(unittest.TestCase):
@@ -39,7 +39,7 @@ class TestTestMethod(unittest.TestCase):
         try:
             TestMethod(json_data)
             self.fail('Should throw KeyError!')
-        except KeyError:
+        except SettingMethodError:
             pass
 
     def test_three_methods(self):
@@ -52,7 +52,7 @@ class TestTestMethod(unittest.TestCase):
         try:
             TestMethod(json_data)
             self.fail('Should throw KeyError!')
-        except KeyError:
+        except SettingMethodError:
             pass
 
     def test_no_method(self):
@@ -62,7 +62,7 @@ class TestTestMethod(unittest.TestCase):
         try:
             TestMethod(json_data)
             self.fail('Should throw KeyError!')
-        except KeyError:
+        except SettingMethodError:
             pass
 
     def test_two_write_methods(self):
@@ -74,7 +74,7 @@ class TestTestMethod(unittest.TestCase):
         try:
             TestMethod(json_data)
             self.fail('Should throw KeyError!')
-        except KeyError:
+        except SettingMethodError:
             pass
 
 if __name__ == '__main__':

@@ -16,14 +16,14 @@ class TestSetting(object):
         if read_method:
             try:
                 self._read_request, self._read_response = self.read_setting(json_data[read_method])
-            except:
-                raise KeyError('%s has incomplete information.' % read_method)
+            except KeyError:
+                raise SettingIncompleteInformationError('%s has incomplete information.' % read_method)
 
         if write_method:
             try:
                 self._write_request, self._write_response = self.read_setting(json_data[write_method])
-            except:
-                raise KeyError('%s has incomplete information.' % write_method)
+            except KeyError:
+                raise SettingIncompleteInformationError('%s has incomplete information.' % write_method)
 
     @classmethod
     def read_setting(cls, json_data):
@@ -51,3 +51,12 @@ class TestSetting(object):
     @property
     def write_response(self):
         return self._write_response
+
+
+class SettingIncompleteInformationError(Exception):
+    """Test types are not supported"""
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return str(self.value)

@@ -46,14 +46,14 @@ if __name__ == '__main__':
         try:
             json_file = open(test_case_file)
             json_data = json.load(json_file)
-        except Exception:
-            add_fail_function('Cannot parse the json file.')
+        except Exception as file_error:
+            add_fail_function('Cannot parse the json file: %s' % str(file_error))
             continue
 
         try:
             setting = TestSetting(json_data)
-        except KeyError as key_error:
-            add_fail_function(str(key_error))
+        except Exception as setting_error:
+            add_fail_function(str(setting_error))
             continue
 
         test_function_builder = TestFunctionBuilder.get(setting, file_name)

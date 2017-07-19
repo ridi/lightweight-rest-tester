@@ -2,7 +2,7 @@ import copy
 
 import requests
 
-from rest_tester.setting import ParameterSet, TestMethod
+from rest_tester.setting import ParameterSet, TestMethod, UnsupportedMethodError
 from . import TestFunctionBuilder, TestFunction
 
 
@@ -34,4 +34,4 @@ class ReadTestFunctionBuilder(TestFunctionBuilder):
         if read_method == TestMethod.GET:
             return requests.get(url=request.url, params=params, timeout=request.timeout)
         else:
-            raise ValueError
+            raise UnsupportedMethodError('Unsupported read method: %s' % read_method)

@@ -2,7 +2,7 @@ import os
 import unittest
 
 
-from rest_tester.setting import TestSetting
+from rest_tester.setting import TestSetting, SettingMethodError, SettingIncompleteInformationError
 from test import helper
 
 
@@ -25,7 +25,7 @@ class TestTestSetting(unittest.TestCase):
         try:
             TestSetting(json_data)
             self.fail('Should throw KeyError!')
-        except KeyError:
+        except SettingIncompleteInformationError:
             pass
 
     def test_post(self):
@@ -49,14 +49,14 @@ class TestTestSetting(unittest.TestCase):
         self.assertEqual(json_data['post']['request'], self.convert_request_to_dict(setting.write_request))
         self.assertEqual(json_data['post']['response'], self.convert_response_to_dict(setting.write_response))
 
-    def test_post_fail_partial(self):
+    def test_post_missing_response(self):
         json_file = '%s/resources/test_setting_post_missing_response.json' % self.current_dir_path
         json_data = helper.load_json_data(json_file)
 
         try:
             TestSetting(json_data)
             self.fail('Should throw KeyError!')
-        except KeyError:
+        except SettingMethodError:
             pass
 
     @staticmethod

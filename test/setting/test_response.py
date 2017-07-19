@@ -1,7 +1,7 @@
 import unittest
 
 
-from rest_tester.setting import Response
+from rest_tester.setting import Response, SettingResponseError
 
 
 class TestResponse(unittest.TestCase):
@@ -48,7 +48,7 @@ class TestResponse(unittest.TestCase):
         try:
             Response(response_data)
             self.fail('Should throw KeyError!')
-        except KeyError:
+        except SettingResponseError:
             pass
 
 if __name__ == '__main__':

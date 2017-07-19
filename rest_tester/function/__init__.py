@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 import jsonschema
 
-from rest_tester.setting import ParameterSet
+from rest_tester.setting import ParameterSet, UnsupportedMethodError
 from rest_tester.utils import convert_to_list
 
 
@@ -33,7 +33,7 @@ class TestFunctionBuilder(metaclass=ABCMeta):
             return ReadTestFunctionBuilder(setting, name_prefix)
 
         else:
-            raise ValueError
+            raise UnsupportedMethodError
 
     @staticmethod
     def test_status_code(self, expected_response, actual_response):
