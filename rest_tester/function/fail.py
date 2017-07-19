@@ -1,14 +1,17 @@
-class FailTestFunction(object):
-    @staticmethod
-    def generate_name(file_name):
-        """Test function name should start with 'test' since we use unit test."""
-        return 'test_%s' % file_name
+from . import TestFunctionBuilder, TestFunction
 
-    @staticmethod
-    def make(msg):
-        """Make a test function"""
 
-        def test_fail(self):
-            self.fail(msg)
+class FailTestFunctionBuilder(TestFunctionBuilder):
+    def __init__(self, msg, name):
+        self._msg = msg
+        self._name = name
 
-        return test_fail
+    def build(self):
+        def test_function(test_self):
+            test_self.fail(self._msg)
+
+        test_function_name = 'test_%s' % self._name
+        return TestFunction(test_function_name, test_function)
+
+    def _get_actual_response(self, request, params):
+        raise NotImplementedError

@@ -1,47 +1,34 @@
+from .method import TestMethod
+from .request import Request
+from .response import Response
+
+
 class TestSetting(object):
     """Read test information from JSON data."""
-    KEY_METHOD = 'method'
     KEY_REQUEST = 'request'
     KEY_RESPONSE = 'response'
 
-    METHOD_GET = 'get'
-    METHOD_PUT = 'put'
-    METHOD_POST = 'post'
-
     def __init__(self, json_data):
-        self._method = json_data[self.KEY_METHOD]
+        self._method = TestMethod(json_data)
+        read_method = self._method.read_method
+        write_method = self._method.write_method
 
-        if self._method == self.METHOD_GET:
-            self._read_request, self._read_response = self.read_setting(json_data, self.METHOD_GET)
-            if self._read_request is None:
-                raise KeyError(self.METHOD_GET)
+        if read_method:
+            try:
+                self._read_request, self._read_response = self.read_setting(json_data[read_method])
+            except:
+                raise KeyError('%s has incomplete information.' % read_method)
 
-        elif self._method == self.METHOD_PUT or self._method == self.METHOD_POST:
-            """Read put- or post-method test case and get-method test case as well."""
-            self._write_request, self._write_response = self.read_setting(json_data, self._method)
-            if self._write_request is None:
-                raise KeyError(self._method)
-
-            """Get-method test case may by skipped."""
-            self._read_request, self._read_response = self.read_setting(json_data, self.METHOD_GET)
-
-        else:
-            raise KeyError(self.KEY_METHOD)
+        if write_method:
+            try:
+                self._write_request, self._write_response = self.read_setting(json_data[write_method])
+            except:
+                raise KeyError('%s has incomplete information.' % write_method)
 
     @classmethod
-    def read_setting(cls, json_data, method_key):
-        method_json_data = json_data.get(method_key)
-
-        if method_json_data:
-            """If method-related value exists, it should contain the keys of request and response."""
-            from .request import Request
-            from .response import Response
-
-            request = Request(method_json_data[cls.KEY_REQUEST])
-            response = Response(method_json_data[cls.KEY_RESPONSE])
-        else:
-            request = None
-            response = None
+    def read_setting(cls, json_data):
+        request = Request(json_data[cls.KEY_REQUEST])
+        response = Response(json_data[cls.KEY_RESPONSE])
 
         return request, response
 

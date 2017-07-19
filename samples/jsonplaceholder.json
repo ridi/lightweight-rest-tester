@@ -1,5 +1,4 @@
 {
-  "method": "get",
   "get": {
     "request": {
       "url": "https://jsonplaceholder.typicode.com/comments",

@@ -1,11 +1,40 @@
 from abc import ABCMeta, abstractmethod
 import jsonschema
 
-from rest_tester.setting.parameters import ParameterSet
+from rest_tester.setting import ParameterSet
 from rest_tester.utils import convert_to_list
 
 
-class TestFunction(metaclass=ABCMeta):
+class TestFunction(object):
+    """Contains test function and its name"""
+    def __init__(self, name, test_function):
+        self._name = name
+        self._test_function = test_function
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def test_function(self):
+        return self._test_function
+
+
+class TestFunctionBuilder(metaclass=ABCMeta):
+    """Build test functions"""
+    @classmethod
+    def get(cls, setting, name_prefix):
+        if setting.method.write_method:
+            from .write import WriteTestFunctionBuilder
+            return WriteTestFunctionBuilder(setting, name_prefix)
+
+        elif setting.method.read_method:
+            from .read import ReadTestFunctionBuilder
+            return ReadTestFunctionBuilder(setting, name_prefix)
+
+        else:
+            raise ValueError
+
     @staticmethod
     def test_status_code(self, expected_response, actual_response):
         """Check if the given status code is identical to the expected."""
@@ -22,34 +51,35 @@ class TestFunction(metaclass=ABCMeta):
 
         jsonschema.validate(actual_json, json_schema)
 
-    @classmethod
-    def make_test_function(cls, request, expected_response):
-        """Make a test function"""
-        def test_function(self):
+    def build_test_function(self, request, expected_response):
+        def test_function(test_self):
             param_set_list = ParameterSet.generate(request.params)
             for param_set in param_set_list:
                 """In some cases, the test case with all the combinations of parameters 
                     should be executed in one test case."""
-                actual_response = cls.get_actual_response(request, param_set)
+                actual_response = self._get_actual_response(request, param_set)
 
                 if expected_response.status_code:
-                    cls.test_status_code(self, expected_response, actual_response)
+                    self.test_status_code(test_self, expected_response, actual_response)
 
                 if expected_response.json_schema:
-                    cls.test_json_schema(self, expected_response, actual_response)
+                    self.test_json_schema(test_self, expected_response, actual_response)
 
         return test_function
 
     @staticmethod
-    def generate_name(base_name, request):
+    def _generate_name(name_prefix, request):
         """Test function name should start with 'test' since we use unit test."""
         param_str = '&'.join([key + "=" + str(value) for key, value in request.params.items()])
         if param_str != '':
             param_str = '?' + param_str
 
-        return 'test_%s%s' % (base_name, param_str)
+        return 'test_%s%s' % (name_prefix, param_str)
 
-    @classmethod
     @abstractmethod
-    def get_actual_response(cls, request, params):
+    def build(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def _get_actual_response(self, request, params):
         raise NotImplementedError
