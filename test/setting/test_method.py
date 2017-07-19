@@ -30,6 +30,18 @@ class TestTestMethod(unittest.TestCase):
         self.assertEqual("get", test_method.read_method)
         self.assertEqual("post", test_method.write_method)
 
+    def test_invalid_two_methods(self):
+        json_data = {
+            "modify": {},
+            "remove": {}
+        }
+
+        try:
+            TestMethod(json_data)
+            self.fail('Should throw KeyError!')
+        except KeyError:
+            pass
+
     def test_three_methods(self):
         json_data = {
             "post": {},

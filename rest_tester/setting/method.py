@@ -22,6 +22,9 @@ class TestMethod(object):
         self._read_method = self._identify_method(method_list, self.READ_TYPES)
         self._write_method = self._identify_method(method_list, self.WRITE_TYPES)
 
+        if self._read_method is None and self._write_method is None:
+            raise KeyError('Test case should have at least one READ (e.g., GET) or WRITE (e.g., PUT) method!')
+
         if method_num == 2:
             if self._read_method is None:
                 raise KeyError('Test case should have at least one READ (e.g., GET) method')
