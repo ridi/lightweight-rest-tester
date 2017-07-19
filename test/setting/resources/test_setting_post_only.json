@@ -1,5 +1,4 @@
 {
-  "method": "post",
   "post": {
     "request": {
       "url": "http://jsonplaceholder.typicode.com/posts",

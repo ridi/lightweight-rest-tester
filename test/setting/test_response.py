@@ -5,7 +5,7 @@ from rest_tester.setting import Response
 
 
 class TestResponse(unittest.TestCase):
-    def test_success(self):
+    def test_entire_information(self):
         response_data = {
             "statusCode": 200,
             "jsonSchema": {
@@ -23,7 +23,7 @@ class TestResponse(unittest.TestCase):
         self.assertEqual(response_data['statusCode'], response.status_code)
         self.assertEqual(response_data['jsonSchema'], response.json_schema)
 
-    def test_success_partial(self):
+    def test_essential_information(self):
         response_data = {
             "statusCode": 200
         }
@@ -32,7 +32,7 @@ class TestResponse(unittest.TestCase):
 
         self.assertEqual(response_data['statusCode'], response.status_code)
 
-    def test_fail(self):
+    def test_wrong_key(self):
         response_data = {
             "wrongStatusCode": 200,
             "wrongJsonSchema": {
@@ -46,7 +46,7 @@ class TestResponse(unittest.TestCase):
         }
 
         try:
-            request = Response(response_data)
+            Response(response_data)
             self.fail('Should throw KeyError!')
         except KeyError:
             pass

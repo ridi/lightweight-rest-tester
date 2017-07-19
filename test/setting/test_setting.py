@@ -9,8 +9,8 @@ from test import helper
 class TestTestSetting(unittest.TestCase):
     current_dir_path = os.path.dirname(__file__)
 
-    def test_get_success(self):
-        json_file = '%s/resources/test_setting_get_success.json' % self.current_dir_path
+    def test_get(self):
+        json_file = '%s/resources/test_setting_get.json' % self.current_dir_path
         json_data = helper.load_json_data(json_file)
 
         setting = TestSetting(json_data)
@@ -18,28 +18,18 @@ class TestTestSetting(unittest.TestCase):
         self.assertEqual(json_data['get']['request'], self.convert_request_to_dict(setting.read_request))
         self.assertEqual(json_data['get']['response'], self.convert_response_to_dict(setting.read_response))
 
-    def test_get_fail_all(self):
-        json_file = '%s/resources/test_setting_get_fail_all.json' % self.current_dir_path
+    def test_get_missing_response(self):
+        json_file = '%s/resources/test_setting_get_missing_response.json' % self.current_dir_path
         json_data = helper.load_json_data(json_file)
 
         try:
-            setting = TestSetting(json_data)
+            TestSetting(json_data)
             self.fail('Should throw KeyError!')
         except KeyError:
             pass
 
-    def test_get_fail_partial(self):
-        json_file = '%s/resources/test_setting_get_fail_partial.json' % self.current_dir_path
-        json_data = helper.load_json_data(json_file)
-
-        try:
-            setting = TestSetting(json_data)
-            self.fail('Should throw KeyError!')
-        except KeyError:
-            pass
-
-    def test_post_success(self):
-        json_file = '%s/resources/test_setting_post_success.json' % self.current_dir_path
+    def test_post(self):
+        json_file = '%s/resources/test_setting_post.json' % self.current_dir_path
         json_data = helper.load_json_data(json_file)
 
         setting = TestSetting(json_data)
@@ -50,31 +40,21 @@ class TestTestSetting(unittest.TestCase):
         self.assertEqual(json_data['get']['request'], self.convert_request_to_dict(setting.read_request))
         self.assertEqual(json_data['get']['response'], self.convert_response_to_dict(setting.read_response))
 
-    def test_post_success_no_get(self):
-        json_file = '%s/resources/test_setting_post_success_no_get.json' % self.current_dir_path
+    def test_post_only(self):
+        json_file = '%s/resources/test_setting_post_only.json' % self.current_dir_path
         json_data = helper.load_json_data(json_file)
 
         setting = TestSetting(json_data)
 
         self.assertEqual(json_data['post']['request'], self.convert_request_to_dict(setting.write_request))
         self.assertEqual(json_data['post']['response'], self.convert_response_to_dict(setting.write_response))
-
-    def test_post_fail_all(self):
-        json_file = '%s/resources/test_setting_post_fail_all.json' % self.current_dir_path
-        json_data = helper.load_json_data(json_file)
-
-        try:
-            setting = TestSetting(json_data)
-            self.fail('Should throw KeyError!')
-        except KeyError:
-            pass
 
     def test_post_fail_partial(self):
-        json_file = '%s/resources/test_setting_post_fail_partial.json' % self.current_dir_path
+        json_file = '%s/resources/test_setting_post_missing_response.json' % self.current_dir_path
         json_data = helper.load_json_data(json_file)
 
         try:
-            setting = TestSetting(json_data)
+            TestSetting(json_data)
             self.fail('Should throw KeyError!')
         except KeyError:
             pass

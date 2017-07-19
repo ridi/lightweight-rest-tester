@@ -5,7 +5,7 @@ from rest_tester.setting import Request
 
 
 class TestRequest(unittest.TestCase):
-    def test_success(self):
+    def test_entire_information(self):
         request_data = {
             "url": "https://jsonplaceholder.typicode.com/comments",
             "params": {
@@ -26,7 +26,7 @@ class TestRequest(unittest.TestCase):
         self.assertEqual(request_data['timeout'], request.timeout)
         self.assertEqual(request_data['data'], request.data)
 
-    def test_success_partial(self):
+    def test_essential_information(self):
         request_data = {
             "url": "https://jsonplaceholder.typicode.com/comments"
         }
@@ -35,7 +35,7 @@ class TestRequest(unittest.TestCase):
 
         self.assertEqual(request_data['url'], request.url)
 
-    def test_fail(self):
+    def test_missing_information(self):
         request_data = {
             "params": {
                 "postId": 1
@@ -44,7 +44,7 @@ class TestRequest(unittest.TestCase):
         }
 
         try:
-            request = Request(request_data)
+            Request(request_data)
             self.fail('Should throw KeyError!')
         except KeyError:
             pass
