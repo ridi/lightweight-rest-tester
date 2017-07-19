@@ -35,12 +35,12 @@ class WriteTestFunctionBuilder(TestFunctionBuilder):
         data = json.dumps(request.data) if request.data else None
         headers = {'Content-Type': 'application/json'}
 
-        response = {
-            TestMethod.PUT: requests.put(url=url, params=params, timeout=timeout, data=data, headers=headers),
-            TestMethod.POST: requests.post(url=url, params=params, timeout=timeout, data=data, headers=headers),
-            TestMethod.PATCH: requests.patch(url=url, params=params, timeout=timeout, data=data, headers=headers),
-            TestMethod.DELETE: requests.delete(url=url, params=params, timeout=timeout)
-        }
-
         write_method = self._setting.method.write_method
-        return response[write_method]
+        if write_method == TestMethod.PUT:
+            return requests.put(url=url, params=params, timeout=timeout, data=data, headers=headers)
+        elif write_method == TestMethod.POST:
+            return requests.post(url=url, params=params, timeout=timeout, data=data, headers=headers)
+        elif write_method == TestMethod.PATCH:
+            return requests.patch(url=url, params=params, timeout=timeout, data=data, headers=headers)
+        elif write_method == TestMethod.DELETE:
+            return requests.delete(url=url, params=params, timeout=timeout)

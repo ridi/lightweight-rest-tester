@@ -1,5 +1,4 @@
 {
-  "method": "put",
   "put": {
     "request": {
       "url": "http://localhost:3000/posts/1",
@@ -11,7 +10,7 @@
       "timeout" : 10
     },
     "response": {
-      "statusCode": 201
+      "statusCode": 200
     }
   }
 }

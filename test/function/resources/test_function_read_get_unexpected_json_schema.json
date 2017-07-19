@@ -1,24 +1,9 @@
 {
-  "method": "put",
-  "put": {
-    "request": {
-      "url": "http://localhost:3000/posts/1",
-      "data": {
-        "title": "foo",
-        "body": "bar",
-        "userId": 1
-      },
-      "timeout" : 10
-    },
-    "response": {
-      "statusCode": 200
-    }
-  },
   "get": {
     "request": {
-      "url": "http://localhost:3000/posts/1",
+      "url": "http://localhost:3000/comments",
       "params": {
-        "userId": 1
+        "postId": 2
       },
       "timeout" : 10
     },
@@ -26,22 +11,29 @@
       "statusCode": 200,
 
       "jsonSchema": {
-        "type": "object",
+        "type": "array",
+
+        "items": {
+          "type": "object",
 
           "properties": {
-            "userId": {
+            "postId": {
               "type": "number"
             },
             "id": {
               "type": "number"
             },
-            "title": {
+            "name": {
+              "type": "number"
+            },
+            "email": {
               "type": "number"
             },
             "body": {
               "type": "number"
             }
           }
+        }
       }
     }
   }

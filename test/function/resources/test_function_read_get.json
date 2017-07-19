@@ -1,5 +1,4 @@
 {
-  "method": "get",
   "get": {
     "request": {
       "url": "http://localhost:3000/comments",
@@ -13,6 +12,7 @@
 
       "jsonSchema": {
         "type": "array",
+        "minItems": 0,
 
         "items": {
           "type": "object",
@@ -25,13 +25,13 @@
               "type": "number"
             },
             "name": {
-              "type": "number"
+              "type": "string"
             },
             "email": {
-              "type": "number"
+              "type": "string"
             },
             "body": {
-              "type": "number"
+              "type": "string"
             }
           }
         }

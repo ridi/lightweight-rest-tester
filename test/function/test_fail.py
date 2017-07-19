@@ -1,22 +1,16 @@
 import unittest
 
 
-from rest_tester.function.fail import FailTestFunction
+from rest_tester.function.fail import FailTestFunctionBuilder
 
 
 class TestFailTestFunction(unittest.TestCase):
-    def test_generate_name(self):
-        file_name = 'file_name'
+    def test_build(self):
+        builder = FailTestFunctionBuilder('Throw AssertionError!', 'fail test case')
+        fail_function = builder.build()
 
-        actual = FailTestFunction.generate_name(file_name)
-        expected = 'test_%s' % file_name
-
-        self.assertEqual(actual, expected)
-
-    def test_make(self):
         try:
-            test_function = FailTestFunction.make('test_function')
-            test_function(self)
+            fail_function.test_function(self)
             self.fail('Should throw AssertionError!')
         except AssertionError:
             pass

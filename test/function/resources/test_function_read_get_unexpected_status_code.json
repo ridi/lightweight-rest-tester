@@ -1,5 +1,4 @@
 {
-  "method": "get",
   "get": {
     "request": {
       "url": "http://localhost:3000/comments",

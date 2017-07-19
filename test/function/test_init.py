@@ -2,13 +2,35 @@ import unittest
 import os
 
 
-from rest_tester.function import TestFunction
-from rest_tester.setting import Request
-from test.helper import are_equal_lists
+from rest_tester.function import TestFunctionBuilder
+from rest_tester.function.read import ReadTestFunctionBuilder
+from rest_tester.function.write import WriteTestFunctionBuilder
+from rest_tester.setting import Request, TestSetting
+from test.helper import are_equal_lists, load_json_data
 
 
 class TestTestFunction(unittest.TestCase):
     current_dir_path = os.path.dirname(__file__)
+
+    def test_get_read(self):
+        json_file = '%s/resources/test_function_init_get_read.json' % self.current_dir_path
+        json_data = load_json_data(json_file)
+
+        setting = TestSetting(json_data)
+        file_name = os.path.basename(json_file)
+
+        builder = TestFunctionBuilder.get(setting, file_name)
+        self.assertTrue(isinstance(builder, ReadTestFunctionBuilder))
+
+    def test_get_write(self):
+        json_file = '%s/resources/test_function_init_get_write.json' % self.current_dir_path
+        json_data = load_json_data(json_file)
+
+        setting = TestSetting(json_data)
+        file_name = os.path.basename(json_file)
+
+        builder = TestFunctionBuilder.get(setting, file_name)
+        self.assertTrue(isinstance(builder, WriteTestFunctionBuilder))
 
     def test_generate_name(self):
         params = {
@@ -25,7 +47,7 @@ class TestTestFunction(unittest.TestCase):
 
         request = Request(request_data)
         file_name = 'file_name'
-        actual = TestFunction.generate_name(file_name, request)
+        actual = TestFunctionBuilder._generate_name(file_name, request)
 
         split_to_url_and_parameters = actual.split('?')
         self.assertEqual(len(split_to_url_and_parameters), 2)
@@ -50,7 +72,7 @@ class TestTestFunction(unittest.TestCase):
         file_name = 'file_name'
         request = Request(request_data)
 
-        actual = TestFunction.generate_name(file_name, request)
+        actual = TestFunctionBuilder._generate_name(file_name, request)
         expected = 'test_%s' % file_name
 
         self.assertEqual(actual, expected)

@@ -1,5 +1,4 @@
 {
-  "method": "put",
   "put": {
     "request": {
       "url": "http://localhost:3000/posts/1",
@@ -28,20 +27,20 @@
       "jsonSchema": {
         "type": "object",
 
-          "properties": {
-            "userId": {
-              "type": "number"
-            },
-            "id": {
-              "type": "number"
-            },
-            "title": {
-              "type": "string"
-            },
-            "body": {
-              "type": "string"
-            }
+        "properties": {
+          "userId": {
+            "type": "number"
+          },
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
           }
+        }
       }
     }
   }
