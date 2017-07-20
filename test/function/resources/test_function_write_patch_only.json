@@ -1,7 +1,7 @@
 {
   "patch": {
     "request": {
-      "url": "http://localhost:3000/posts/2",
+      "url": "http://json-server:3000/posts/2",
       "data": {
         "title": "title is patched!"
       },

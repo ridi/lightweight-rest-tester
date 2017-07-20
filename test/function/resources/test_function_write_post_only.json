@@ -1,7 +1,7 @@
 {
   "post": {
     "request": {
-      "url": "http://localhost:3000/posts",
+      "url": "http://json-server:3000/posts",
       "data": {
         "title": "foo",
         "body": "bar",
