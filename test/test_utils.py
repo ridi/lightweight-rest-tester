@@ -13,7 +13,7 @@ class TestUtils(unittest.TestCase):
         self.assertTrue(are_equal_lists(actual, expected))
 
     def test_convert_to_list_by_list(self):
-        actual = convert_to_list('item')
+        actual = convert_to_list(['item'])
         expected = ['item']
 
         self.assertTrue(are_equal_lists(actual, expected))
