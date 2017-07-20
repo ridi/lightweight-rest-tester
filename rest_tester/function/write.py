@@ -7,10 +7,7 @@ from .read import ReadTestFunctionBuilder
 
 
 class WriteTestFunctionBuilder(TestFunctionBuilder):
-    def __init__(self, setting, name_prefix):
-        self._setting = setting
-        self._name_prefix = name_prefix
-
+    """Build function that checks the response from WRITE (e.g., PUT) method."""
     def build(self):
         write_request = self._setting.write_request
         write_response = self._setting.write_response

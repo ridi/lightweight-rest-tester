@@ -8,10 +8,6 @@ from . import TestFunctionBuilder, TestFunction
 
 class ReadTestFunctionBuilder(TestFunctionBuilder):
     """Build function that checks the response from READ (e.g., GET) method."""
-    def __init__(self, setting, name_prefix):
-        self._setting = setting
-        self._name_prefix = name_prefix
-
     def build(self):
         request = self._setting.read_request
         response = self._setting.read_response

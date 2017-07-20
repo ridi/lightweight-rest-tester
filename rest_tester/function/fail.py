@@ -1,7 +1,8 @@
-from . import TestFunctionBuilder, TestFunction
+from . import TestFunction
 
 
-class FailTestFunctionBuilder(TestFunctionBuilder):
+class FailTestFunctionBuilder(object):
+    """Build test function to let unittest know failure."""
     def __init__(self, msg, name):
         self._msg = msg
         self._name = name

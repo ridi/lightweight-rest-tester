@@ -1,4 +1,3 @@
-from abc import ABCMeta, abstractmethod
 import jsonschema
 
 from rest_tester.setting import ParameterSet, UnsupportedMethodError
@@ -20,10 +19,9 @@ class TestFunction(object):
         return self._test_function
 
 
-class TestFunctionBuilder(metaclass=ABCMeta):
-    """Build test functions"""
-    @classmethod
-    def get(cls, setting, name_prefix):
+class TestFunctionBuilderFactory(object):
+    @staticmethod
+    def get_builder(setting, name_prefix):
         if setting.method.write_method:
             from .write import WriteTestFunctionBuilder
             return WriteTestFunctionBuilder(setting, name_prefix)
@@ -34,6 +32,13 @@ class TestFunctionBuilder(metaclass=ABCMeta):
 
         else:
             raise UnsupportedMethodError
+
+
+class TestFunctionBuilder(object):
+    """Build test functions"""
+    def __init__(self, setting, name_prefix):
+        self._setting = setting
+        self._name_prefix = name_prefix
 
     @staticmethod
     def test_status_code(self, expected_response, actual_response):
@@ -76,10 +81,8 @@ class TestFunctionBuilder(metaclass=ABCMeta):
 
         return 'test_%s%s' % (name_prefix, param_str)
 
-    @abstractmethod
     def build(self):
         raise NotImplementedError
 
-    @abstractmethod
     def _get_actual_response(self, request, params):
         raise NotImplementedError

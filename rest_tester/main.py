@@ -4,7 +4,7 @@ import os
 import sys
 import unittest
 
-from rest_tester.function import TestFunctionBuilder
+from rest_tester.function import TestFunctionBuilderFactory
 from rest_tester.function.fail import FailTestFunctionBuilder
 from rest_tester.setting import TestSetting
 from rest_tester.utils import convert_to_list
@@ -56,7 +56,7 @@ if __name__ == '__main__':
             add_fail_function(str(setting_error))
             continue
 
-        test_function_builder = TestFunctionBuilder.get(setting, file_name)
+        test_function_builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
         test_functions = test_function_builder.build()
         for test_function in convert_to_list(test_functions):
             add_function_to_container(test_function)

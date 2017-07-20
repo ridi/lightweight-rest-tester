@@ -2,7 +2,7 @@ import unittest
 import os
 
 
-from rest_tester.function import TestFunctionBuilder
+from rest_tester.function import TestFunctionBuilderFactory, TestFunctionBuilder
 from rest_tester.function.read import ReadTestFunctionBuilder
 from rest_tester.function.write import WriteTestFunctionBuilder
 from rest_tester.setting import Request, TestSetting
@@ -19,7 +19,7 @@ class TestTestFunction(unittest.TestCase):
         setting = TestSetting(json_data)
         file_name = os.path.basename(json_file)
 
-        builder = TestFunctionBuilder.get(setting, file_name)
+        builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
         self.assertTrue(isinstance(builder, ReadTestFunctionBuilder))
 
     def test_get_write(self):
@@ -29,7 +29,7 @@ class TestTestFunction(unittest.TestCase):
         setting = TestSetting(json_data)
         file_name = os.path.basename(json_file)
 
-        builder = TestFunctionBuilder.get(setting, file_name)
+        builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
         self.assertTrue(isinstance(builder, WriteTestFunctionBuilder))
 
     def test_generate_name(self):
