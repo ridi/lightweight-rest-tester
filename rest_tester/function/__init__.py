@@ -56,7 +56,7 @@ class TestFunctionBuilder(object):
 
         jsonschema.validate(actual_json, json_schema)
 
-    def build_test_function(self, request, expected_response):
+    def _build_test_function(self, request, expected_response):
         def test_function(test_self):
             param_set_list = ParameterSet.generate(request.params)
             for param_set in param_set_list:

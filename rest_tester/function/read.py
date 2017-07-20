@@ -20,7 +20,7 @@ class ReadTestFunctionBuilder(TestFunctionBuilder):
             curr_request.params = param_set
 
             test_function_name = self._generate_name(self._name_prefix, curr_request)
-            test_function = self.build_test_function(curr_request, response)
+            test_function = self._build_test_function(curr_request, response)
             test_function_list.append(TestFunction(test_function_name, test_function))
 
         return test_function_list

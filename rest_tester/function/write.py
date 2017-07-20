@@ -13,7 +13,7 @@ class WriteTestFunctionBuilder(TestFunctionBuilder):
         write_response = self._setting.write_response
 
         def test_function(test_self):
-            write_function = self.build_test_function(write_request, write_response)
+            write_function = self._build_test_function(write_request, write_response)
             write_function(test_self)
 
             if self._setting.method.read_method:
