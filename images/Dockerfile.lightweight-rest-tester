@@ -10,3 +10,5 @@ WORKDIR /var/lightweight-rest-tester
 RUN pip install -r requirements.txt
 
 ADD . /var/lightweight-rest-tester
+
+HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://json-server:3000/posts || exit 1
