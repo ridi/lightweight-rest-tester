@@ -25,9 +25,10 @@ class TestReadTestFunctionBuilder(unittest.TestCase):
         try:
             for test_function in test_function_list:
                 test_function.test_function(self)
-            self.fail('Should throw AssertionError!')
         except AssertionError:
             pass
+        else:
+            self.fail('Should throw AssertionError!')
 
     def test_build_unexpected_json_schema(self):
         json_file = '%s/resources/test_function_read_get_unexpected_json_schema.json' % self.current_dir_path
@@ -36,9 +37,10 @@ class TestReadTestFunctionBuilder(unittest.TestCase):
         try:
             for test_function in test_function_list:
                 test_function.test_function(self)
-            self.fail('Should throw ValidationError!')
         except ValidationError:
             pass
+        else:
+            self.fail('Should throw ValidationError!')
 
     @staticmethod
     def generate_test_functions(json_file):

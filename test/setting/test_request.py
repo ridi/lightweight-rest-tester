@@ -45,9 +45,10 @@ class TestRequest(unittest.TestCase):
 
         try:
             Request(request_data)
-            self.fail('Should throw KeyError!')
         except KeyError:
             pass
+        else:
+            self.fail('Should throw KeyError!')
 
 if __name__ == '__main__':
     unittest.main()

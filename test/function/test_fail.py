@@ -11,9 +11,10 @@ class TestFailTestFunction(unittest.TestCase):
 
         try:
             fail_function.test_function(self)
-            self.fail('Should throw AssertionError!')
         except AssertionError:
             pass
+        else:
+            self.fail('Should throw AssertionError!')
 
 if __name__ == '__main__':
     unittest.main()

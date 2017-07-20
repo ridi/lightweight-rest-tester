@@ -47,9 +47,10 @@ class TestResponse(unittest.TestCase):
 
         try:
             Response(response_data)
-            self.fail('Should throw KeyError!')
         except SettingResponseError:
             pass
+        else:
+            self.fail('Should throw KeyError!')
 
 if __name__ == '__main__':
     unittest.main()

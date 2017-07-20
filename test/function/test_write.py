@@ -47,9 +47,10 @@ class TestWriteTestFunctionBuilder(unittest.TestCase):
 
         try:
             test_function.test_function(self)
-            self.fail('Should throw AssertionError')
         except AssertionError:
             pass
+        else:
+            self.fail('Should throw AssertionError')
 
     def test_build_unexpected_get(self):
         json_file = '%s/resources/test_function_write_unexpected_get.json' % self.current_dir_path
@@ -57,9 +58,10 @@ class TestWriteTestFunctionBuilder(unittest.TestCase):
 
         try:
             test_function.test_function(self)
-            self.fail('Should throw ValidationError')
         except ValidationError:
             pass
+        else:
+            self.fail('Should throw ValidationError')
 
     @staticmethod
     def generate_test_function(json_file):

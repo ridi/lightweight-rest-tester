@@ -24,9 +24,10 @@ class TestTestSetting(unittest.TestCase):
 
         try:
             TestSetting(json_data)
-            self.fail('Should throw KeyError!')
         except SettingIncompleteInformationError:
             pass
+        else:
+            self.fail('Should throw KeyError!')
 
     def test_post(self):
         json_file = '%s/resources/test_setting_post.json' % self.current_dir_path
@@ -55,9 +56,10 @@ class TestTestSetting(unittest.TestCase):
 
         try:
             TestSetting(json_data)
-            self.fail('Should throw KeyError!')
         except SettingMethodError:
             pass
+        else:
+            self.fail('Should throw KeyError!')
 
     @staticmethod
     def convert_request_to_dict(request):
