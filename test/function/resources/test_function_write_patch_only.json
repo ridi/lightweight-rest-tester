@@ -1,0 +1,14 @@
+{
+  "patch": {
+    "request": {
+      "url": "http://localhost:3000/posts/2",
+      "data": {
+        "title": "title is patched!"
+      },
+      "timeout" : 10
+    },
+    "response": {
+      "statusCode": 200
+    }
+  }
+}

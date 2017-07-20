@@ -1,0 +1,14 @@
+{
+  "get": {
+    "request": {
+      "url": "http://localhost:3000/comments",
+      "params": {
+        "postId": 1
+      },
+      "timeout" : 10
+    },
+    "response": {
+      "statusCode": 500
+    }
+  }
+}

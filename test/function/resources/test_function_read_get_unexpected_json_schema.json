@@ -1,10 +1,9 @@
 {
   "get": {
     "request": {
-      "url": "https://jsonplaceholder.typicode.com/comments",
+      "url": "http://localhost:3000/comments",
       "params": {
-        "postId": [1, 2],
-        "id": [1, 3, 5, 7, 9]
+        "postId": 2
       },
       "timeout" : 10
     },
@@ -13,7 +12,6 @@
 
       "jsonSchema": {
         "type": "array",
-        "minItems": 0,
 
         "items": {
           "type": "object",
@@ -26,13 +24,13 @@
               "type": "number"
             },
             "name": {
-              "type": "string"
+              "type": "number"
             },
             "email": {
-              "type": "string"
+              "type": "number"
             },
             "body": {
-              "type": "string"
+              "type": "number"
             }
           }
         }

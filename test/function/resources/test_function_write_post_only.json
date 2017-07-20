@@ -1,0 +1,16 @@
+{
+  "post": {
+    "request": {
+      "url": "http://localhost:3000/posts",
+      "data": {
+        "title": "foo",
+        "body": "bar",
+        "userId": 1
+      },
+      "timeout" : 10
+    },
+    "response": {
+      "statusCode": 201
+    }
+  }
+}

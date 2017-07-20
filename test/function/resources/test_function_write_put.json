@@ -1,0 +1,47 @@
+{
+  "put": {
+    "request": {
+      "url": "http://localhost:3000/posts/1",
+      "data": {
+        "title": "foo",
+        "body": "bar",
+        "userId": 1
+      },
+      "timeout" : 10
+    },
+    "response": {
+      "statusCode": 200
+    }
+  },
+  "get": {
+    "request": {
+      "url": "http://localhost:3000/posts/1",
+      "params": {
+        "userId": 1
+      },
+      "timeout" : 10
+    },
+    "response": {
+      "statusCode": 200,
+
+      "jsonSchema": {
+        "type": "object",
+
+        "properties": {
+          "userId": {
+            "type": "number"
+          },
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

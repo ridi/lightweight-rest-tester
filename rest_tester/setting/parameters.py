@@ -1,6 +1,9 @@
 import copy
 
 
+from rest_tester.utils import convert_to_list
+
+
 class ParameterSet(object):
     """Generate all the possible combinations of given parameters that consist of keys and values."""
     @classmethod
@@ -19,14 +22,14 @@ class ParameterSet(object):
         curr_value = params[curr_key]
 
         """Convert to list (if not) to simplify the rest of parts."""
-        value_list = curr_value if isinstance(curr_value, list) else [curr_value]
+        value_list = convert_to_list(curr_value)
 
         param_set_list = []
         for value in value_list:
             curr_set[curr_key] = value
 
             if len(param_keys) == 1:
-                """If no more key (of parameters) are left,"""
+                """If no more keys (of parameters) are left."""
                 param_set_list.append(copy.deepcopy(curr_set))
             else:
                 new_param_set_list = cls.generate_inner(params, param_keys[1:], curr_set)

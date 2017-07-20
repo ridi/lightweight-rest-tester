@@ -1,0 +1,14 @@
+{
+  "post": {
+    "request": {
+      "url": "http://jsonplaceholder.typicode.com/posts",
+      "data": {
+        "title": "foo"
+      },
+      "timeout" : 10
+    },
+    "response": {
+      "statusCode": 201
+    }
+  }
+}

@@ -1,26 +1,28 @@
 {
-  "api": {
-    "url": "https://api.github.com/orgs/ridibooks/members"
-  },
-  "tests": {
-    "statusCode": 200,
+  "get": {
+    "request": {
+      "url": "https://api.github.com/orgs/ridibooks/members"
+    },
+    "response": {
+      "statusCode": 200,
 
-    "jsonSchema": {
-      "type": "array",
-      "minItems": 1,
+      "jsonSchema": {
+        "type": "array",
+        "minItems": 1,
 
-      "items": {
-        "type": "object",
+        "items": {
+          "type": "object",
 
-        "properties": {
-          "login": {
-            "type": "string"
-          },
-          "id": {
-            "type": "number"
-          },
-          "url": {
-            "type": "string"
+          "properties": {
+            "login": {
+              "type": "string"
+            },
+            "id": {
+              "type": "number"
+            },
+            "url": {
+              "type": "string"
+            }
           }
         }
       }

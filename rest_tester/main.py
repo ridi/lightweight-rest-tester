@@ -1,12 +1,13 @@
 import glob
 import json
 import os
-import unittest
 import sys
+import unittest
 
-from rest_tester.test_info import TestInfo
-from rest_tester.parameters import ParameterSet
-from rest_tester.test_function import TestFunction, TestFailFunction
+from rest_tester.function import TestFunctionBuilderFactory
+from rest_tester.function.fail import FailTestFunctionBuilder
+from rest_tester.setting import TestSetting
+from rest_tester.utils import convert_to_list
 
 
 class TestsContainer(unittest.TestCase):
@@ -19,15 +20,14 @@ def identify_files_in_dir(path):
     return [target for file_path in os.walk(path) for target in glob.glob(os.path.join(file_path[0], '*.json'))]
 
 
-def add_fail_function(file_path, msg):
-    """Add fail function when cannot read test information."""
-    fail_function_name = TestFailFunction.generate_name(os.path.basename(file_path))
-    fail_function = TestFailFunction.make(msg)
-    setattr(TestsContainer, fail_function_name, fail_function)
+def add_function_to_container(test_function):
+    """Add test functions with their name to container"""
+    setattr(TestsContainer, test_function.name, test_function.test_function)
+    print('%s is added to the test container.' % test_function.name)
 
 
 if __name__ == '__main__':
-    # Read test_suites_dir from the arguments.
+    """Read test_suites_dir from the arguments."""
     try:
         script, test_suites_dir = sys.argv
     except ValueError:
@@ -36,34 +36,30 @@ if __name__ == '__main__':
 
     for test_case_file in identify_files_in_dir(test_suites_dir):
         print('Working on %s ...' % test_case_file)
+        file_name = os.path.basename(test_case_file)
+
+        def add_fail_function(msg):
+            fail_function_builder = FailTestFunctionBuilder(msg, file_name)
+            fail_function = fail_function_builder.build()
+            add_function_to_container(fail_function)
+
         try:
             json_file = open(test_case_file)
-        except FileNotFoundError:
-            add_fail_function(test_case_file, 'Cannot find the json file.')
-            continue
-
-        try:
             json_data = json.load(json_file)
-        except Exception:
-            add_fail_function(test_case_file, 'Cannot parse the json file.')
+        except Exception as file_error:
+            add_fail_function('Cannot parse the json file: %s' % str(file_error))
             continue
 
         try:
-            url, params, timeout, test_cases = TestInfo.read(json_data)
-        except KeyError as e:
-            add_fail_function(test_case_file, 'Essential test information is missing: %s' % str(e))
+            setting = TestSetting(json_data)
+        except Exception as setting_error:
+            add_fail_function(str(setting_error))
             continue
 
-        param_set_list = ParameterSet.generate(params)
-
-        file_name = os.path.basename(test_case_file)
-        for param_set in param_set_list:
-            for test_key, test_value in test_cases.items():
-                test_function_name = TestFunction.generate_name(file_name, test_key, param_set)
-                test_function = TestFunction.make(url, param_set, timeout, test_key, test_value)
-                setattr(TestsContainer, test_function_name, test_function)
-
-                print('%s is added to the test container.' % test_function_name)
+        test_function_builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
+        test_functions = test_function_builder.build()
+        for test_function in convert_to_list(test_functions):
+            add_function_to_container(test_function)
 
     suite = unittest.makeSuite(TestsContainer)
     unittest.TextTestRunner(verbosity=1).run(suite)
