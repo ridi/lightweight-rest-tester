@@ -1,7 +1,7 @@
 {
   "get": {
     "request": {
-      "url": "http://localhost:3000/comments",
+      "url": "http://json-server:3000/comments",
       "params": {
         "postId": 2
       },
