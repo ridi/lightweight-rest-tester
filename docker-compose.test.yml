@@ -5,9 +5,10 @@ services:
     build:
       context: .
       dockerfile: ./images/Dockerfile.lightweight-rest-tester
-    command: python -m unittest
+    command: sh run_test_coveralls.sh
     depends_on:
-      - json-server
+      json-server:
+        condition: service_healthy
     links:
       - json-server
 
