@@ -1,5 +1,6 @@
 import os
 import unittest
+import time
 
 from jsonschema import ValidationError
 
@@ -15,16 +16,14 @@ class TestReadTestFunctionBuilder(unittest.TestCase):
         json_file = '%s/resources/test_function_read_get.json' % self.current_dir_path
         test_function_list = self.generate_test_functions(json_file)
 
-        for test_function in test_function_list:
-            test_function.test_function(self)
+        self.run_test_function_list(test_function_list, self)
 
     def test_build_unexpected_status_code(self):
         json_file = '%s/resources/test_function_read_get_unexpected_status_code.json' % self.current_dir_path
         test_function_list = self.generate_test_functions(json_file)
 
         try:
-            for test_function in test_function_list:
-                test_function.test_function(self)
+            self.run_test_function_list(test_function_list, self)
         except AssertionError:
             pass
         else:
@@ -35,8 +34,7 @@ class TestReadTestFunctionBuilder(unittest.TestCase):
         test_function_list = self.generate_test_functions(json_file)
 
         try:
-            for test_function in test_function_list:
-                test_function.test_function(self)
+            self.run_test_function_list(test_function_list, self)
         except ValidationError:
             pass
         else:
@@ -51,6 +49,13 @@ class TestReadTestFunctionBuilder(unittest.TestCase):
 
         builder = ReadTestFunctionBuilder(setting, file_name)
         return builder.build()
+
+    @staticmethod
+    def run_test_function_list(test_function_list, test_self):
+        time.sleep(1)
+
+        for test_function in test_function_list:
+            test_function.test_function(test_self)
 
 if __name__ == '__main__':
     unittest.main()

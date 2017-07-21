@@ -1,4 +1,0 @@
-FROM python:3.4.6
-MAINTAINER Jeehoon Yoo <jihungen@gmail.com>
-
-HEALTHCHECK --retries=12 CMD curl --fail http://json-server:3000/posts || exit 1

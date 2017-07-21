@@ -1,5 +1,6 @@
 import os
 import unittest
+import time
 
 from jsonschema import ValidationError
 
@@ -14,39 +15,39 @@ class TestWriteTestFunctionBuilder(unittest.TestCase):
     def test_build_put(self):
         json_file = '%s/resources/test_function_write_put.json' % self.current_dir_path
         test_function = self.generate_test_function(json_file)
-        test_function.test_function(self)
+        self.run_test_function(test_function, self)
 
     def test_build_post(self):
         json_file = '%s/resources/test_function_write_post.json' % self.current_dir_path
         test_function = self.generate_test_function(json_file)
-        test_function.test_function(self)
+        self.run_test_function(test_function, self)
 
     def test_build_put_only(self):
         json_file = '%s/resources/test_function_write_put_only.json' % self.current_dir_path
         test_function = self.generate_test_function(json_file)
-        test_function.test_function(self)
+        self.run_test_function(test_function, self)
 
     def test_build_post_only(self):
         json_file = '%s/resources/test_function_write_post.json' % self.current_dir_path
         test_function = self.generate_test_function(json_file)
-        test_function.test_function(self)
+        self.run_test_function(test_function, self)
 
     def test_build_patch_only(self):
         json_file = '%s/resources/test_function_write_patch_only.json' % self.current_dir_path
         test_function = self.generate_test_function(json_file)
-        test_function.test_function(self)
+        self.run_test_function(test_function, self)
 
     def test_build_delete_only(self):
         json_file = '%s/resources/test_function_write_delete_only.json' % self.current_dir_path
         test_function = self.generate_test_function(json_file)
-        test_function.test_function(self)
+        self.run_test_function(test_function, self)
 
     def test_build_unexpected_status_code(self):
         json_file = '%s/resources/test_function_write_unexpected_status_code.json' % self.current_dir_path
         test_function = self.generate_test_function(json_file)
 
         try:
-            test_function.test_function(self)
+            self.run_test_function(test_function, self)
         except AssertionError:
             pass
         else:
@@ -57,7 +58,7 @@ class TestWriteTestFunctionBuilder(unittest.TestCase):
         test_function = self.generate_test_function(json_file)
 
         try:
-            test_function.test_function(self)
+            self.run_test_function(test_function, self)
         except ValidationError:
             pass
         else:
@@ -72,6 +73,12 @@ class TestWriteTestFunctionBuilder(unittest.TestCase):
 
         builder = WriteTestFunctionBuilder(setting, file_name)
         return builder.build()
+
+    @staticmethod
+    def run_test_function(test_function, test_self):
+        time.sleep(1)
+
+        test_function.test_function(test_self)
 
 if __name__ == '__main__':
     unittest.main()

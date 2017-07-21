@@ -7,16 +7,6 @@ services:
       dockerfile: ./images/Dockerfile.lightweight-rest-tester
     command: python -m unittest
     depends_on:
-      json-server-healthcheck:
-        condition: service_healthy
-    links:
-      - json-server
-
-  json-server-healthcheck:
-    build:
-      context: .
-      dockerfile: ./images/Dockerfile.json-server-healthcheck
-    depends_on:
       - json-server
     links:
       - json-server
