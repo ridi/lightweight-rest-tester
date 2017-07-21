@@ -7,6 +7,7 @@ ADD requirements.txt /var/lightweight-rest-tester/requirements.txt
 
 WORKDIR /var/lightweight-rest-tester
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt \
+    && pip install coveralls[yaml]
 
 ADD . /var/lightweight-rest-tester

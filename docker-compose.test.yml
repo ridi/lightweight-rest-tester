@@ -1,11 +1,11 @@
 version: '2.1'
 
 services:
-  data-api-test:
+  lightweight-rest-tester:
     build:
       context: .
       dockerfile: ./images/Dockerfile.lightweight-rest-tester
-    command: python -m unittest
+    command: sh run_test_coveralls.sh
     depends_on:
       json-server:
         condition: service_healthy

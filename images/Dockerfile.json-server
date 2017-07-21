@@ -9,4 +9,4 @@ WORKDIR /var/lightweight-rest-tester
 
 CMD ["json-server","--watch","mock-db.json"]
 
-HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://localhost:3000/posts || exit 1
+HEALTHCHECK CMD curl --fail http://localhost:3000/posts || exit 1
