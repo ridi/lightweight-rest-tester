@@ -26,10 +26,10 @@ def add_function_to_container(test_function):
     print('%s is added to the test container.' % test_function.name)
 
 
-if __name__ == '__main__':
+def main(argv):
     """Read test_suites_dir from the arguments."""
     try:
-        script, test_suites_dir = sys.argv
+        script, test_suites_dir = argv
     except ValueError:
         print('Please specify the test suite directory for testing.')
         raise
@@ -63,3 +63,6 @@ if __name__ == '__main__':
 
     suite = unittest.makeSuite(TestsContainer)
     unittest.TextTestRunner(verbosity=1).run(suite)
+
+if __name__ == '__main__':
+    main(sys.argv)

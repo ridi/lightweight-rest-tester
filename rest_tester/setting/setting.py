@@ -17,13 +17,13 @@ class TestSetting(object):
             try:
                 self._read_request, self._read_response = self._read_setting(json_data[read_method])
             except KeyError:
-                raise SettingIncompleteInformationError('%s has incomplete information.' % read_method)
+                raise SettingIncompleteInformationError('"%s" has incomplete information.' % read_method)
 
         if write_method:
             try:
                 self._write_request, self._write_response = self._read_setting(json_data[write_method])
             except KeyError:
-                raise SettingIncompleteInformationError('%s has incomplete information.' % write_method)
+                raise SettingIncompleteInformationError('"%s" has incomplete information.' % write_method)
 
     @classmethod
     def _read_setting(cls, json_data):
