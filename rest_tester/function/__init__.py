@@ -1,3 +1,5 @@
+import copy
+
 import jsonschema
 
 from rest_tester.setting import ParameterSet, UnsupportedMethodError
@@ -71,6 +73,20 @@ class TestFunctionBuilder(object):
                     self.test_json_schema(test_self, expected_response, actual_response)
 
         return test_function
+
+    def _build_test_function_list(self, request, response):
+        test_function_list = []
+
+        param_set_list = ParameterSet.generate(request.params)
+        for param_set in param_set_list:
+            curr_request = copy.deepcopy(request)
+            curr_request.params = param_set
+
+            test_function_name = self._generate_name(self._name_prefix, curr_request)
+            test_function = self._build_test_function(curr_request, response)
+            test_function_list.append(TestFunction(test_function_name, test_function))
+
+        return test_function_list
 
     @staticmethod
     def _generate_name(name_prefix, request):
