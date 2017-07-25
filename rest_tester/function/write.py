@@ -9,22 +9,33 @@ from .read import ReadTestFunctionBuilder
 class WriteTestFunctionBuilder(TestFunctionBuilder):
     """Build function that checks the response from WRITE (e.g., PUT) method."""
     def build(self):
+        if self._setting.method.read_method:
+            return self._build_write_and_read()
+        else:
+            return self._build_write_only()
+
+    def _build_write_and_read(self):
         write_request = self._setting.write_request
         write_response = self._setting.write_response
 
         def test_function(test_self):
+            """Execute write-method functions first and then read-method functions"""
             write_function = self._build_test_function(write_request, write_response)
             write_function(test_self)
 
-            if self._setting.method.read_method:
-                """Some test cases may not call READ (e.g., GET) API."""
-                read_builder = ReadTestFunctionBuilder(self._setting, self._name_prefix)
-                read_function_list = read_builder.build()
-                for read_function in read_function_list:
-                    read_function.test_function(test_self)
+            read_builder = ReadTestFunctionBuilder(self._setting, self._name_prefix)
+            read_function_list = read_builder.build()
+            for read_function in read_function_list:
+                read_function.test_function(test_self)
 
         test_function_name = self._generate_name(self._name_prefix, write_request)
-        return TestFunction(test_function_name, test_function)
+        return [TestFunction(test_function_name, test_function)]
+
+    def _build_write_only(self):
+        write_request = self._setting.write_request
+        write_response = self._setting.write_response
+
+        return self._build_test_function_list(write_request, write_response)
 
     def _get_actual_response(self, request, params):
         url = request.url
