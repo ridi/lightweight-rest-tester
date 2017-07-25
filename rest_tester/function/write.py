@@ -1,7 +1,5 @@
-import requests
 import json
 
-from rest_tester.setting import TestMethod, UnsupportedMethodError
 from . import TestFunctionBuilder, TestFunction
 from .read import ReadTestFunctionBuilder
 
@@ -38,19 +36,9 @@ class WriteTestFunctionBuilder(TestFunctionBuilder):
         return self._build_test_function_list(write_request, write_response)
 
     def _get_actual_response(self, request, params):
-        url = request.url
-        timeout = request.timeout
         data = json.dumps(request.data) if request.data else None
-        headers = {'Content-Type': 'application/json'}
-
         write_method = self._setting.method.write_method
-        if write_method == TestMethod.PUT:
-            return requests.put(url=url, params=params, timeout=timeout, data=data, headers=headers)
-        elif write_method == TestMethod.POST:
-            return requests.post(url=url, params=params, timeout=timeout, data=data, headers=headers)
-        elif write_method == TestMethod.PATCH:
-            return requests.patch(url=url, params=params, timeout=timeout, data=data, headers=headers)
-        elif write_method == TestMethod.DELETE:
-            return requests.delete(url=url, params=params, timeout=timeout)
-        else:
-            raise UnsupportedMethodError('Unsupported read method: %s' % write_method)
+
+        response = self.send_request(method=write_method, url=request.url, params=params, timeout=request.timeout,
+                                     data=data)
+        return response

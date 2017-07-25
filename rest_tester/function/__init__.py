@@ -1,8 +1,9 @@
 import copy
 
 import jsonschema
+import requests
 
-from rest_tester.setting import ParameterSet, UnsupportedMethodError
+from rest_tester.setting import ParameterSet, UnsupportedMethodError, TestMethod
 from rest_tester.utils import convert_to_list
 
 
@@ -87,6 +88,23 @@ class TestFunctionBuilder(object):
             test_function_list.append(TestFunction(test_function_name, test_function))
 
         return test_function_list
+
+    @staticmethod
+    def send_request(method, url, params, timeout, data=None):
+        headers = {'Content-Type': 'application/json'}
+
+        if method == TestMethod.GET:
+            return requests.get(url=url, params=params, timeout=timeout)
+        elif method == TestMethod.PUT:
+            return requests.put(url=url, params=params, timeout=timeout, data=data, headers=headers)
+        elif method == TestMethod.POST:
+            return requests.post(url=url, params=params, timeout=timeout, data=data, headers=headers)
+        elif method == TestMethod.PATCH:
+            return requests.patch(url=url, params=params, timeout=timeout, data=data, headers=headers)
+        elif method == TestMethod.DELETE:
+            return requests.delete(url=url, params=params, timeout=timeout)
+        else:
+            raise UnsupportedMethodError('Unsupported read method: %s' % method)
 
     @staticmethod
     def _generate_name(name_prefix, request):
