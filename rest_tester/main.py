@@ -43,15 +43,15 @@ def main(argv):
             add_function_to_container(fail_function)
 
         try:
-            json_file = open(test_case_file)
-            json_data = json.load(json_file)
-        except Exception as file_error:
+            with open(test_case_file, 'r') as json_file:
+                json_data = json.load(json_file)
+        except BaseException as file_error:
             add_fail_function('Cannot parse the json file: %s' % str(file_error))
             continue
 
         try:
             setting = TestSetting(json_data)
-        except Exception as setting_error:
+        except BaseException as setting_error:
             add_fail_function(str(setting_error))
             continue
 
