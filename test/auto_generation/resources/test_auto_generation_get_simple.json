@@ -1,0 +1,12 @@
+{
+  "get": {
+    "request": {
+      "url": "https://jsonplaceholder.typicode.com/comments",
+      "params": {
+        "postId": 1,
+        "id": 3
+      },
+      "timeout" : 10
+    }
+  }
+}
