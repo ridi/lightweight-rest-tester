@@ -1,44 +1,33 @@
 {
-  "post": {
-    "request": {
-      "url": "http://json-server:3000/posts",
-      "data": {
-        "title": "foo",
-        "body": "bar",
-        "userId": 1
-      }
-    },
-    "response": {
-      "timeout" : 10,
-      "statusCode": 201
-    }
-  },
   "get": {
     "request": {
-      "url": "http://json-server:3000/posts",
+      "url": "http://json-server:3000/comments",
       "params": {
-        "userId": 1
+        "postId": 1
       }
     },
     "response": {
-      "timeout" : 10,
+      "timeout" : 0.0001,
       "statusCode": 200,
 
       "jsonSchema": {
         "type": "array",
-        "minItems": 1,
+        "minItems": 0,
 
         "items": {
           "type": "object",
 
           "properties": {
-            "userId": {
+            "postId": {
               "type": "number"
             },
             "id": {
               "type": "number"
             },
-            "title": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
               "type": "string"
             },
             "body": {

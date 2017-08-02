@@ -7,6 +7,7 @@ from rest_tester.setting import Response, SettingResponseError
 class TestResponse(unittest.TestCase):
     def test_entire_information(self):
         response_data = {
+            "timeout": 10,
             "statusCode": 200,
             "jsonSchema": {
                 "type": "object",
@@ -20,6 +21,7 @@ class TestResponse(unittest.TestCase):
 
         response = Response(response_data)
 
+        self.assertEqual(response_data['timeout'], response.timeout)
         self.assertEqual(response_data['statusCode'], response.status_code)
         self.assertEqual(response_data['jsonSchema'], response.json_schema)
 

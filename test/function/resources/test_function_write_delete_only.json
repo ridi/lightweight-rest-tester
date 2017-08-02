@@ -1,10 +1,10 @@
 {
   "delete": {
     "request": {
-      "url": "http://json-server:3000/posts/10",
-      "timeout" : 10
+      "url": "http://json-server:3000/posts/10"
     },
     "response": {
+      "timeout" : 10,
       "statusCode": [200, 404]
     }
   }

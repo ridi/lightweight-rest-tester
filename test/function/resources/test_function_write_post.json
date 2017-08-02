@@ -6,10 +6,10 @@
         "title": "foo",
         "body": "bar",
         "userId": 1
-      },
-      "timeout" : 10
+      }
     },
     "response": {
+      "timeout" : 10,
       "statusCode": 201
     }
   },
@@ -18,10 +18,10 @@
       "url": "http://json-server:3000/posts",
       "params": {
         "userId": 1
-      },
-      "timeout" : 10
+      }
     },
     "response": {
+      "timeout" : 10,
       "statusCode": 200,
 
       "jsonSchema": {

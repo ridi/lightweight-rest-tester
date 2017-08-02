@@ -68,8 +68,6 @@ class TestTestSetting(unittest.TestCase):
             request_dict[request.KEY_DATA] = request.data
         if request.params:
             request_dict[request.KEY_PARAMS] = request.params
-        if request.timeout:
-            request_dict[request.KEY_TIMEOUT] = request.timeout
         if request.url:
             request_dict[request.KEY_URL] = request.url
 
@@ -78,6 +76,8 @@ class TestTestSetting(unittest.TestCase):
     @staticmethod
     def convert_response_to_dict(response):
         response_dict = {}
+        if response.timeout:
+            response_dict[response.KEY_TIMEOUT] = response.timeout
         if response.status_code:
             response_dict[response.KEY_STATUS_CODE] = response.status_code
         if response.json_schema:

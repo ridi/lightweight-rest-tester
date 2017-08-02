@@ -1,6 +1,7 @@
 import os
 import unittest
 
+from requests.exceptions import ReadTimeout
 from jsonschema import ValidationError
 
 from rest_tester.function.read import ReadTestFunctionBuilder
@@ -17,6 +18,17 @@ class TestReadTestFunctionBuilder(unittest.TestCase):
         test_function_list = self.generate_test_functions(json_file)
 
         run_test_function_list(test_function_list, self)
+
+    def test_build_unexpected_timeout(self):
+        json_file = '%s/resources/test_function_read_get_unexpected_timeout.json' % self.current_dir_path
+        test_function_list = self.generate_test_functions(json_file)
+
+        try:
+            run_test_function_list(test_function_list, self)
+        except ReadTimeout:
+            pass
+        else:
+            self.fail('Should throw AssertionError!')
 
     def test_build_unexpected_status_code(self):
         json_file = '%s/resources/test_function_read_get_unexpected_status_code.json' % self.current_dir_path
