@@ -85,6 +85,23 @@ class TestTestSetting(unittest.TestCase):
         else:
             self.fail('Should throw KeyError!')
 
+    def test_post_and_get_without_get_api(self):
+        json_file = '%s/resources/test_setting_post_and_get_without_get_api.json' % self.current_dir_path
+        json_data = helper.load_json_data(json_file)
+
+        TestSetting(json_data)
+
+    def test_put_and_get_without_get_api(self):
+        json_file = '%s/resources/test_setting_put_and_get_without_get_api.json' % self.current_dir_path
+        json_data = helper.load_json_data(json_file)
+
+        try:
+            TestSetting(json_data)
+        except SettingIncompleteInformationError:
+            pass
+        else:
+            self.fail('Should throw KeyError!')
+
     @staticmethod
     def convert_api_to_dict(api):
         api_dict = {}

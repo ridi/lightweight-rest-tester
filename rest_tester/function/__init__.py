@@ -1,8 +1,9 @@
 import copy
 
 import jsonschema
+import requests
 
-from rest_tester.setting import ParameterSet, UnsupportedMethodError
+from rest_tester.setting import ParameterSet, UnsupportedMethodError, TestMethod
 from rest_tester.utils import convert_to_list
 
 
@@ -43,18 +44,19 @@ class TestFunctionBuilder(object):
         self._name_prefix = name_prefix
 
     @staticmethod
-    def validate_status_code(self, expected, response):
-        """Check if the given status code is identical to the expected."""
-        actual = response.status_code
+    def run_test(self, tests, response):
+        if tests.status_code:
+            self.assertIn(
+                    response.status_code,
+                    convert_to_list(tests.status_code),
+                    'Unexpected status code.'
+            )
 
-        self.assertIn(actual, convert_to_list(expected), 'Unexpected status code.')
-
-    @staticmethod
-    def validate_json(self, json_schema, response):
-        """Use jsonschema to validate the given JSON data is identical to the expected."""
-        actual_json = response.json()
-
-        jsonschema.validate(actual_json, json_schema)
+        if tests.json_schema:
+            jsonschema.validate(
+                    response.json(),
+                    tests.json_schema
+            )
 
     def _build_test_function(self, api, tests):
         def test_function(test_self):
@@ -65,11 +67,7 @@ class TestFunctionBuilder(object):
                 timeout = tests.timeout
                 response = self._get_response(api, param_set, timeout)
 
-                if tests.status_code:
-                    self.validate_status_code(test_self, tests.status_code, response)
-
-                if tests.json_schema:
-                    self.validate_json(test_self, tests.json_schema, response)
+                self.run_test(test_self, tests, response)
 
         return test_function
 
@@ -88,9 +86,26 @@ class TestFunctionBuilder(object):
         return test_function_list
 
     @staticmethod
-    def _generate_name(name_prefix, request):
+    def _send_request(method, url, params, timeout, data=None):
+        headers = {'Content-Type': 'application/json'}
+
+        if method == TestMethod.GET:
+            return requests.get(url=url, params=params, timeout=timeout)
+        elif method == TestMethod.PUT:
+            return requests.put(url=url, params=params, timeout=timeout, data=data, headers=headers)
+        elif method == TestMethod.POST:
+            return requests.post(url=url, params=params, timeout=timeout, data=data, headers=headers)
+        elif method == TestMethod.PATCH:
+            return requests.patch(url=url, params=params, timeout=timeout, data=data, headers=headers)
+        elif method == TestMethod.DELETE:
+            return requests.delete(url=url, params=params, timeout=timeout)
+        else:
+            raise UnsupportedMethodError('Unsupported method: %s' % method)
+
+    @staticmethod
+    def _generate_name(name_prefix, api):
         """Test function name should start with 'test' since we use unit test."""
-        param_str = '&'.join([key + "=" + str(value) for key, value in request.params.items()])
+        param_str = '&'.join([key + "=" + str(value) for key, value in api.params.items()])
         if param_str != '':
             param_str = '?' + param_str
 
@@ -99,5 +114,5 @@ class TestFunctionBuilder(object):
     def build(self):
         raise NotImplementedError
 
-    def _get_response(self, request, params, timeout):
+    def _get_response(self, api, params, timeout):
         raise NotImplementedError

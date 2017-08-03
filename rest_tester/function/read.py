@@ -1,6 +1,3 @@
-import requests
-
-from rest_tester.setting import TestMethod, UnsupportedMethodError
 from . import TestFunctionBuilder
 
 
@@ -14,7 +11,5 @@ class ReadTestFunctionBuilder(TestFunctionBuilder):
 
     def _get_response(self, api, params, timeout):
         read_method = self._setting.method.read_method
-        if read_method == TestMethod.GET:
-            return requests.get(url=api.url, params=params, timeout=timeout)
-        else:
-            raise UnsupportedMethodError('Unsupported read method: %s' % read_method)
+
+        return self._send_request(method=read_method, url=api.url, params=params, timeout=timeout)

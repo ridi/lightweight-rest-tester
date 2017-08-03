@@ -4,7 +4,7 @@ import unittest
 from jsonschema import ValidationError
 
 from rest_tester.function.write import WriteTestFunctionBuilder
-from rest_tester.setting import TestSetting
+from rest_tester.setting import TestSetting, SettingIncompleteInformationError
 from test.helper import load_json_data
 from . import run_test_function_list
 
@@ -44,6 +44,11 @@ class TestWriteTestFunctionBuilder(unittest.TestCase):
 
     def test_build_delete_only(self):
         json_file = '%s/resources/test_function_write_delete_only.json' % self.current_dir_path
+        test_function_list = self.generate_test_function(json_file)
+        run_test_function_list(test_function_list, self)
+
+    def test_build_post_and_get_without_get_api(self):
+        json_file = '%s/resources/test_function_write_post_and_get_without_get_api.json' % self.current_dir_path
         test_function_list = self.generate_test_function(json_file)
         run_test_function_list(test_function_list, self)
 
