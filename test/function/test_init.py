@@ -5,7 +5,7 @@ import os
 from rest_tester.function import TestFunctionBuilderFactory, TestFunctionBuilder
 from rest_tester.function.read import ReadTestFunctionBuilder
 from rest_tester.function.write import WriteTestFunctionBuilder
-from rest_tester.setting import Request, TestSetting
+from rest_tester.setting import API, TestSetting
 from test.helper import are_equal_lists, load_json_data
 
 
@@ -40,14 +40,14 @@ class TestTestFunction(unittest.TestCase):
             "param_4": 4
         }
 
-        request_data = {
+        api_data = {
             "url": "https://jsonplaceholder.typicode.com/comments",
             "params": params
         }
 
-        request = Request(request_data)
+        api = API(api_data)
         file_name = 'file_name'
-        actual = TestFunctionBuilder._generate_name(file_name, request)
+        actual = TestFunctionBuilder._generate_name(file_name, api)
 
         split_to_url_and_parameters = actual.split('?')
         self.assertEqual(len(split_to_url_and_parameters), 2)
@@ -64,15 +64,15 @@ class TestTestFunction(unittest.TestCase):
         self.assertTrue(are_equal_lists(actual_parameter_list, expected_parameter_list))
 
     def test_generate_name_no_param(self):
-        request_data = {
+        api_data = {
             "url": "https://jsonplaceholder.typicode.com/comments",
             "params": {}
         }
 
         file_name = 'file_name'
-        request = Request(request_data)
+        api = API(api_data)
 
-        actual = TestFunctionBuilder._generate_name(file_name, request)
+        actual = TestFunctionBuilder._generate_name(file_name, api)
         expected = 'test_%s' % file_name
 
         self.assertEqual(actual, expected)

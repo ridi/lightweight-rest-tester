@@ -1,12 +1,12 @@
 {
   "get": {
-    "request": {
+    "api": {
       "url": "http://json-server:3000/comments",
       "params": {
         "postId": 1
       }
     },
-    "response": {
+    "tests": {
       "timeout" : 10,
       "statusCode": 500
     }

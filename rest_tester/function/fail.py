@@ -13,6 +13,3 @@ class FailTestFunctionBuilder(object):
 
         test_function_name = 'test_%s' % self._name
         return TestFunction(test_function_name, test_function)
-
-    def _get_actual_response(self, request, params):
-        raise NotImplementedError

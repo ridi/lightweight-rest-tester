@@ -1,6 +1,6 @@
 {
   "post": {
-    "request": {
+    "api": {
       "url": "http://jsonplaceholder.typicode.com/posts",
       "data": {
         "title": "foo"

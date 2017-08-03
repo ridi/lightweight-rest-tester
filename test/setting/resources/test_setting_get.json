@@ -1,12 +1,12 @@
 {
   "get": {
-    "request": {
+    "api": {
       "url": "https://jsonplaceholder.typicode.com/comments",
       "params": {
         "postId": 1
       }
     },
-    "response": {
+    "tests": {
       "timeout" : 10,
       "statusCode": 200
     }

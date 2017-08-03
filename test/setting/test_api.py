@@ -1,10 +1,10 @@
 import unittest
 
 
-from rest_tester.setting import Request
+from rest_tester.setting import API
 
 
-class TestRequest(unittest.TestCase):
+class TestAPI(unittest.TestCase):
     def test_entire_information(self):
         request_data = {
             "url": "https://jsonplaceholder.typicode.com/comments",
@@ -18,7 +18,7 @@ class TestRequest(unittest.TestCase):
             }
         }
 
-        request = Request(request_data)
+        request = API(request_data)
 
         self.assertEqual(request_data['url'], request.url)
         self.assertEqual(request_data['params'], request.params)
@@ -29,7 +29,7 @@ class TestRequest(unittest.TestCase):
             "url": "https://jsonplaceholder.typicode.com/comments"
         }
 
-        request = Request(request_data)
+        request = API(request_data)
 
         self.assertEqual(request_data['url'], request.url)
 
@@ -41,7 +41,7 @@ class TestRequest(unittest.TestCase):
         }
 
         try:
-            Request(request_data)
+            API(request_data)
         except KeyError:
             pass
         else:

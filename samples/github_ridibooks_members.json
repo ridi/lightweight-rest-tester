@@ -1,9 +1,9 @@
 {
   "get": {
-    "request": {
+    "api": {
       "url": "https://api.github.com/orgs/ridibooks/members"
     },
-    "response": {
+    "tests": {
       "statusCode": 200,
 
       "jsonSchema": {

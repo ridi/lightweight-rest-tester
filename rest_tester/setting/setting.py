@@ -1,12 +1,12 @@
 from .method import TestMethod
-from .request import Request
-from .response import Response
+from .api import API
+from .tests import Tests
 
 
 class TestSetting(object):
     """Read test information from JSON data."""
-    KEY_REQUEST = 'request'
-    KEY_RESPONSE = 'response'
+    KEY_API = 'api'
+    KEY_TESTS = 'tests'
 
     def __init__(self, json_data):
         self._method = TestMethod(json_data)
@@ -15,45 +15,42 @@ class TestSetting(object):
 
         if read_method:
             try:
-                self._read_request, self._read_response = self._read_setting(json_data[read_method])
+                self._read_api, self._read_tests = self._read_setting(json_data[read_method])
             except KeyError:
                 raise SettingIncompleteInformationError('"%s" has incomplete information.' % read_method)
 
         if write_method:
             try:
-                self._write_request, self._write_response = self._read_setting(json_data[write_method])
+                self._write_api, self._write_tests = self._read_setting(json_data[write_method])
             except KeyError:
                 raise SettingIncompleteInformationError('"%s" has incomplete information.' % write_method)
 
     @classmethod
     def _read_setting(cls, json_data):
-        request = Request(json_data[cls.KEY_REQUEST])
-        response = Response(json_data[cls.KEY_RESPONSE])
+        api = API(json_data[cls.KEY_API])
+        tests = Tests(json_data[cls.KEY_TESTS])
 
-        """Pass timeout to request since it is necessary when making requests."""
-        request.timeout = response.timeout
-
-        return request, response
+        return api, tests
 
     @property
     def method(self):
         return self._method
 
     @property
-    def read_request(self):
-        return self._read_request
+    def read_api(self):
+        return self._read_api
 
     @property
-    def read_response(self):
-        return self._read_response
+    def read_tests(self):
+        return self._read_tests
 
     @property
-    def write_request(self):
-        return self._write_request
+    def write_api(self):
+        return self._write_api
 
     @property
-    def write_response(self):
-        return self._write_response
+    def write_tests(self):
+        return self._write_tests
 
 
 class SettingIncompleteInformationError(Exception):

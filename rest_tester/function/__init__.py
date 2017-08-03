@@ -43,47 +43,46 @@ class TestFunctionBuilder(object):
         self._name_prefix = name_prefix
 
     @staticmethod
-    def test_status_code(self, expected_response, actual_response):
+    def validate_status_code(self, expected, response):
         """Check if the given status code is identical to the expected."""
-        actual = actual_response.status_code
-        expected = convert_to_list(expected_response.status_code)
+        actual = response.status_code
 
-        self.assertIn(actual, expected, 'Unexpected status code.')
+        self.assertIn(actual, convert_to_list(expected), 'Unexpected status code.')
 
     @staticmethod
-    def test_json_schema(self, expected_response, actual_response):
+    def validate_json(self, json_schema, response):
         """Use jsonschema to validate the given JSON data is identical to the expected."""
-        actual_json = actual_response.json()
-        json_schema = expected_response.json_schema
+        actual_json = response.json()
 
         jsonschema.validate(actual_json, json_schema)
 
-    def _build_test_function(self, request, expected_response):
+    def _build_test_function(self, api, tests):
         def test_function(test_self):
-            param_set_list = ParameterSet.generate(request.params)
+            param_set_list = ParameterSet.generate(api.params)
             for param_set in param_set_list:
                 """In some cases, the test case with all the combinations of parameters 
                     should be executed in one test case."""
-                actual_response = self._get_actual_response(request, param_set)
+                timeout = tests.timeout
+                response = self._get_response(api, param_set, timeout)
 
-                if expected_response.status_code:
-                    self.test_status_code(test_self, expected_response, actual_response)
+                if tests.status_code:
+                    self.validate_status_code(test_self, tests.status_code, response)
 
-                if expected_response.json_schema:
-                    self.test_json_schema(test_self, expected_response, actual_response)
+                if tests.json_schema:
+                    self.validate_json(test_self, tests.json_schema, response)
 
         return test_function
 
-    def _build_test_function_list(self, request, response):
+    def _build_test_function_list(self, api, tests):
         test_function_list = []
 
-        param_set_list = ParameterSet.generate(request.params)
+        param_set_list = ParameterSet.generate(api.params)
         for param_set in param_set_list:
-            curr_request = copy.deepcopy(request)
-            curr_request.params = param_set
+            curr_api = copy.deepcopy(api)
+            curr_api.params = param_set
 
-            test_function_name = self._generate_name(self._name_prefix, curr_request)
-            test_function = self._build_test_function(curr_request, response)
+            test_function_name = self._generate_name(self._name_prefix, curr_api)
+            test_function = self._build_test_function(curr_api, tests)
             test_function_list.append(TestFunction(test_function_name, test_function))
 
         return test_function_list
@@ -100,5 +99,5 @@ class TestFunctionBuilder(object):
     def build(self):
         raise NotImplementedError
 
-    def _get_actual_response(self, request, params):
+    def _get_response(self, request, params, timeout):
         raise NotImplementedError
