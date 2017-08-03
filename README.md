@@ -63,7 +63,7 @@ When parameter values are given as an array, multiple test cases with all possib
 
 ## 3. Tests
 
-The `tests` part checks if the response is received within `timeout`. Also, it checks the received status code (`statusCode`) and JSON (`jsonSchema`). Either `statusCode` or `jsonSchema` should be provided.
+The `tests` part validates the responses of API calls. It checks if the response is received within `timeout`. It also checks the received status code (`statusCode`) and JSON (`jsonSchema`). Either `statusCode` or `jsonSchema` should be provided.
 
 #### timeout
 Request's timeout in seconds. Its default value is 10 (seconds).
