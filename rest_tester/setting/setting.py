@@ -30,6 +30,9 @@ class TestSetting(object):
         request = Request(json_data[cls.KEY_REQUEST])
         response = Response(json_data[cls.KEY_RESPONSE])
 
+        """Pass timeout to request since it is necessary when making requests."""
+        request.timeout = response.timeout
+
         return request, response
 
     @property

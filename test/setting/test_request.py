@@ -11,7 +11,6 @@ class TestRequest(unittest.TestCase):
             "params": {
                 "postId": 1
             },
-            "timeout": 10,
             "data": {
                 "title": "foo",
                 "body": "bar",
@@ -23,7 +22,6 @@ class TestRequest(unittest.TestCase):
 
         self.assertEqual(request_data['url'], request.url)
         self.assertEqual(request_data['params'], request.params)
-        self.assertEqual(request_data['timeout'], request.timeout)
         self.assertEqual(request_data['data'], request.data)
 
     def test_essential_information(self):
@@ -39,8 +37,7 @@ class TestRequest(unittest.TestCase):
         request_data = {
             "params": {
                 "postId": 1
-            },
-            "timeout": 10
+            }
         }
 
         try:

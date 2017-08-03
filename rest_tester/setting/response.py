@@ -1,6 +1,7 @@
 class Response(object):
     KEY_STATUS_CODE = 'statusCode'
     KEY_JSON_SCHEMA = 'jsonSchema'
+    KEY_TIMEOUT = 'timeout'
 
     def __init__(self, response_data):
         self._status_code = response_data.get(self.KEY_STATUS_CODE)
@@ -10,6 +11,8 @@ class Response(object):
             """One of them can be missing, but not all of them."""
             raise SettingResponseError('Test case should have either status code or json schema!')
 
+        self._timeout = response_data.get(self.KEY_TIMEOUT, 10)
+
     @property
     def status_code(self):
         return self._status_code
@@ -17,6 +20,10 @@ class Response(object):
     @property
     def json_schema(self):
         return self._json_schema
+
+    @property
+    def timeout(self):
+        return self._timeout
 
 
 class SettingResponseError(Exception):

@@ -9,10 +9,10 @@
         "title": "foo",
         "body": "bar",
         "userId": 1
-      },
-      "timeout" : 10
+      }
     },
     "response": {
+      "timeout" : 10,
       "statusCode": 200
     }
   }

@@ -4,10 +4,10 @@
       "url": "http://jsonplaceholder.typicode.com/posts",
       "data": {
         "title": "foo"
-      },
-      "timeout" : 10
+      }
     },
     "response": {
+      "timeout" : 10,
       "statusCode": 201
     }
   }

@@ -5,10 +5,10 @@
       "params": {
         "postId": [1, 2],
         "id": [1, 3, 5, 7, 9]
-      },
-      "timeout" : 10
+      }
     },
     "response": {
+      "timeout" : 10,
       "statusCode": 200,
 
       "jsonSchema": {
