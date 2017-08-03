@@ -2,7 +2,7 @@ import os
 import unittest
 
 
-from rest_tester.setting import TestSetting, SettingMethodError, SettingIncompleteInformationError
+from rest_tester.setting import TestSetting, TestMethod, SettingMethodError, SettingIncompleteInformationError
 from test import helper
 
 
@@ -15,8 +15,14 @@ class TestTestSetting(unittest.TestCase):
 
         setting = TestSetting(json_data)
 
-        self.assertEqual(json_data['get']['request'], self.convert_request_to_dict(setting.read_request))
-        self.assertEqual(json_data['get']['response'], self.convert_response_to_dict(setting.read_response))
+        self.assertEqual(
+                json_data[TestMethod.GET][TestSetting.KEY_API],
+                self.convert_api_to_dict(setting.read_api)
+        )
+        self.assertEqual(
+                json_data[TestMethod.GET][TestSetting.KEY_TESTS],
+                self.convert_tests_to_dict(setting.read_tests)
+        )
 
     def test_get_missing_response(self):
         json_file = '%s/resources/test_setting_get_missing_response.json' % self.current_dir_path
@@ -35,11 +41,23 @@ class TestTestSetting(unittest.TestCase):
 
         setting = TestSetting(json_data)
 
-        self.assertEqual(json_data['post']['request'], self.convert_request_to_dict(setting.write_request))
-        self.assertEqual(json_data['post']['response'], self.convert_response_to_dict(setting.write_response))
+        self.assertEqual(
+                json_data[TestMethod.POST][TestSetting.KEY_API],
+                self.convert_api_to_dict(setting.write_api)
+        )
+        self.assertEqual(
+                json_data[TestMethod.POST][TestSetting.KEY_TESTS],
+                self.convert_tests_to_dict(setting.write_tests)
+        )
 
-        self.assertEqual(json_data['get']['request'], self.convert_request_to_dict(setting.read_request))
-        self.assertEqual(json_data['get']['response'], self.convert_response_to_dict(setting.read_response))
+        self.assertEqual(
+                json_data[TestMethod.GET][TestSetting.KEY_API],
+                self.convert_api_to_dict(setting.read_api)
+        )
+        self.assertEqual(
+                json_data[TestMethod.GET][TestSetting.KEY_TESTS],
+                self.convert_tests_to_dict(setting.read_tests)
+        )
 
     def test_post_only(self):
         json_file = '%s/resources/test_setting_post_only.json' % self.current_dir_path
@@ -47,8 +65,14 @@ class TestTestSetting(unittest.TestCase):
 
         setting = TestSetting(json_data)
 
-        self.assertEqual(json_data['post']['request'], self.convert_request_to_dict(setting.write_request))
-        self.assertEqual(json_data['post']['response'], self.convert_response_to_dict(setting.write_response))
+        self.assertEqual(
+                json_data[TestMethod.POST][TestSetting.KEY_API],
+                self.convert_api_to_dict(setting.write_api)
+        )
+        self.assertEqual(
+                json_data[TestMethod.POST][TestSetting.KEY_TESTS],
+                self.convert_tests_to_dict(setting.write_tests)
+        )
 
     def test_post_missing_response(self):
         json_file = '%s/resources/test_setting_post_missing_response.json' % self.current_dir_path
@@ -56,34 +80,34 @@ class TestTestSetting(unittest.TestCase):
 
         try:
             TestSetting(json_data)
-        except SettingMethodError:
+        except SettingIncompleteInformationError:
             pass
         else:
             self.fail('Should throw KeyError!')
 
     @staticmethod
-    def convert_request_to_dict(request):
-        request_dict = {}
-        if request.data:
-            request_dict[request.KEY_DATA] = request.data
-        if request.params:
-            request_dict[request.KEY_PARAMS] = request.params
-        if request.url:
-            request_dict[request.KEY_URL] = request.url
+    def convert_api_to_dict(api):
+        api_dict = {}
+        if api.data:
+            api_dict[api.KEY_DATA] = api.data
+        if api.params:
+            api_dict[api.KEY_PARAMS] = api.params
+        if api.url:
+            api_dict[api.KEY_URL] = api.url
 
-        return request_dict
+        return api_dict
 
     @staticmethod
-    def convert_response_to_dict(response):
-        response_dict = {}
-        if response.timeout:
-            response_dict[response.KEY_TIMEOUT] = response.timeout
-        if response.status_code:
-            response_dict[response.KEY_STATUS_CODE] = response.status_code
-        if response.json_schema:
-            response_dict[response.KEY_JSON_SCHEMA] = response.json_schema
+    def convert_tests_to_dict(tests):
+        tests_dict = {}
+        if tests.timeout:
+            tests_dict[tests.KEY_TIMEOUT] = tests.timeout
+        if tests.status_code:
+            tests_dict[tests.KEY_STATUS_CODE] = tests.status_code
+        if tests.json_schema:
+            tests_dict[tests.KEY_JSON_SCHEMA] = tests.json_schema
 
-        return response_dict
+        return tests_dict
 
 
 if __name__ == '__main__':

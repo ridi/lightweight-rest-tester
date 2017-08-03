@@ -1,10 +1,10 @@
 import unittest
 
 
-from rest_tester.setting import Response, SettingResponseError
+from rest_tester.setting import Tests, SettingTestsError
 
 
-class TestResponse(unittest.TestCase):
+class TestTests(unittest.TestCase):
     def test_entire_information(self):
         response_data = {
             "timeout": 10,
@@ -19,20 +19,20 @@ class TestResponse(unittest.TestCase):
             }
         }
 
-        response = Response(response_data)
+        response = Tests(response_data)
 
-        self.assertEqual(response_data['timeout'], response.timeout)
-        self.assertEqual(response_data['statusCode'], response.status_code)
-        self.assertEqual(response_data['jsonSchema'], response.json_schema)
+        self.assertEqual(response_data[Tests.KEY_TIMEOUT], response.timeout)
+        self.assertEqual(response_data[Tests.KEY_STATUS_CODE], response.status_code)
+        self.assertEqual(response_data[Tests.KEY_JSON_SCHEMA], response.json_schema)
 
     def test_essential_information(self):
         response_data = {
             "statusCode": 200
         }
 
-        response = Response(response_data)
+        response = Tests(response_data)
 
-        self.assertEqual(response_data['statusCode'], response.status_code)
+        self.assertEqual(response_data[Tests.KEY_STATUS_CODE], response.status_code)
 
     def test_wrong_key(self):
         response_data = {
@@ -48,8 +48,8 @@ class TestResponse(unittest.TestCase):
         }
 
         try:
-            Response(response_data)
-        except SettingResponseError:
+            Tests(response_data)
+        except SettingTestsError:
             pass
         else:
             self.fail('Should throw KeyError!')

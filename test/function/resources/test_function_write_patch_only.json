@@ -1,12 +1,12 @@
 {
   "patch": {
-    "request": {
+    "api": {
       "url": "http://json-server:3000/posts/2",
       "data": {
         "title": "title is patched!"
       }
     },
-    "response": {
+    "tests": {
       "timeout" : 10,
       "statusCode": 200
     }

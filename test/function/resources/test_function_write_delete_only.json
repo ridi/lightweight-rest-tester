@@ -1,9 +1,9 @@
 {
   "delete": {
-    "request": {
+    "api": {
       "url": "http://json-server:3000/posts/10"
     },
-    "response": {
+    "tests": {
       "timeout" : 10,
       "statusCode": [200, 404]
     }

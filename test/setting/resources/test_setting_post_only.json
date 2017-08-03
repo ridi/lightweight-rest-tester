@@ -1,12 +1,12 @@
 {
   "post": {
-    "request": {
+    "api": {
       "url": "http://jsonplaceholder.typicode.com/posts",
       "data": {
         "title": "foo"
       }
     },
-    "response": {
+    "tests": {
       "timeout" : 10,
       "statusCode": 201
     }

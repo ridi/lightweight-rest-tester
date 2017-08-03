@@ -1,24 +1,24 @@
 {
   "post": {
-    "request": {
+    "api": {
       "url": "http://jsonplaceholder.typicode.com/posts",
       "data": {
         "title": "foo"
       }
     },
-    "response": {
+    "tests": {
       "timeout" : 10,
       "statusCode": 201
     }
   },
   "get": {
-    "request": {
+    "api": {
       "url": "http://jsonplaceholder.typicode.com/posts",
       "params": {
         "userId": 1
       }
     },
-    "response": {
+    "tests": {
       "timeout" : 10,
       "statusCode": 200
     }

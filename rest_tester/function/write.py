@@ -15,12 +15,12 @@ class WriteTestFunctionBuilder(TestFunctionBuilder):
             return self._build_write_only()
 
     def _build_write_and_read(self):
-        write_request = self._setting.write_request
-        write_response = self._setting.write_response
+        write_api = self._setting.write_api
+        write_tests = self._setting.write_tests
 
         def test_function(test_self):
             """Execute write-method functions first and then read-method functions"""
-            write_function = self._build_test_function(write_request, write_response)
+            write_function = self._build_test_function(write_api, write_tests)
             write_function(test_self)
 
             read_builder = ReadTestFunctionBuilder(self._setting, self._name_prefix)
@@ -28,19 +28,18 @@ class WriteTestFunctionBuilder(TestFunctionBuilder):
             for read_function in read_function_list:
                 read_function.test_function(test_self)
 
-        test_function_name = self._generate_name(self._name_prefix, write_request)
+        test_function_name = self._generate_name(self._name_prefix, write_api)
         return [TestFunction(test_function_name, test_function)]
 
     def _build_write_only(self):
-        write_request = self._setting.write_request
-        write_response = self._setting.write_response
+        write_api = self._setting.write_api
+        write_tests = self._setting.write_tests
 
-        return self._build_test_function_list(write_request, write_response)
+        return self._build_test_function_list(write_api, write_tests)
 
-    def _get_actual_response(self, request, params):
-        url = request.url
-        timeout = request.timeout
-        data = json.dumps(request.data) if request.data else None
+    def _get_response(self, api, params, timeout):
+        url = api.url
+        data = json.dumps(api.data) if api.data else None
         headers = {'Content-Type': 'application/json'}
 
         write_method = self._setting.method.write_method

@@ -1,5 +1,5 @@
 from .setting import *
-from .request import *
-from .response import *
+from .api import *
+from .tests import *
 from .parameters import *
 from .method import *

@@ -1,6 +1,6 @@
 {
   "put": {
-    "request": {
+    "api": {
       "url": "http://json-server:3000/posts/1",
       "data": {
         "title": "foo",
@@ -8,19 +8,19 @@
         "userId": 1
       }
     },
-    "response": {
+    "tests": {
       "timeout" : 10,
       "statusCode": 200
     }
   },
   "get": {
-    "request": {
+    "api": {
       "url": "http://json-server:3000/posts/1",
       "params": {
         "userId": 1
       }
     },
-    "response": {
+    "tests": {
       "timeout" : 10,
       "statusCode": 200,
 
