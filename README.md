@@ -7,7 +7,7 @@ A lightweight REST API testing framework written in Python (working with 2.7 ~ 3
 ## 1. Getting Started
 Write your test cases into JSON files and pass their locations (directory) as the argument:
 ```
-python rest_tester/main.py $(JSON_FILE_DIRECTORY)
+python rest_tester/main.py ${JSON_FILE_DIRECTORY}
 ```
 
 If your Python cannot identify the `rest_tester` module, then set the Python path:
