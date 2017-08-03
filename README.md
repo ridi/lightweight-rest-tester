@@ -16,9 +16,9 @@ export PYTHONPATH=.
 ```
 
 ### JSON File Format
-Put HTTP method as a top-level entry, and then specify what you **request** and how you verify its **response**. It supports five HTTP methods, **GET**, **POST**, **PUT**, **PATCH** and **DELETE**. In the `request` part, you can set the target REST API by URL (`url`) with parameters (`params`). In the `response` part, you can add three types of test cases, timeout (`timeout`) in seconds, HTTP status code (`statusCode`) and [JSON Schema](http://json-schema.org) (`jsonSchema`).
+Put HTTP method as a top-level entry, and then specify your **api** and how you **test** it. It supports five HTTP methods, **GET**, **POST**, **PUT**, **PATCH** and **DELETE**. In the `api` part, you can set the target REST API by URL (`url`) with parameters (`params`). In the `test` part, you can add three types of test cases, timeout (`timeout`) in seconds, HTTP status code (`statusCode`) and [JSON Schema](http://json-schema.org) (`jsonSchema`).
 
-The following example sends **GET** (`get`) request to `http://json-server:3000/comments` with the `postId=1` parameter. When receiving the response, it checks the follows:
+The following example makes **GET** (`get`) API call to `http://json-server:3000/comments` with the `postId=1` parameter. When receiving the response, it checks the follows:
 
 - if the response is received within `10` seconds.
 - if the status code is `200`.
@@ -27,14 +27,14 @@ The following example sends **GET** (`get`) request to `http://json-server:3000/
 ```json
 {
   "get": {
-    "request": {
+    "api": {
       "url": "http://json-server:3000/comments",
       "params": {
         "postId": 1
       }
     },
     
-    "response": {
+    "tests": {
       "timeout" : 10,
       "statusCode": 200,
       "jsonSchema": {
@@ -47,9 +47,9 @@ The following example sends **GET** (`get`) request to `http://json-server:3000/
 
 You can find some samples in [here](/samples) and [there](/test/function/resources). For the details, please read the below.
 
-## 2. Request
+## 2. API
 
-The `request` part consists of `url` and `params`. `url` is essential, but `params` is optional.
+The `api` part consists of `url` and `params`. `url` is essential, but `params` is optional.
 
 #### params
 When parameter values are given as an array, multiple test cases with all possible parameter-sets are generated. They will show which parameter-set fails a test if exists (please see [5. Test Case Name](#5-test-case-name)). For example, the following parameters generate 9 test cases (e.g., `{"p1": 1, "p2": "abc", "p3": "def"}`):
@@ -61,9 +61,9 @@ When parameter values are given as an array, multiple test cases with all possib
 }
 ```
 
-## 3. Response
+## 3. Tests
 
-The `response` part checks if the response is received within `timeout`. Also, it checks the received status code (`statusCode`) and JSON (`jsonSchema`). Either `statusCode` or `jsonSchema` should be provided.
+The `tests` part checks if the response is received within `timeout`. Also, it checks the received status code (`statusCode`) and JSON (`jsonSchema`). Either `statusCode` or `jsonSchema` should be provided.
 
 #### timeout
 Request's timeout in seconds. Its default value is 10 (seconds).
@@ -95,7 +95,7 @@ Unlike the single-method test, **Write-and-Read** test builds always one test ca
 This framework uses [URL query string format](https://en.wikipedia.org/wiki/Query_string) to make test case name. However, it starts with JSON file name instead of `url`. It helps you understand which parameter-set fails a test if exists. For example, `json_file.json?postId=1&id=2` is the name of the following test case:
 
 ```json
-"request": {
+"api": {
   "url": "http://json-server:3000/comments",
   "params": {
     "postId": 1,
