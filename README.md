@@ -10,19 +10,19 @@ Write your test cases into JSON files and pass their locations (directory) as th
 python rest_tester/main.py $(JSON_FILE_DIRECTORY)
 ```
 
-If your python cannot identify the `rest_tester` module, then set the python path:
+If your Python cannot identify the `rest_tester` module, then set the Python path:
 ```
 export PYTHONPATH=.
 ```
 
 ### JSON File Format
-Put HTTP method as a top-level entry, and then specify what you *request* and how you verify its *response*. It supports five HTTP methods, **GET**, **POST**, **PUT**, **PATCH** and **DELETE**. In the `request` part, you can set the target REST API by URL (`url`) with parameters (`params`). In the `response` part, you can add three types of test cases, timeout (`timeout`) in seconds, HTTP status code (`statusCode`) and [JSON Schema](http://json-schema.org) (`jsonSchema`).
+Put HTTP method as a top-level entry, and then specify what you **request** and how you verify its **response**. It supports five HTTP methods, **GET**, **POST**, **PUT**, **PATCH** and **DELETE**. In the `request` part, you can set the target REST API by URL (`url`) with parameters (`params`). In the `response` part, you can add three types of test cases, timeout (`timeout`) in seconds, HTTP status code (`statusCode`) and [JSON Schema](http://json-schema.org) (`jsonSchema`).
 
-The following example sends GET request to `http://json-server:3000/comments` with the `postId=1` parameter. When receiving the response, it checks the follows:
+The following example sends **GET** (`get`) request to `http://json-server:3000/comments` with the `postId=1` parameter. When receiving the response, it checks the follows:
 
 - if the response is received within `10` seconds.
 - if the status code is `200`.
-- if the returned JSON satisfies JSON Schema
+- if the returned JSON satisfies JSON Schema.
 
 ```json
 {
@@ -38,14 +38,14 @@ The following example sends GET request to `http://json-server:3000/comments` wi
       "timeout" : 10,
       "statusCode": 200,
       "jsonSchema": {
-        "JSON Schema"
+        "Write your JSON Schema in here."
       }
     }
   }
 }
 ```
 
-You can find some JSON samples in [here](/samples) and [there](/test/function/resources). For the details, please read the below.
+You can find some samples in [here](/samples) and [there](/test/function/resources). For the details, please read the below.
 
 ## 2. Request
 
@@ -79,7 +79,7 @@ This framework uses [jsonschema](https://github.com/Julian/jsonschema) to valida
 
 ## 4. Write-and-Read Test
 
-Sometimes, it is necessary to check if some modifications on a database work correctly. We call such test scenario as **Write-and-Read** test that has a particular test-execution-order like **PUT-and-GET**. This framework supports this feature. To use it, just put two HTTP methods in one JSON file and fill the information for each method. You can find an example of **PUT-and-GET** in [here](https://github.com/ridibooks/lightweight-rest-tester/blob/dev/readme/init/test/function/resources/test_function_write_put.json).
+Sometimes, it is necessary to check if modifications on a database work correctly. We call such test scenario as **Write-and-Read** test that has a particular test-execution-order like **PUT-and-GET**. This framework supports this feature. To use it, just put two HTTP methods in one JSON file and fill the information for each method. You can find an example of **PUT-and-GET** in [here](https://github.com/ridibooks/lightweight-rest-tester/blob/dev/readme/init/test/function/resources/test_function_write_put.json).
 
 You can build the four types of **Write-and-Read** test:
 
@@ -105,7 +105,7 @@ This framework uses [URL query string format](https://en.wikipedia.org/wiki/Quer
 }
 ```
 
-Unlike the single-method test, **Write-and-Read** test uses only JSON file name without parameters when making its name.
+Unlike the single-method test, **Write-and-Read** test uses only JSON file name for its name.
 
 ## 6. Contributions to This Project
 
