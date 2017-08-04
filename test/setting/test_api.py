@@ -40,12 +40,8 @@ class TestAPI(unittest.TestCase):
             }
         }
 
-        try:
+        with self.assertRaises(KeyError):
             API(request_data)
-        except KeyError:
-            pass
-        else:
-            self.fail('Should throw KeyError!')
 
 if __name__ == '__main__':
     unittest.main()

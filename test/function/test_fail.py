@@ -9,12 +9,8 @@ class TestFailTestFunction(unittest.TestCase):
         builder = FailTestFunctionBuilder('Throw AssertionError!', 'fail test case')
         fail_function = builder.build()
 
-        try:
+        with self.assertRaises(AssertionError):
             fail_function.test_function(self)
-        except AssertionError:
-            pass
-        else:
-            self.fail('Should throw AssertionError!')
 
 if __name__ == '__main__':
     unittest.main()

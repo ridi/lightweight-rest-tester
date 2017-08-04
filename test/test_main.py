@@ -17,12 +17,8 @@ class TestMain(unittest.TestCase):
     def test_invalid_arguments(self):
         argv = ''
 
-        try:
+        with self.assertRaises(ValueError):
             main(argv)
-        except ValueError:
-            pass
-        else:
-            self.fail('Should thrown ValueError!')
 
 if __name__ == '__main__':
     unittest.main()
