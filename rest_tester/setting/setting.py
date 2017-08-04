@@ -60,10 +60,7 @@ class TestSetting(object):
         return self._write_tests
 
     def has_post_and_get_condition(self):
-        if self._read_api is None and self._method.write_method == TestMethod.POST:
-            return True
-        else:
-            return False
+        return self._read_api is None and self._method.write_method == TestMethod.POST
 
 
 class SettingIncompleteInformationError(Exception):
