@@ -1,0 +1,41 @@
+{
+  "put": {
+    "api": {
+      "url": "http://json-server:3000/posts",
+      "data": {
+        "title": "foo",
+        "body": "bar",
+        "userId": 1
+      }
+    },
+    "tests": {
+      "timeout" : 10,
+      "statusCode": 201
+    }
+  },
+  "get": {
+    "tests": {
+      "timeout" : 10,
+      "statusCode": 200,
+
+      "jsonSchema": {
+        "type": "object",
+
+        "properties": {
+          "userId": {
+            "type": "number"
+          },
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -36,12 +36,8 @@ class TestTestMethod(unittest.TestCase):
             "remove": {}
         }
 
-        try:
+        with self.assertRaises(SettingMethodError):
             TestMethod(json_data)
-        except SettingMethodError:
-            pass
-        else:
-            self.fail('Should throw KeyError!')
 
     def test_three_methods(self):
         json_data = {
@@ -50,23 +46,15 @@ class TestTestMethod(unittest.TestCase):
             "put": {}
         }
 
-        try:
+        with self.assertRaises(SettingMethodError):
             TestMethod(json_data)
-        except SettingMethodError:
-            pass
-        else:
-            self.fail('Should throw KeyError!')
 
     def test_no_method(self):
         json_data = {
         }
 
-        try:
+        with self.assertRaises(SettingMethodError):
             TestMethod(json_data)
-        except SettingMethodError:
-            pass
-        else:
-            self.fail('Should throw KeyError!')
 
     def test_two_write_methods(self):
         json_data = {
@@ -74,12 +62,8 @@ class TestTestMethod(unittest.TestCase):
             "put": {}
         }
 
-        try:
+        with self.assertRaises(SettingMethodError):
             TestMethod(json_data)
-        except SettingMethodError:
-            pass
-        else:
-            self.fail('Should throw KeyError!')
 
 if __name__ == '__main__':
     unittest.main()

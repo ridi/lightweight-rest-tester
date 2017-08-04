@@ -4,7 +4,7 @@ import unittest
 from jsonschema import ValidationError
 
 from rest_tester.function.write import WriteTestFunctionBuilder
-from rest_tester.setting import TestSetting
+from rest_tester.setting import TestSetting, SettingIncompleteInformationError
 from test.helper import load_json_data
 from . import run_test_function_list
 
@@ -47,27 +47,24 @@ class TestWriteTestFunctionBuilder(unittest.TestCase):
         test_function_list = self.generate_test_function(json_file)
         run_test_function_list(test_function_list, self)
 
+    def test_build_post_and_get_without_get_api(self):
+        json_file = '%s/resources/test_function_write_post_and_get_without_get_api.json' % self.current_dir_path
+        test_function_list = self.generate_test_function(json_file)
+        run_test_function_list(test_function_list, self)
+
     def test_build_unexpected_status_code(self):
         json_file = '%s/resources/test_function_write_unexpected_status_code.json' % self.current_dir_path
         test_function_list = self.generate_test_function(json_file)
 
-        try:
+        with self.assertRaises(AssertionError):
             run_test_function_list(test_function_list, self)
-        except AssertionError:
-            pass
-        else:
-            self.fail('Should throw AssertionError')
 
     def test_build_unexpected_get(self):
         json_file = '%s/resources/test_function_write_unexpected_get.json' % self.current_dir_path
         test_function_list = self.generate_test_function(json_file)
 
-        try:
+        with self.assertRaises(ValidationError):
             run_test_function_list(test_function_list, self)
-        except ValidationError:
-            pass
-        else:
-            self.fail('Should throw ValidationError')
 
     @staticmethod
     def generate_test_function(json_file):
