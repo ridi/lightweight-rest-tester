@@ -16,7 +16,7 @@ export PYTHONPATH=.
 ```
 
 ### JSON File Format
-Put HTTP method as a top-level entry, and then specify your **api** and how you **test** it. It supports five HTTP methods, **GET**, **POST**, **PUT**, **PATCH** and **DELETE**. In the `api` part, you can set the target REST API by URL (`url`) with parameters (`params`). In the `test` part, you can add three types of test cases, timeout (`timeout`) in seconds, HTTP status code (`statusCode`) and [JSON Schema](http://json-schema.org) (`jsonSchema`).
+Put HTTP method as a top-level entry, and then specify your **api** and how you **test** it. It supports five HTTP methods, **GET**, **POST**, **PUT**, **PATCH** and **DELETE**. In the `api` part, you can set the target REST API by URL (`url`) with parameters (`params`). In the `tests` part, you can add three types of test cases, timeout (`timeout`) in seconds, HTTP status code (`statusCode`) and [JSON Schema](http://json-schema.org) (`jsonSchema`).
 
 The following example makes **GET** (`get`) API call to `http://json-server:3000/comments` with the `postId=1` parameter. When receiving the response, it checks the follows:
 
@@ -52,7 +52,7 @@ You can find some samples in [here](/samples) and [there](/test/function/resourc
 The `api` part consists of `url` and `params`. `url` is essential, but `params` is optional.
 
 #### params
-When parameter values are given as an array, multiple test cases with all possible parameter-sets are generated. They will show which parameter-set fails a test if exists (please see [5. Test Case Name](#5-test-case-name)). For example, the following parameters generate 9 test cases (e.g., `{"p1": 1, "p2": "abc", "p3": "def"}`):
+When parameter values are given as an array, multiple test cases with all possible parameter-sets are generated. They will show which parameter-set fails a test if exists (please see [5. Test Case Name](#5-test-case-name)). For example, the following parameters generate 9 different parameter sets. One of them could be `{"p1": 1, "p2": "abc", "p3": "def"}`.
 ```json
 "params": {
   "p1": [1, 2, 3],
@@ -89,6 +89,14 @@ You can build the four types of **Write-and-Read** test:
 - **DELETE-and-GET**
 
 Unlike the single-method test, **Write-and-Read** test builds always one test case to preserve test-execution order. Even when arrays of parameter values are given, this framework executes all the test cases belonging to **Write** method (e.g., **PUT**) first and then runs the test cases of **Read** method (e.g., **GET**).
+
+### POST-and-GET
+
+Your REST API may return the **Location** header of new resource which is created by a **POST** API call. In this case, you may want to **GET** the newly created resource using the **Location** header. To follow such use-scenario, just omit `get.api` in your test case. You can find the example in [here](test/function/resources/test_function_write_post_and_get_without_get_api.json).
+
+On the other hand, if you specify `get.api` in your **POST-and-GET** test, this framework will ignore the **Location** header and **GET** the `url` in the `get.api` like other **Write-and-Read** tests.
+
+The current version of this framework assumes that the **Location** header represents absolute URL ([RFC 2616](https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html)). That is, it cannot recognize relative URL yet ([RFC 7231](https://tools.ietf.org/html/rfc7231#section-4.3.3)).
 
 ## 5. Test Case Name
 
