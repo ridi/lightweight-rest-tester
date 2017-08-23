@@ -1,17 +1,25 @@
+from .method import TestMethod
+
+
 class API(object):
     KEY_URL = 'url'
+    KEY_METHOD = 'method'
     KEY_PARAMS = 'params'
     KEY_DATA = 'data'
 
     def __init__(self, api_data):
-        """Use get for only 'params' and 'timeout' to raise KeyError if keys do not exist."""
         self._url = api_data[self.KEY_URL]
+        self._method = TestMethod(api_data[self.KEY_METHOD])
         self._params = api_data.get(self.KEY_PARAMS, {})
         self._data = api_data.get(self.KEY_DATA)
 
     @property
     def url(self):
         return self._url
+
+    @property
+    def method(self):
+        return self._method.method
 
     @property
     def params(self):

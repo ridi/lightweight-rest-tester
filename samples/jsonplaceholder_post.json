@@ -1,7 +1,8 @@
-{
-  "post": {
+[
+  {
     "api": {
       "url": "http://jsonplaceholder.typicode.com/posts",
+      "method": "post",
       "data": {
         "title": "foo",
         "body": "bar",
@@ -13,9 +14,10 @@
       "statusCode": 201
     }
   },
-  "get": {
+  {
     "api": {
       "url": "http://jsonplaceholder.typicode.com/posts",
+      "method": "get",
       "params": {
         "userId": 1
       }
@@ -49,4 +51,4 @@
       }
     }
   }
-}
+]

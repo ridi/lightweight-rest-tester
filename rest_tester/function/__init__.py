@@ -1,9 +1,10 @@
 import copy
+import json
 
 import jsonschema
 import requests
 
-from rest_tester.setting import ParameterSet, UnsupportedMethodError, TestMethod
+from rest_tester.setting import ParameterSet, TestMethod, UnsupportedMethodError
 from rest_tester.utils import convert_to_list
 
 
@@ -25,22 +26,18 @@ class TestFunction(object):
 class TestFunctionBuilderFactory(object):
     @staticmethod
     def get_builder(setting, name_prefix):
-        if setting.method.write_method:
-            from .write import WriteTestFunctionBuilder
-            return WriteTestFunctionBuilder(setting, name_prefix)
-
-        elif setting.method.read_method:
-            from .read import ReadTestFunctionBuilder
-            return ReadTestFunctionBuilder(setting, name_prefix)
+        if setting.has_multiple_targets():
+            from .multiple import MultipleTargetsTestFunctionBuilder
+            return MultipleTargetsTestFunctionBuilder(setting, name_prefix)
 
         else:
-            raise UnsupportedMethodError
+            from .single import SingleTargetTestFunctionBuilder
+            return SingleTargetTestFunctionBuilder(setting, name_prefix)
 
 
 class TestFunctionBuilder(object):
     """Build test functions"""
-    def __init__(self, setting, name_prefix):
-        self._setting = setting
+    def __init__(self, name_prefix):
         self._name_prefix = name_prefix
 
     @staticmethod
@@ -85,6 +82,11 @@ class TestFunctionBuilder(object):
 
         return test_function_list
 
+    def _get_response(self, api, params, timeout):
+        data = json.dumps(api.data) if api.data else None
+
+        return self._send_request(method=api.method, url=api.url, params=params, timeout=timeout, data=data)
+
     @staticmethod
     def _send_request(method, url, params, timeout, data=None):
         headers = {'Content-Type': 'application/json'}
@@ -112,7 +114,4 @@ class TestFunctionBuilder(object):
         return 'test_%s%s' % (name_prefix, param_str)
 
     def build(self):
-        raise NotImplementedError
-
-    def _get_response(self, api, params, timeout):
         raise NotImplementedError
