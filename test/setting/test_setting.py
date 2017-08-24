@@ -1,119 +1,48 @@
 import os
 import unittest
 
-
-from rest_tester.setting import TestSetting, TestMethod, SettingMethodError, SettingIncompleteInformationError
-from test import helper
+from test.setting import convert_api_to_dict, convert_tests_to_dict
+from rest_tester.setting import TestSetting, TestTarget
+from test import load_json_data
 
 
 class TestTestSetting(unittest.TestCase):
     current_dir_path = os.path.dirname(__file__)
 
-    def test_get(self):
-        json_file = '%s/resources/test_setting_get.json' % self.current_dir_path
-        json_data = helper.load_json_data(json_file)
+    def test_single(self):
+        json_file = '%s/resources/test_setting_single.json' % self.current_dir_path
+        json_data = load_json_data(json_file)
 
         setting = TestSetting(json_data)
 
+        self.assertFalse(setting.has_multiple_targets())
+
         self.assertEqual(
-                json_data[TestMethod.GET][TestSetting.KEY_API],
-                self.convert_api_to_dict(setting.read_api)
+                json_data[TestTarget.KEY_API],
+                convert_api_to_dict(setting.targets[0].api)
         )
         self.assertEqual(
-                json_data[TestMethod.GET][TestSetting.KEY_TESTS],
-                self.convert_tests_to_dict(setting.read_tests)
+                json_data[TestTarget.KEY_TESTS],
+                convert_tests_to_dict(setting.targets[0].tests)
         )
 
-    def test_get_missing_response(self):
-        json_file = '%s/resources/test_setting_get_missing_response.json' % self.current_dir_path
-        json_data = helper.load_json_data(json_file)
-
-        with self.assertRaises(SettingIncompleteInformationError):
-            TestSetting(json_data)
-
-    def test_post(self):
-        json_file = '%s/resources/test_setting_post.json' % self.current_dir_path
-        json_data = helper.load_json_data(json_file)
+    def test_multiple(self):
+        json_file = '%s/resources/test_setting_multiple.json' % self.current_dir_path
+        json_data = load_json_data(json_file)
 
         setting = TestSetting(json_data)
 
-        self.assertEqual(
-                json_data[TestMethod.POST][TestSetting.KEY_API],
-                self.convert_api_to_dict(setting.write_api)
-        )
-        self.assertEqual(
-                json_data[TestMethod.POST][TestSetting.KEY_TESTS],
-                self.convert_tests_to_dict(setting.write_tests)
-        )
+        self.assertTrue(setting.has_multiple_targets())
 
-        self.assertEqual(
-                json_data[TestMethod.GET][TestSetting.KEY_API],
-                self.convert_api_to_dict(setting.read_api)
-        )
-        self.assertEqual(
-                json_data[TestMethod.GET][TestSetting.KEY_TESTS],
-                self.convert_tests_to_dict(setting.read_tests)
-        )
-
-    def test_post_only(self):
-        json_file = '%s/resources/test_setting_post_only.json' % self.current_dir_path
-        json_data = helper.load_json_data(json_file)
-
-        setting = TestSetting(json_data)
-
-        self.assertEqual(
-                json_data[TestMethod.POST][TestSetting.KEY_API],
-                self.convert_api_to_dict(setting.write_api)
-        )
-        self.assertEqual(
-                json_data[TestMethod.POST][TestSetting.KEY_TESTS],
-                self.convert_tests_to_dict(setting.write_tests)
-        )
-
-    def test_post_missing_response(self):
-        json_file = '%s/resources/test_setting_post_missing_response.json' % self.current_dir_path
-        json_data = helper.load_json_data(json_file)
-
-        with self.assertRaises(SettingIncompleteInformationError):
-            TestSetting(json_data)
-
-    def test_post_and_get_without_get_api(self):
-        json_file = '%s/resources/test_setting_post_and_get_without_get_api.json' % self.current_dir_path
-        json_data = helper.load_json_data(json_file)
-
-        TestSetting(json_data)
-
-    def test_put_and_get_without_get_api(self):
-        json_file = '%s/resources/test_setting_put_and_get_without_get_api.json' % self.current_dir_path
-        json_data = helper.load_json_data(json_file)
-
-        with self.assertRaises(SettingIncompleteInformationError):
-            TestSetting(json_data)
-
-    @staticmethod
-    def convert_api_to_dict(api):
-        api_dict = {}
-        if api.data:
-            api_dict[api.KEY_DATA] = api.data
-        if api.params:
-            api_dict[api.KEY_PARAMS] = api.params
-        if api.url:
-            api_dict[api.KEY_URL] = api.url
-
-        return api_dict
-
-    @staticmethod
-    def convert_tests_to_dict(tests):
-        tests_dict = {}
-        if tests.timeout:
-            tests_dict[tests.KEY_TIMEOUT] = tests.timeout
-        if tests.status_code:
-            tests_dict[tests.KEY_STATUS_CODE] = tests.status_code
-        if tests.json_schema:
-            tests_dict[tests.KEY_JSON_SCHEMA] = tests.json_schema
-
-        return tests_dict
-
+        for idx, target in enumerate(setting.targets):
+            self.assertEqual(
+                    json_data[idx][TestTarget.KEY_API],
+                    convert_api_to_dict(target.api)
+            )
+            self.assertEqual(
+                    json_data[idx][TestTarget.KEY_TESTS],
+                    convert_tests_to_dict(target.tests)
+            )
 
 if __name__ == '__main__':
     unittest.main()

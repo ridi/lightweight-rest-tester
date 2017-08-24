@@ -11,7 +11,7 @@ class TestTarget(object):
             self._api = API(json_data[self.KEY_API])
             self._tests = Tests(json_data[self.KEY_TESTS])
         except KeyError:
-            raise SettingIncompleteInformationError('Test case has incomplete information.')
+            raise IncompleteTargetInformationError('Test case has incomplete information.')
 
     @property
     def api(self):
@@ -22,7 +22,7 @@ class TestTarget(object):
         return self._tests
 
 
-class SettingIncompleteInformationError(Exception):
+class IncompleteTargetInformationError(Exception):
     """Test types are not supported"""
     def __init__(self, value):
         self.value = value

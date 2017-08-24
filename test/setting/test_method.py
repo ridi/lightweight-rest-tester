@@ -1,69 +1,46 @@
 import unittest
 
-from rest_tester.setting import TestMethod, SettingMethodError
+from rest_tester.setting import TestMethod, UnsupportedMethodError
 
 
 class TestTestMethod(unittest.TestCase):
-    def test_read_method(self):
-        json_data = {
-            "get": {}
-        }
+    def test_get_method(self):
+        method_get = 'get'
 
-        test_method = TestMethod(json_data)
-        self.assertEqual("get", test_method.read_method)
+        test_method = TestMethod(method_get)
+        self.assertEqual(method_get, test_method.method)
 
-    def test_write_method(self):
-        json_data = {
-            "put": {}
-        }
+    def test_post_method(self):
+        method_post = 'post'
 
-        test_method = TestMethod(json_data)
-        self.assertEqual("put", test_method.write_method)
+        test_method = TestMethod(method_post)
+        self.assertEqual(method_post, test_method.method)
 
-    def test_read_write_method(self):
-        json_data = {
-            "post": {},
-            "get": {}
-        }
+    def test_put_method(self):
+        method_put = 'put'
 
-        test_method = TestMethod(json_data)
-        self.assertEqual("get", test_method.read_method)
-        self.assertEqual("post", test_method.write_method)
+        test_method = TestMethod(method_put)
+        self.assertEqual(method_put, test_method.method)
 
-    def test_invalid_two_methods(self):
-        json_data = {
-            "modify": {},
-            "remove": {}
-        }
+    def test_patch_method(self):
+        method_patch = 'patch'
 
-        with self.assertRaises(SettingMethodError):
-            TestMethod(json_data)
+        test_method = TestMethod(method_patch)
+        self.assertEqual(method_patch, test_method.method)
 
-    def test_three_methods(self):
-        json_data = {
-            "post": {},
-            "get": {},
-            "put": {}
-        }
+    def test_delete_method(self):
+        method_delete = 'delete'
 
-        with self.assertRaises(SettingMethodError):
-            TestMethod(json_data)
+        test_method = TestMethod(method_delete)
+        self.assertEqual(method_delete, test_method.method)
 
     def test_no_method(self):
-        json_data = {
-        }
+        with self.assertRaises(UnsupportedMethodError):
+            TestMethod('')
 
-        with self.assertRaises(SettingMethodError):
-            TestMethod(json_data)
-
-    def test_two_write_methods(self):
-        json_data = {
-            "post": {},
-            "put": {}
-        }
-
-        with self.assertRaises(SettingMethodError):
-            TestMethod(json_data)
+    def test_invalid_method(self):
+        with self.assertRaises(UnsupportedMethodError):
+            TestMethod('modify')
 
 if __name__ == '__main__':
     unittest.main()
