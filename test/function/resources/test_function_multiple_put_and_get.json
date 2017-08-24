@@ -1,7 +1,8 @@
-{
-  "post": {
+[
+  {
     "api": {
-      "url": "http://json-server:3000/posts",
+      "url": "http://json-server:3000/posts/1",
+      "method": "put",
       "data": {
         "title": "foo",
         "body": "bar",
@@ -10,10 +11,17 @@
     },
     "tests": {
       "timeout" : 10,
-      "statusCode": 201
+      "statusCode": 200
     }
   },
-  "get": {
+  {
+    "api": {
+      "url": "http://json-server:3000/posts/1",
+      "method": "get",
+      "params": {
+        "userId": 1
+      }
+    },
     "tests": {
       "timeout" : 10,
       "statusCode": 200,
@@ -38,4 +46,4 @@
       }
     }
   }
-}
+]

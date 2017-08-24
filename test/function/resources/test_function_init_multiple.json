@@ -1,7 +1,8 @@
-{
-  "put": {
+[
+  {
     "api": {
-      "url": "http://json-server:3000/posts/1",
+      "url": "http://json-server:3000/posts",
+      "method": "post",
       "data": {
         "title": "foo",
         "body": "bar",
@@ -10,12 +11,13 @@
     },
     "tests": {
       "timeout" : 10,
-      "statusCode": 200
+      "statusCode": 201
     }
   },
-  "get": {
+  {
     "api": {
-      "url": "http://json-server:3000/posts/1",
+      "url": "http://json-server:3000/posts",
+      "method": "get",
       "params": {
         "userId": 1
       }
@@ -25,7 +27,11 @@
       "statusCode": 200,
 
       "jsonSchema": {
-        "type": "object",
+        "type": "array",
+        "minItems": 1,
+
+        "items": {
+          "type": "object",
 
           "properties": {
             "userId": {
@@ -35,13 +41,14 @@
               "type": "number"
             },
             "title": {
-              "type": "number"
+              "type": "string"
             },
             "body": {
-              "type": "number"
+              "type": "string"
             }
           }
+        }
       }
     }
   }
-}
+]

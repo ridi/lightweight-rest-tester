@@ -1,9 +1,25 @@
-{
-  "get": {
+[
+  {
     "api": {
-      "url": "http://json-server:3000/comments",
+      "url": "http://json-server:3000/posts",
+      "method": "post",
+      "data": {
+        "title": "foo",
+        "body": "bar",
+        "userId": 1
+      }
+    },
+    "tests": {
+      "timeout" : 10,
+      "statusCode": 201
+    }
+  },
+  {
+    "api": {
+      "url": "http://json-server:3000/posts",
+      "method": "get",
       "params": {
-        "postId": 1
+        "userId": 1
       }
     },
     "tests": {
@@ -12,22 +28,19 @@
 
       "jsonSchema": {
         "type": "array",
-        "minItems": 0,
+        "minItems": 1,
 
         "items": {
           "type": "object",
 
           "properties": {
-            "postId": {
+            "userId": {
               "type": "number"
             },
             "id": {
               "type": "number"
             },
-            "name": {
-              "type": "string"
-            },
-            "email": {
+            "title": {
               "type": "string"
             },
             "body": {
@@ -38,4 +51,4 @@
       }
     }
   }
-}
+]

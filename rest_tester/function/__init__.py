@@ -1,4 +1,3 @@
-import copy
 import json
 
 import jsonschema
@@ -67,20 +66,6 @@ class TestFunctionBuilder(object):
                 self.run_test(test_self, tests, response)
 
         return test_function
-
-    def _build_test_function_list(self, api, tests):
-        test_function_list = []
-
-        param_set_list = ParameterSet.generate(api.params)
-        for param_set in param_set_list:
-            curr_api = copy.deepcopy(api)
-            curr_api.params = param_set
-
-            test_function_name = self._generate_name(self._name_prefix, curr_api)
-            test_function = self._build_test_function(curr_api, tests)
-            test_function_list.append(TestFunction(test_function_name, test_function))
-
-        return test_function_list
 
     def _get_response(self, api, params, timeout):
         data = json.dumps(api.data) if api.data else None

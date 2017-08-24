@@ -1,0 +1,39 @@
+{
+  "api": {
+    "url": "http://json-server:3000/comments",
+    "method": "get",
+    "params": {
+      "postId": 2
+    }
+  },
+  "tests": {
+    "timeout" : 10,
+    "statusCode": 200,
+
+    "jsonSchema": {
+      "type": "array",
+
+      "items": {
+        "type": "object",
+
+        "properties": {
+          "postId": {
+            "type": "number"
+          },
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "number"
+          },
+          "email": {
+            "type": "number"
+          },
+          "body": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

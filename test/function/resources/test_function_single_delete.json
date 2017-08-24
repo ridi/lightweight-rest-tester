@@ -1,0 +1,10 @@
+{
+  "api": {
+    "url": "http://json-server:3000/posts/10",
+    "method": "delete"
+  },
+  "tests": {
+    "timeout" : 10,
+    "statusCode": [200, 404]
+  }
+}
