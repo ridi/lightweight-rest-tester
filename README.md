@@ -116,7 +116,7 @@ Sometimes, it is necessary to check if modifications on a database work correctl
 
 You can find more examples in [here](/test/function/resources).
 
-Unlike the single-method test, **Write-and-Read** test builds always one test case to preserve test-execution order. Even when arrays of parameter values are given, this framework executes all the test cases belonging to **Write** method (e.g., **PUT**) first and then runs the test cases of **Read** method (e.g., **GET**).
+Unlike the single-method test, **Write-and-Read** test builds always one test case to preserve test-execution order. Even when arrays of parameter values are given, this framework executes all the test cases belonging to first `api`/`tests` pair and then runs the test cases of the rest pair.
 
 ## 5. Test Case Name
 
