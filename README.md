@@ -81,7 +81,7 @@ This framework uses [jsonschema](https://github.com/Julian/jsonschema) to valida
 
 ## 4. Write-and-Read Test
 
-Sometimes, it is necessary to check if modifications on a database work correctly. We call such test scenario as **Write-and-Read** test that has a particular test-execution-order like **PUT-and-GET**. This framework supports this feature. To use it, just put two `api`/`tests` pairs in an array when writing JSON file:
+Sometimes, it is necessary to check if modifications on a database work correctly. We call such test scenario as **Write-and-Read** test that has a particular test-execution-order like **PUT-and-GET**. This framework supports this feature. To use it, just put two `api`/`tests` pairs in a list when writing JSON file:
 
 ```json
 [
