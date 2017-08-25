@@ -4,7 +4,7 @@ from . import TestFunction, TestFunctionBuilder
 class FailTestFunctionBuilder(TestFunctionBuilder):
     """Build test function to let unittest know failure."""
     def __init__(self, msg, name_prefix):
-        super().__init__(name_prefix)
+        super(FailTestFunctionBuilder, self).__init__(name_prefix)
 
         self._msg = msg
 

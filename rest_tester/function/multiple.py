@@ -3,7 +3,7 @@ from . import TestFunctionBuilder, TestFunction
 
 class MultipleTargetsTestFunctionBuilder(TestFunctionBuilder):
     def __init__(self, setting, name_prefix):
-        super().__init__(name_prefix)
+        super(MultipleTargetsTestFunctionBuilder, self).__init__(name_prefix)
 
         self._targets = setting.targets
 

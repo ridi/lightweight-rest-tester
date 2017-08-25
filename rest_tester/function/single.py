@@ -6,7 +6,7 @@ from . import TestFunctionBuilder, TestFunction
 
 class SingleTargetTestFunctionBuilder(TestFunctionBuilder):
     def __init__(self, setting, name_prefix):
-        super().__init__(name_prefix)
+        super(SingleTargetTestFunctionBuilder, self).__init__(name_prefix)
 
         self._api = setting.targets[0].api
         self._tests = setting.targets[0].tests
