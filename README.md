@@ -48,7 +48,10 @@ You can find some samples in [here](/samples) and [there](/test/function/resourc
 
 ## 2. API
 
-The `api` part consists of `method`, `url`, `params` and `data`. `method` and `url` are essential, but `params` and `data` are optional.
+The `api` part consists of `url`, `method`, `params` and `data`. `url` and `method` are essential, but `params` and `data` are optional.
+
+#### method
+**GET**, **POST**, **PUT**, **PATCH** and **DELETE** methods are supported.
 
 #### params
 When parameter values are given as an array, multiple test cases with all possible parameter-sets are generated. They will show which parameter-set fails a test if exists (please see [5. Test Case Name](#5-test-case-name)). For example, the following parameters generate 9 different parameter sets. One of them could be `{"p1": 1, "p2": "abc", "p3": "def"}`.
