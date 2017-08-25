@@ -13,4 +13,4 @@ services:
 
 install: pip install tox-travis
 
-script: sh ./run_test_docker.sh
+script: sh ./run_test.sh
