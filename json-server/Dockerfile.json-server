@@ -3,7 +3,7 @@ MAINTAINER Jeehoon Yoo <jihungen@gmail.com>
 
 RUN npm install -g json-server
 
-ADD /bin/mock-db.json /var/lightweight-rest-tester/mock-db.json
+ADD mock-db.json /var/lightweight-rest-tester/mock-db.json
 
 WORKDIR /var/lightweight-rest-tester
 

@@ -4,6 +4,6 @@ services:
   json-server:
     build:
       context: .
-      dockerfile: ./images/Dockerfile.json-server
+      dockerfile: ./Dockerfile.json-server
     ports:
       - "3000:3000"
