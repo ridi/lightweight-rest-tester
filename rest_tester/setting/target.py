@@ -10,8 +10,8 @@ class TestTarget(object):
         try:
             self._api = API(json_data[self.KEY_API])
             self._tests = Tests(json_data[self.KEY_TESTS])
-        except KeyError:
-            raise IncompleteTargetInformationError('Test case has incomplete information.')
+        except KeyError as e:
+            raise IncompleteTargetInformationError('Test case has missing information: %s' % str(e))
 
     @property
     def api(self):
