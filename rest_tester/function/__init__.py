@@ -1,4 +1,5 @@
 import json
+import abc
 
 import jsonschema
 import requests
@@ -36,6 +37,8 @@ class TestFunctionBuilderFactory(object):
 
 class TestFunctionBuilder(object):
     """Build test functions"""
+    __metaclass__ = abc.ABCMeta
+
     def __init__(self, name_prefix):
         self._name_prefix = name_prefix
 
@@ -96,5 +99,6 @@ class TestFunctionBuilder(object):
 
         return 'test_%s%s' % (name_prefix, param_str)
 
+    @abc.abstractmethod
     def build(self):
         raise NotImplementedError
