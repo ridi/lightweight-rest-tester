@@ -1,6 +1,6 @@
 {
   "api": {
-    "url": "http://json-server:3000/comments",
+    "url": "http://localhost:3000/comments",
     "method": "get",
     "params": {
       "postId": 1

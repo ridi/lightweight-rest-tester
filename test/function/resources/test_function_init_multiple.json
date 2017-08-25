@@ -1,7 +1,7 @@
 [
   {
     "api": {
-      "url": "http://json-server:3000/posts",
+      "url": "http://localhost:3000/posts",
       "method": "post",
       "data": {
         "title": "foo",
@@ -16,7 +16,7 @@
   },
   {
     "api": {
-      "url": "http://json-server:3000/posts",
+      "url": "http://localhost:3000/posts",
       "method": "get",
       "params": {
         "userId": 1

@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from requests.exceptions import ReadTimeout
+from requests.exceptions import ConnectTimeout
 from jsonschema import ValidationError
 
 from rest_tester.function.single import SingleTargetTestFunctionBuilder
@@ -22,7 +22,7 @@ class TestSingleTargetTestFunctionBuilder(unittest.TestCase):
         json_file = '%s/resources/test_function_single_get_unexpected_timeout.json' % self.current_dir_path
         test_function_list = self.generate_test_functions(json_file)
 
-        with self.assertRaises(ReadTimeout):
+        with self.assertRaises(ConnectTimeout):
             run_test_function_list(test_function_list, self)
 
     def test_get_unexpected_status_code(self):

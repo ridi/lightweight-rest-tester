@@ -1,6 +1,6 @@
 {
   "api": {
-    "url": "http://json-server:3000/posts/2",
+    "url": "http://localhost:3000/posts/2",
     "method": "patch",
     "data": {
       "title": "title is patched!"

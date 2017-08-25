@@ -1,6 +1,6 @@
 {
   "api": {
-    "url": "http://json-server:3000/posts/10",
+    "url": "http://localhost:3000/posts/10",
     "method": "delete"
   },
   "tests": {

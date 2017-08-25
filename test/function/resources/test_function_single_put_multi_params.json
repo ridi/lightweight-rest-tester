@@ -1,6 +1,6 @@
 {
   "api": {
-    "url": "http://json-server:3000/posts/1",
+    "url": "http://localhost:3000/posts/1",
     "method": "put",
     "params": {
       "id": [3, 4, 5]

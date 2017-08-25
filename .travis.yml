@@ -2,7 +2,6 @@ sudo: required
 
 language: python
 python:
-  - "2.7"
   - "3.2"
   - "3.3"
   - "3.4"
@@ -12,7 +11,6 @@ python:
 services:
   - docker
 
-# command to install dependencies
-install: "pip install -r requirements.txt"
-# command to run tests
+install: pip install tox-travis
+
 script: sh ./run_test_docker.sh
