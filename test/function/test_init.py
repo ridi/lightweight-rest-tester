@@ -3,34 +3,34 @@ import os
 
 
 from rest_tester.function import TestFunctionBuilderFactory, TestFunctionBuilder
-from rest_tester.function.read import ReadTestFunctionBuilder
-from rest_tester.function.write import WriteTestFunctionBuilder
+from rest_tester.function.single import SingleTargetTestFunctionBuilder
+from rest_tester.function.multiple import MultipleTargetsTestFunctionBuilder
 from rest_tester.setting import API, TestSetting
-from test.helper import are_equal_lists, load_json_data
+from test import are_equal_lists, load_json_data
 
 
 class TestTestFunction(unittest.TestCase):
     current_dir_path = os.path.dirname(__file__)
 
-    def test_get_read(self):
-        json_file = '%s/resources/test_function_init_get_read.json' % self.current_dir_path
+    def test_single(self):
+        json_file = '%s/resources/test_function_init_single.json' % self.current_dir_path
         json_data = load_json_data(json_file)
 
         setting = TestSetting(json_data)
         file_name = os.path.basename(json_file)
 
         builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
-        self.assertTrue(isinstance(builder, ReadTestFunctionBuilder))
+        self.assertTrue(isinstance(builder, SingleTargetTestFunctionBuilder))
 
-    def test_get_write(self):
-        json_file = '%s/resources/test_function_init_get_write.json' % self.current_dir_path
+    def test_multiple(self):
+        json_file = '%s/resources/test_function_init_multiple.json' % self.current_dir_path
         json_data = load_json_data(json_file)
 
         setting = TestSetting(json_data)
         file_name = os.path.basename(json_file)
 
         builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
-        self.assertTrue(isinstance(builder, WriteTestFunctionBuilder))
+        self.assertTrue(isinstance(builder, MultipleTargetsTestFunctionBuilder))
 
     def test_generate_name(self):
         params = {
@@ -42,6 +42,7 @@ class TestTestFunction(unittest.TestCase):
 
         api_data = {
             "url": "https://jsonplaceholder.typicode.com/comments",
+            "method": "get",
             "params": params
         }
 
@@ -66,6 +67,7 @@ class TestTestFunction(unittest.TestCase):
     def test_generate_name_no_param(self):
         api_data = {
             "url": "https://jsonplaceholder.typicode.com/comments",
+            "method": "get",
             "params": {}
         }
 

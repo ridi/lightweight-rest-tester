@@ -1,9 +1,10 @@
-import copy
+import json
+import abc
 
 import jsonschema
 import requests
 
-from rest_tester.setting import ParameterSet, UnsupportedMethodError, TestMethod
+from rest_tester.setting import ParameterSet, TestMethod, UnsupportedMethodError
 from rest_tester.utils import convert_to_list
 
 
@@ -25,26 +26,24 @@ class TestFunction(object):
 class TestFunctionBuilderFactory(object):
     @staticmethod
     def get_builder(setting, name_prefix):
-        if setting.method.write_method:
-            from .write import WriteTestFunctionBuilder
-            return WriteTestFunctionBuilder(setting, name_prefix)
-
-        elif setting.method.read_method:
-            from .read import ReadTestFunctionBuilder
-            return ReadTestFunctionBuilder(setting, name_prefix)
+        if setting.has_multiple_targets():
+            from .multiple import MultipleTargetsTestFunctionBuilder
+            return MultipleTargetsTestFunctionBuilder(setting, name_prefix)
 
         else:
-            raise UnsupportedMethodError
+            from .single import SingleTargetTestFunctionBuilder
+            return SingleTargetTestFunctionBuilder(setting, name_prefix)
 
 
 class TestFunctionBuilder(object):
     """Build test functions"""
-    def __init__(self, setting, name_prefix):
-        self._setting = setting
+    __metaclass__ = abc.ABCMeta
+
+    def __init__(self, name_prefix):
         self._name_prefix = name_prefix
 
     @staticmethod
-    def run_test(self, tests, response):
+    def _run_tests(self, tests, response):
         if tests.status_code:
             self.assertIn(
                     response.status_code,
@@ -62,28 +61,17 @@ class TestFunctionBuilder(object):
         def test_function(test_self):
             param_set_list = ParameterSet.generate(api.params)
             for param_set in param_set_list:
-                """In some cases, the test case with all the combinations of parameters 
-                    should be executed in one test case."""
                 timeout = tests.timeout
                 response = self._get_response(api, param_set, timeout)
 
-                self.run_test(test_self, tests, response)
+                self._run_tests(test_self, tests, response)
 
         return test_function
 
-    def _build_test_function_list(self, api, tests):
-        test_function_list = []
+    def _get_response(self, api, params, timeout):
+        data = json.dumps(api.data) if api.data else None
 
-        param_set_list = ParameterSet.generate(api.params)
-        for param_set in param_set_list:
-            curr_api = copy.deepcopy(api)
-            curr_api.params = param_set
-
-            test_function_name = self._generate_name(self._name_prefix, curr_api)
-            test_function = self._build_test_function(curr_api, tests)
-            test_function_list.append(TestFunction(test_function_name, test_function))
-
-        return test_function_list
+        return self._send_request(method=api.method, url=api.url, params=params, timeout=timeout, data=data)
 
     @staticmethod
     def _send_request(method, url, params, timeout, data=None):
@@ -111,8 +99,6 @@ class TestFunctionBuilder(object):
 
         return 'test_%s%s' % (name_prefix, param_str)
 
+    @abc.abstractmethod
     def build(self):
-        raise NotImplementedError
-
-    def _get_response(self, api, params, timeout):
         raise NotImplementedError

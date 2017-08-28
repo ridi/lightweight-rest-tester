@@ -1,0 +1,9 @@
+{
+  "api": {
+    "url": "https://jsonplaceholder.typicode.com/comments",
+    "method": "get",
+    "params": {
+      "postId": 1
+    }
+  }
+}

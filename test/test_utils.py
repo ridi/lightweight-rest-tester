@@ -2,7 +2,7 @@ import unittest
 
 
 from rest_tester.utils import convert_to_list
-from test.helper import are_equal_lists
+from test import are_equal_lists
 
 
 class TestUtils(unittest.TestCase):

@@ -1,0 +1,15 @@
+{
+  "api": {
+    "url": "http://localhost:3000/posts/1",
+    "method": "put",
+    "data": {
+      "title": "foo",
+      "body": "bar",
+      "userId": 1
+    }
+  },
+  "tests": {
+    "timeout" : 10,
+    "statusCode": 200
+  }
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "api": {
+      "url": "http://jsonplaceholder.typicode.com/posts",
+      "method": "post",
+      "data": {
+        "title": "foo"
+      }
+    },
+    "tests": {
+      "timeout" : 10,
+      "statusCode": 201
+    }
+  },
+  {
+    "api": {
+      "url": "http://jsonplaceholder.typicode.com/posts",
+      "method": "get",
+      "params": {
+        "userId": 1
+      }
+    },
+    "tests": {
+      "timeout" : 10,
+      "statusCode": 200
+    }
+  }
+]

@@ -1,0 +1,9 @@
+version: '2.1'
+
+services:
+  json-server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.json-server
+    ports:
+      - "3000:3000"

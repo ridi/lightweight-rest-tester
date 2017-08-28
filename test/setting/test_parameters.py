@@ -1,7 +1,7 @@
 import unittest
 
 from rest_tester.setting import ParameterSet
-from test import helper
+from test import are_equal_lists
 
 
 class TestParameterSet(unittest.TestCase):
@@ -15,7 +15,7 @@ class TestParameterSet(unittest.TestCase):
         actual = ParameterSet.generate(params)
         expected = [params]
 
-        self.assertTrue(helper.are_equal_lists(actual, expected))
+        self.assertTrue(are_equal_lists(actual, expected))
 
     def test_generate_lists(self):
         params = {
@@ -65,7 +65,7 @@ class TestParameterSet(unittest.TestCase):
             {'param_1': 3, 'param_2': 'c', 'param_3': 'hij'}
         ]
 
-        self.assertTrue(helper.are_equal_lists(actual, expected))
+        self.assertTrue(are_equal_lists(actual, expected))
 
     def test_generate_lists_with_non_list(self):
         params = {
@@ -117,7 +117,7 @@ class TestParameterSet(unittest.TestCase):
             {'param_4': 'non_list_4', 'param_2': 'non_list_2', 'param_1': 3, 'param_5': 'hij', 'param_3': 'c'}
         ]
 
-        self.assertTrue(helper.are_equal_lists(actual, expected))
+        self.assertTrue(are_equal_lists(actual, expected))
 
 if __name__ == '__main__':
     unittest.main()

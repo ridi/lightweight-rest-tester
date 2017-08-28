@@ -8,6 +8,6 @@
   },
   "tests": {
     "timeout" : 10,
-    "statusCode": 200
+    "statusCode": 500
   }
 }

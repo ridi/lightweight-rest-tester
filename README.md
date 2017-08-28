@@ -16,7 +16,7 @@ export PYTHONPATH=.
 ```
 
 ### JSON File Format
-Put HTTP method as a top-level entry, and then specify your **api** and how you **test** it. It supports five HTTP methods, **GET**, **POST**, **PUT**, **PATCH** and **DELETE**. In the `api` part, you can set the target REST API by URL (`url`) with parameters (`params`). In the `tests` part, you can add three types of test cases, timeout (`timeout`) in seconds, HTTP status code (`statusCode`) and [JSON Schema](http://json-schema.org) (`jsonSchema`).
+Specify your **api** and how you **test** it. In the `api` part, you can set the target REST API by URL (`url`) with method (`method`). It supports five HTTP methods, **GET**, **POST**, **PUT**, **PATCH** and **DELETE**. You can also set the parameters (`params`). In the `tests` part, you can add three types of test cases, timeout (`timeout`) in seconds, HTTP status code (`statusCode`) and [JSON Schema](http://json-schema.org) (`jsonSchema`).
 
 The following example makes **GET** (`get`) API call to `http://json-server:3000/comments` with the `postId=1` parameter. When receiving the response, it checks the follows:
 
@@ -26,20 +26,19 @@ The following example makes **GET** (`get`) API call to `http://json-server:3000
 
 ```json
 {
-  "get": {
-    "api": {
-      "url": "http://json-server:3000/comments",
-      "params": {
-        "postId": 1
-      }
-    },
-    
-    "tests": {
-      "timeout" : 10,
-      "statusCode": 200,
-      "jsonSchema": {
-        "Write your JSON Schema in here."
-      }
+  "api": {
+    "url": "http://json-server:3000/comments",
+    "method": "get",
+    "params": {
+      "postId": 1
+    }
+  },
+
+  "tests": {
+    "timeout" : 10,
+    "statusCode": 200,
+    "jsonSchema": {
+      "Write your JSON Schema in here."
     }
   }
 }
@@ -49,7 +48,10 @@ You can find some samples in [here](/samples) and [there](/test/function/resourc
 
 ## 2. API
 
-The `api` part consists of `url` and `params`. `url` is essential, but `params` is optional.
+The `api` part consists of `url`, `method`, `params` and `data`. `url` and `method` are essential, but `params` and `data` are optional.
+
+#### method
+**GET**, **POST**, **PUT**, **PATCH** and **DELETE** methods are supported.
 
 #### params
 When parameter values are given as an array, multiple test cases with all possible parameter-sets are generated. They will show which parameter-set fails a test if exists (please see [5. Test Case Name](#5-test-case-name)). For example, the following parameters generate 9 different parameter sets. One of them could be `{"p1": 1, "p2": "abc", "p3": "def"}`.
@@ -60,6 +62,9 @@ When parameter values are given as an array, multiple test cases with all possib
   "p3": ["def", "efg", "hij"]
 }
 ```
+
+#### data
+When you make **POST**, **PUT** and **PATCH** calls, you can send JSON format data using `data`. You can find an example in [here](/test/function/resources/test_function_single_post.json).
 
 ## 3. Tests
 
@@ -79,32 +84,51 @@ This framework uses [jsonschema](https://github.com/Julian/jsonschema) to valida
 
 ## 4. Write-and-Read Test
 
-Sometimes, it is necessary to check if modifications on a database work correctly. We call such test scenario as **Write-and-Read** test that has a particular test-execution-order like **PUT-and-GET**. This framework supports this feature. To use it, just put two HTTP methods in one JSON file and fill the information for each method. You can find an example of **PUT-and-GET** in [here](https://github.com/ridibooks/lightweight-rest-tester/blob/dev/readme/init/test/function/resources/test_function_write_put.json).
+Sometimes, it is necessary to check if modifications on a database work correctly. We call such test scenario as **Write-and-Read** test that has a particular test-execution-order like **PUT-and-GET**. This framework supports this feature. To use it, just put two `api`/`tests` pairs in a list when writing JSON file:
 
-You can build the four types of **Write-and-Read** test:
+```json
+[
+  {
+    "api": {
+      "url": "http://json-server:3000/posts",
+      "method": "post",
+      "data": {
+        "title": "foo",
+        "body": "bar",
+        "userId": 1
+      }
+    },
+    "tests": {
+      "statusCode": 201
+    }
+  },
+  {
+    "api": {
+      "url": "http://json-server:3000/posts",
+      "method": "get",
+      "params": {
+        "userId": 1
+      }
+    },
+    "tests": {
+      "statusCode": 200
+    }
+  }
+]
+```
 
-- **POST-and-GET**
-- **PUT-and-GET**
-- **PATCH-and-GET**
-- **DELETE-and-GET**
+You can find more examples in [here](/test/function/resources).
 
-Unlike the single-method test, **Write-and-Read** test builds always one test case to preserve test-execution order. Even when arrays of parameter values are given, this framework executes all the test cases belonging to **Write** method (e.g., **PUT**) first and then runs the test cases of **Read** method (e.g., **GET**).
-
-### POST-and-GET
-
-Your REST API may return the **Location** header of new resource which is created by a **POST** API call. In this case, you may want to **GET** the newly created resource using the **Location** header. To follow such use-scenario, just omit `get.api` in your test case. You can find the example in [here](test/function/resources/test_function_write_post_and_get_without_get_api.json).
-
-On the other hand, if you specify `get.api` in your **POST-and-GET** test, this framework will ignore the **Location** header and **GET** the `url` in the `get.api` like other **Write-and-Read** tests.
-
-The current version of this framework assumes that the **Location** header represents absolute URL ([RFC 2616](https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html)). That is, it cannot recognize relative URL yet ([RFC 7231](https://tools.ietf.org/html/rfc7231#section-4.3.3)).
+Unlike the single-method test, **Write-and-Read** test builds always one test case to preserve test-execution order. Even when arrays of parameter values are given, this framework executes all the test cases belonging to first `api`/`tests` pair and then runs the test cases of the rest pair.
 
 ## 5. Test Case Name
 
 This framework uses [URL query string format](https://en.wikipedia.org/wiki/Query_string) to make test case name. However, it starts with JSON file name instead of `url`. It helps you understand which parameter-set fails a test if exists. For example, `json_file.json?postId=1&id=2` is the name of the following test case:
 
 ```json
-"api": {
+{
   "url": "http://json-server:3000/comments",
+  "method": "get",
   "params": {
     "postId": 1,
     "id": 2
