@@ -4,7 +4,7 @@ docker-compose -f ./json-server/docker-compose.test.yml up --build -d
 echo "Waiting until container becomes healthy..."
 
 retries=0
-while ! docker ps | grep json-server | grep healthy; do
+while ! docker ps | grep json-server | grep healthy | grep -v unhealthy; do
     sleep 1
 
     if [ "$retries" -gt 10 ]
