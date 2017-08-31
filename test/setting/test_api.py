@@ -1,12 +1,12 @@
 import unittest
 
-
+from rest_tester.options import Options
 from rest_tester.setting import API
 
 
 class TestAPI(unittest.TestCase):
     def test_entire_information(self):
-        request_data = {
+        api_data = {
             "url": "https://jsonplaceholder.typicode.com/comments",
             "method": "get",
             "params": {
@@ -19,33 +19,45 @@ class TestAPI(unittest.TestCase):
             }
         }
 
-        request = API(request_data)
+        api = API(api_data, Options())
 
-        self.assertEqual(request_data['url'], request.url)
-        self.assertEqual(request_data['method'], request.method)
-        self.assertEqual(request_data['params'], request.params)
-        self.assertEqual(request_data['data'], request.data)
+        self.assertEqual(api_data['url'], api.url)
+        self.assertEqual(api_data['method'], api.method)
+        self.assertEqual(api_data['params'], api.params)
+        self.assertEqual(api_data['data'], api.data)
 
     def test_essential_information(self):
-        request_data = {
+        api_data = {
             "url": "https://jsonplaceholder.typicode.com/comments",
             "method": "get"
         }
 
-        request = API(request_data)
+        api = API(api_data, Options())
 
-        self.assertEqual(request_data['url'], request.url)
-        self.assertEqual(request_data['method'], request.method)
+        self.assertEqual(api_data['url'], api.url)
+        self.assertEqual(api_data['method'], api.method)
+
+    def test_add_base_url(self):
+        base_url = "https://jsonplaceholder.typicode.com"
+        api_data = {
+            "url": "/comments",
+            "method": "get"
+        }
+
+        api = API(api_data, Options(base_url=base_url))
+
+        self.assertEqual(base_url + api_data['url'], api.url)
+        self.assertEqual(api_data['method'], api.method)
 
     def test_missing_information(self):
-        request_data = {
+        api_data = {
             "params": {
                 "postId": 1
             }
         }
 
         with self.assertRaises(KeyError):
-            API(request_data)
+            API(api_data, Options())
 
 if __name__ == '__main__':
     unittest.main()

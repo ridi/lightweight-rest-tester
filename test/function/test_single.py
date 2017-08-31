@@ -5,6 +5,7 @@ from requests.exceptions import Timeout
 from jsonschema import ValidationError
 
 from rest_tester.function.single import SingleTargetTestFunctionBuilder
+from rest_tester.options import Options
 from rest_tester.setting import TestSetting
 from test import load_json_data
 from test.function import run_test_function_list
@@ -75,7 +76,7 @@ class TestSingleTargetTestFunctionBuilder(unittest.TestCase):
     def generate_test_functions(json_file):
         json_data = load_json_data(json_file)
 
-        setting = TestSetting(json_data)
+        setting = TestSetting(json_data, Options())
         file_name = os.path.basename(json_file)
 
         builder = SingleTargetTestFunctionBuilder(setting, file_name)

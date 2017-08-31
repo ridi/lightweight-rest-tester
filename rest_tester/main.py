@@ -1,11 +1,13 @@
 import glob
 import json
 import os
-import sys
 import unittest
+
+import click
 
 from rest_tester.function import TestFunctionBuilderFactory
 from rest_tester.function.fail import FailTestFunctionBuilder
+from rest_tester.options import Options
 from rest_tester.setting import TestSetting
 
 
@@ -25,14 +27,7 @@ def add_function_to_container(test_function):
     print('%s is added to the test container.' % test_function.name)
 
 
-def main(argv):
-    """Read test_suites_dir from the arguments."""
-    try:
-        script, test_suites_dir = argv
-    except ValueError:
-        print('Please specify the test suite directory for testing.')
-        raise
-
+def generate_test_functions(test_suites_dir, options):
     for test_case_file in identify_files_in_dir(test_suites_dir):
         print('Working on %s ...' % test_case_file)
         file_name = os.path.basename(test_case_file)
@@ -50,7 +45,7 @@ def main(argv):
             continue
 
         try:
-            setting = TestSetting(json_data)
+            setting = TestSetting(json_data, options)
         except BaseException as setting_error:
             add_fail_function(str(setting_error))
             continue
@@ -60,8 +55,20 @@ def main(argv):
         for test_function in test_function_list:
             add_function_to_container(test_function)
 
+
+def run_test_functions():
     suite = unittest.makeSuite(TestsContainer)
     unittest.TextTestRunner(verbosity=1).run(suite)
 
+
+@click.command()
+@click.argument('test_suites_dir', type=click.Path(exists=True))
+@click.option('--base_url', default=None, type=str, help='The base URL of API.')
+def main(test_suites_dir, base_url):
+    options = Options(base_url=base_url)
+
+    generate_test_functions(test_suites_dir, options)
+    run_test_functions()
+
 if __name__ == '__main__':
-    main(sys.argv)
+    main()
