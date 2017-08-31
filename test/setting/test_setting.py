@@ -1,6 +1,7 @@
 import os
 import unittest
 
+from rest_tester.options import Options
 from test.setting import convert_api_to_dict, convert_tests_to_dict
 from rest_tester.setting import TestSetting, TestTarget
 from test import load_json_data
@@ -13,7 +14,7 @@ class TestTestSetting(unittest.TestCase):
         json_file = '%s/resources/test_setting_single.json' % self.current_dir_path
         json_data = load_json_data(json_file)
 
-        setting = TestSetting(json_data)
+        setting = TestSetting(json_data, Options())
 
         self.assertFalse(setting.has_multiple_targets())
 
@@ -30,7 +31,7 @@ class TestTestSetting(unittest.TestCase):
         json_file = '%s/resources/test_setting_multiple.json' % self.current_dir_path
         json_data = load_json_data(json_file)
 
-        setting = TestSetting(json_data)
+        setting = TestSetting(json_data, Options())
 
         self.assertTrue(setting.has_multiple_targets())
 

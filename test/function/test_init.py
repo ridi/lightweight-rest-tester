@@ -5,6 +5,7 @@ import os
 from rest_tester.function import TestFunctionBuilderFactory, TestFunctionBuilder
 from rest_tester.function.single import SingleTargetTestFunctionBuilder
 from rest_tester.function.multiple import MultipleTargetsTestFunctionBuilder
+from rest_tester.options import Options
 from rest_tester.setting import API, TestSetting
 from test import are_equal_lists, load_json_data
 
@@ -16,7 +17,7 @@ class TestTestFunction(unittest.TestCase):
         json_file = '%s/resources/test_function_init_single.json' % self.current_dir_path
         json_data = load_json_data(json_file)
 
-        setting = TestSetting(json_data)
+        setting = TestSetting(json_data, Options())
         file_name = os.path.basename(json_file)
 
         builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
@@ -26,7 +27,7 @@ class TestTestFunction(unittest.TestCase):
         json_file = '%s/resources/test_function_init_multiple.json' % self.current_dir_path
         json_data = load_json_data(json_file)
 
-        setting = TestSetting(json_data)
+        setting = TestSetting(json_data, Options())
         file_name = os.path.basename(json_file)
 
         builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
@@ -46,7 +47,7 @@ class TestTestFunction(unittest.TestCase):
             "params": params
         }
 
-        api = API(api_data)
+        api = API(api_data, Options())
         file_name = 'file_name'
         actual = TestFunctionBuilder._generate_name(file_name, api)
 
@@ -72,7 +73,7 @@ class TestTestFunction(unittest.TestCase):
         }
 
         file_name = 'file_name'
-        api = API(api_data)
+        api = API(api_data, Options())
 
         actual = TestFunctionBuilder._generate_name(file_name, api)
         expected = 'test_%s' % file_name

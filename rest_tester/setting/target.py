@@ -6,9 +6,9 @@ class TestTarget(object):
     KEY_API = 'api'
     KEY_TESTS = 'tests'
 
-    def __init__(self, json_data):
+    def __init__(self, json_data, options):
         try:
-            self._api = API(json_data[self.KEY_API])
+            self._api = API(json_data[self.KEY_API], options)
             self._tests = Tests(json_data[self.KEY_TESTS])
         except KeyError as e:
             raise IncompleteTargetInformationError('Test case has missing information: %s' % str(e))

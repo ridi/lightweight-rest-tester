@@ -7,8 +7,11 @@ class API(object):
     KEY_PARAMS = 'params'
     KEY_DATA = 'data'
 
-    def __init__(self, api_data):
+    def __init__(self, api_data, options):
         self._url = api_data[self.KEY_URL]
+        if options.base_url:
+            self._url = options.base_url + self._url
+
         self._method = TestMethod(api_data[self.KEY_METHOD])
         self._params = api_data.get(self.KEY_PARAMS, {})
         self._data = api_data.get(self.KEY_DATA)

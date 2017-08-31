@@ -1,0 +1,13 @@
+{
+  "api": {
+    "url": "/comments",
+    "method": "get",
+    "params": {
+      "postId": 1
+    }
+  },
+  "tests": {
+    "timeout" : 10,
+    "statusCode": 200
+  }
+}
