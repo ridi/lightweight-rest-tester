@@ -73,4 +73,6 @@ def main(test_suites_dir, base_url):
 
 if __name__ == '__main__':
     is_successful = main()
-    sys.exit(is_successful)
+    print(is_successful)
+    if not is_successful:
+        sys.exit(1)
