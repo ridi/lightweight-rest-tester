@@ -4,6 +4,7 @@ import os
 import unittest
 
 import click
+import sys
 
 from rest_tester.function import TestFunctionBuilderFactory
 from rest_tester.function.fail import FailTestFunctionBuilder
@@ -12,8 +13,7 @@ from rest_tester.setting import TestSetting
 
 
 class TestsContainer(unittest.TestCase):
-    """The test container for dynamically generated test cases."""
-    longMessage = True
+    pass
 
 
 def identify_files_in_dir(path):
@@ -21,13 +21,13 @@ def identify_files_in_dir(path):
     return [target for file_path in os.walk(path) for target in glob.glob(os.path.join(file_path[0], '*.json'))]
 
 
-def add_function_to_container(test_function):
+def add_function_to_container(test_container, test_function):
     """Add test functions with their name to container"""
-    setattr(TestsContainer, test_function.name, test_function.test_function)
+    setattr(test_container, test_function.name, test_function.test_function)
     print('%s is added to the test container.' % test_function.name)
 
 
-def generate_test_functions(test_suites_dir, options):
+def generate_test_functions(test_container, test_suites_dir, options):
     for test_case_file in identify_files_in_dir(test_suites_dir):
         print('Working on %s ...' % test_case_file)
         file_name = os.path.basename(test_case_file)
@@ -35,7 +35,7 @@ def generate_test_functions(test_suites_dir, options):
         def add_fail_function(msg):
             fail_function_builder = FailTestFunctionBuilder(msg, file_name)
             fail_function = fail_function_builder.build()
-            add_function_to_container(fail_function)
+            add_function_to_container(test_container, fail_function)
 
         try:
             with open(test_case_file, 'r') as json_file:
@@ -53,12 +53,12 @@ def generate_test_functions(test_suites_dir, options):
         test_function_builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
         test_function_list = test_function_builder.build()
         for test_function in test_function_list:
-            add_function_to_container(test_function)
+            add_function_to_container(test_container, test_function)
 
 
-def run_test_functions():
-    suite = unittest.makeSuite(TestsContainer)
-    unittest.TextTestRunner(verbosity=1).run(suite)
+def run_test_functions(test_container):
+    suite = unittest.makeSuite(test_container)
+    return unittest.TextTestRunner(verbosity=1).run(suite).wasSuccessful()
 
 
 @click.command()
@@ -67,8 +67,11 @@ def run_test_functions():
 def main(test_suites_dir, base_url):
     options = Options(base_url=base_url)
 
-    generate_test_functions(test_suites_dir, options)
-    run_test_functions()
+    generate_test_functions(TestsContainer, test_suites_dir, options)
+    was_successful = run_test_functions(TestsContainer)
+    if not was_successful:
+        print('Testing was NOT successful!')
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

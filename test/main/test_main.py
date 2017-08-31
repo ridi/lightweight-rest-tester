@@ -6,16 +6,32 @@ from rest_tester.main import generate_test_functions, run_test_functions
 from rest_tester.options import Options
 
 
+class TestsContainerSuccess(unittest.TestCase):
+    pass
+
+
+class TestsContainerFail(unittest.TestCase):
+    pass
+
+
 class TestMain(unittest.TestCase):
     current_dir_path = os.path.dirname(__file__)
 
-    def test_main(self):
-        test_suites_dir = '%s/resources/' % self.current_dir_path
+    def test_main_success(self):
+        test_suites_dir = '%s/resources_success/' % self.current_dir_path
 
         options = Options(base_url=None)
 
-        generate_test_functions(test_suites_dir, options)
-        run_test_functions()
+        generate_test_functions(TestsContainerSuccess, test_suites_dir, options)
+        self.assertTrue(run_test_functions(TestsContainerSuccess))
+
+    def test_main_fail(self):
+        test_suites_dir = '%s/resources_fail/' % self.current_dir_path
+
+        options = Options(base_url=None)
+
+        generate_test_functions(TestsContainerFail, test_suites_dir, options)
+        self.assertFalse(run_test_functions(TestsContainerFail))
 
 if __name__ == '__main__':
     unittest.main()

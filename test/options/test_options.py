@@ -5,6 +5,10 @@ from rest_tester.main import generate_test_functions, run_test_functions
 from rest_tester.options import Options
 
 
+class TestsContainer(unittest.TestCase):
+    pass
+
+
 class TestOptions(unittest.TestCase):
     current_dir_path = os.path.dirname(__file__)
 
@@ -20,8 +24,8 @@ class TestOptions(unittest.TestCase):
 
         options = Options(base_url=base_url)
 
-        generate_test_functions(test_suites_dir, options)
-        run_test_functions()
+        generate_test_functions(TestsContainer, test_suites_dir, options)
+        self.assertTrue(run_test_functions(TestsContainer))
 
 if __name__ == '__main__':
     unittest.main()
