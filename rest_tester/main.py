@@ -69,10 +69,10 @@ def main(test_suites_dir, base_url):
     options = Options(base_url=base_url)
 
     generate_test_functions(TestsContainer, test_suites_dir, options)
-    return run_test_functions(TestsContainer)
+    was_successful = run_test_functions(TestsContainer)
+    if not was_successful:
+        print('Testing was NOT successful!')
+        sys.exit(1)
 
 if __name__ == '__main__':
-    is_successful = main()
-    print(is_successful)
-    if not is_successful:
-        sys.exit(1)
+    main()
