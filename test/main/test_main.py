@@ -7,13 +7,11 @@ from rest_tester.options import Options
 
 
 class TestsContainerSuccess(unittest.TestCase):
-    """The test container for dynamically generated test cases."""
-    longMessage = True
+    pass
 
 
 class TestsContainerFail(unittest.TestCase):
-    """The test container for dynamically generated test cases."""
-    longMessage = True
+    pass
 
 
 class TestMain(unittest.TestCase):

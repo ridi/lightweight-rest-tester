@@ -13,8 +13,7 @@ from rest_tester.setting import TestSetting
 
 
 class TestsContainer(unittest.TestCase):
-    """The test container for dynamically generated test cases."""
-    longMessage = True
+    pass
 
 
 def identify_files_in_dir(path):
