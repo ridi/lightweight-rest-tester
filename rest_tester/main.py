@@ -3,17 +3,9 @@ import json
 import os
 import unittest
 
-import click
-import sys
-
 from rest_tester.function import TestFunctionBuilderFactory
 from rest_tester.function.fail import FailTestFunctionBuilder
-from rest_tester.options import Options
 from rest_tester.setting import TestSetting
-
-
-class TestsContainer(unittest.TestCase):
-    pass
 
 
 def identify_files_in_dir(path):
@@ -59,19 +51,3 @@ def generate_test_functions(test_container, test_suites_dir, options):
 def run_test_functions(test_container):
     suite = unittest.makeSuite(test_container)
     return unittest.TextTestRunner(verbosity=1).run(suite).wasSuccessful()
-
-
-@click.command()
-@click.argument('test_suites_dir', type=click.Path(exists=True))
-@click.option('--base_url', default=None, type=str, help='The base URL of API.')
-def main(test_suites_dir, base_url):
-    options = Options(base_url=base_url)
-
-    generate_test_functions(TestsContainer, test_suites_dir, options)
-    was_successful = run_test_functions(TestsContainer)
-    if not was_successful:
-        print('Testing was NOT successful!')
-        sys.exit(1)
-
-if __name__ == '__main__':
-    main()
