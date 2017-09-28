@@ -5,14 +5,14 @@
 A lightweight REST API testing framework written in Python (working with 2.7 ~ 3.6). It reads [JSON Schema](http://json-schema.org) test-cases from JSON files and then generates and executes unittest of Python. 
 
 ## 1. Getting Started
-Write your test cases into JSON files and pass their locations (directory) as the argument:
-```
-python rest_tester/main.py ${JSON_FILE_DIRECTORY}
+Install **lightweight-rest-tester** using `setup.py`:
+```bash
+python setup.py install
 ```
 
-If your Python cannot identify the `rest_tester` module, then set the Python path:
-```
-export PYTHONPATH=.
+Write your test cases into JSON files and pass their locations (directory) as the argument:
+```bash
+lw_rest_tester ${JSON_FILE_DIRECTORY}
 ```
 
 ### JSON File Format

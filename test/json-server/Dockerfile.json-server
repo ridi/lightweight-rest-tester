@@ -1,5 +1,5 @@
 FROM node:latest
-MAINTAINER Jeehoon Yoo <jihungen@gmail.com>
+MAINTAINER Jeehoon Yoo <jeehoon.yoo@ridi.com>
 
 RUN npm install -g json-server
 

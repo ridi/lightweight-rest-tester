@@ -1,5 +1,5 @@
-docker-compose -f ./json-server/docker-compose.test.yml down
-docker-compose -f ./json-server/docker-compose.test.yml up --build -d
+docker-compose -f ./test/json-server/docker-compose.test.yml down
+docker-compose -f ./test/json-server/docker-compose.test.yml up --build -d
 
 echo "Waiting until container becomes healthy..."
 
