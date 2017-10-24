@@ -36,9 +36,8 @@ class TestMultipleTargetsTestFunctionBuilder(unittest.TestCase):
         json_data = load_json_data(json_file)
 
         setting = TestSetting(json_data, Options())
-        file_name = os.path.basename(json_file)
 
-        builder = MultipleTargetsTestFunctionBuilder(setting, file_name)
+        builder = MultipleTargetsTestFunctionBuilder(setting)
         return builder.build()
 
 if __name__ == '__main__':

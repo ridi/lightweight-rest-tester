@@ -16,15 +16,13 @@ def identify_files_in_dir(path):
 def add_function_to_container(test_container, test_function):
     """Add test functions with their name to container"""
     setattr(test_container, test_function.name, test_function.test_function)
-    print('%s is added to the test container.' % test_function.name)
 
 
 def generate_test_functions(test_container, test_suites_dir, options):
     for test_case_file in identify_files_in_dir(test_suites_dir):
-        print('Working on %s ...' % test_case_file)
-        file_name = os.path.basename(test_case_file)
 
         def add_fail_function(msg):
+            file_name = os.path.basename(test_case_file)
             fail_function_builder = FailTestFunctionBuilder(msg, file_name)
             fail_function = fail_function_builder.build()
             add_function_to_container(test_container, fail_function)
@@ -42,7 +40,7 @@ def generate_test_functions(test_container, test_suites_dir, options):
             add_fail_function(str(setting_error))
             continue
 
-        test_function_builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
+        test_function_builder = TestFunctionBuilderFactory.get_builder(setting)
         test_function_list = test_function_builder.build()
         for test_function in test_function_list:
             add_function_to_container(test_container, test_function)

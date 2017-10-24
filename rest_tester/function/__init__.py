@@ -25,22 +25,19 @@ class TestFunction(object):
 
 class TestFunctionBuilderFactory(object):
     @staticmethod
-    def get_builder(setting, name_prefix):
+    def get_builder(setting):
         if setting.has_multiple_targets():
             from .multiple import MultipleTargetsTestFunctionBuilder
-            return MultipleTargetsTestFunctionBuilder(setting, name_prefix)
+            return MultipleTargetsTestFunctionBuilder(setting)
 
         else:
             from .single import SingleTargetTestFunctionBuilder
-            return SingleTargetTestFunctionBuilder(setting, name_prefix)
+            return SingleTargetTestFunctionBuilder(setting)
 
 
 class TestFunctionBuilder(object):
     """Build test functions"""
     __metaclass__ = abc.ABCMeta
-
-    def __init__(self, name_prefix):
-        self._name_prefix = name_prefix
 
     @staticmethod
     def _run_tests(self, tests, response):
@@ -57,12 +54,15 @@ class TestFunctionBuilder(object):
                     tests.json_schema
             )
 
-    def _build_test_function(self, api, tests):
+    def _build_test_function(self, name, api, tests):
         def test_function(test_self):
             param_set_list = ParameterSet.generate(api.params)
             for param_set in param_set_list:
                 timeout = tests.timeout
                 response = self._get_response(api, param_set, timeout)
+
+                response_time = response.elapsed.total_seconds()
+                print(name + ' takes ' + str(round(response_time, 4)) + ' seconds.')
 
                 self._run_tests(test_self, tests, response)
 
@@ -91,13 +91,13 @@ class TestFunctionBuilder(object):
             raise UnsupportedMethodError('Unsupported method: %s' % method)
 
     @staticmethod
-    def _generate_name(name_prefix, api):
+    def _generate_name(api):
         """Test function name should start with 'test' since we use unit test."""
         param_str = '&'.join([key + "=" + str(value) for key, value in api.params.items()])
         if param_str != '':
             param_str = '?' + param_str
 
-        return 'test_%s%s' % (name_prefix, param_str)
+        return 'test_%s%s' % (api.url, param_str)
 
     @abc.abstractmethod
     def build(self):

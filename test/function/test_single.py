@@ -77,9 +77,8 @@ class TestSingleTargetTestFunctionBuilder(unittest.TestCase):
         json_data = load_json_data(json_file)
 
         setting = TestSetting(json_data, Options())
-        file_name = os.path.basename(json_file)
 
-        builder = SingleTargetTestFunctionBuilder(setting, file_name)
+        builder = SingleTargetTestFunctionBuilder(setting)
         return builder.build()
 
 if __name__ == '__main__':
