@@ -18,9 +18,8 @@ class TestTestFunction(unittest.TestCase):
         json_data = load_json_data(json_file)
 
         setting = TestSetting(json_data, Options())
-        file_name = os.path.basename(json_file)
 
-        builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
+        builder = TestFunctionBuilderFactory.get_builder(setting)
         self.assertTrue(isinstance(builder, SingleTargetTestFunctionBuilder))
 
     def test_multiple(self):
@@ -28,9 +27,8 @@ class TestTestFunction(unittest.TestCase):
         json_data = load_json_data(json_file)
 
         setting = TestSetting(json_data, Options())
-        file_name = os.path.basename(json_file)
 
-        builder = TestFunctionBuilderFactory.get_builder(setting, file_name)
+        builder = TestFunctionBuilderFactory.get_builder(setting)
         self.assertTrue(isinstance(builder, MultipleTargetsTestFunctionBuilder))
 
     def test_generate_name(self):
@@ -48,8 +46,7 @@ class TestTestFunction(unittest.TestCase):
         }
 
         api = API(api_data, Options())
-        file_name = 'file_name'
-        actual = TestFunctionBuilder._generate_name(file_name, api)
+        actual = TestFunctionBuilder._generate_name(api)
 
         split_to_url_and_parameters = actual.split('?')
         self.assertEqual(len(split_to_url_and_parameters), 2)
@@ -57,7 +54,7 @@ class TestTestFunction(unittest.TestCase):
         actual_url = split_to_url_and_parameters[0]
         actual_parameters = split_to_url_and_parameters[1]
 
-        expected_url = 'test_%s' % file_name
+        expected_url = 'test_%s' % api.url
         self.assertEqual(actual_url, expected_url)
 
         actual_parameter_list = actual_parameters.split('&')
@@ -72,11 +69,10 @@ class TestTestFunction(unittest.TestCase):
             "params": {}
         }
 
-        file_name = 'file_name'
         api = API(api_data, Options())
 
-        actual = TestFunctionBuilder._generate_name(file_name, api)
-        expected = 'test_%s' % file_name
+        actual = TestFunctionBuilder._generate_name(api)
+        expected = 'test_%s' % api.url
 
         self.assertEqual(actual, expected)
 
