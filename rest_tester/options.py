@@ -1,6 +1,3 @@
-from .utils import read_json_file
-
-
 class AuthenticationError(Exception):
     """Test types are not supported"""
     def __init__(self, value):
@@ -10,26 +7,24 @@ class AuthenticationError(Exception):
         return str(self.value)
 
 
+def _read_authentication_password_file(file_path):
+    with open(file=file_path) as file:
+        return file.read().splitlines()[0]
+
+
 class Options(object):
-    def __init__(self, base_url=None, auth_file=None):
+    def __init__(self, base_url=None, auth_user=None, auth_pass_file=None):
         self._base_url = base_url
-        self._auth = self._read_authentication(auth_file)
 
-    @staticmethod
-    def _read_authentication(auth_file):
-        if auth_file is not None:
+        if auth_user and auth_pass_file:
             try:
-                auth_json = read_json_file(auth_file)
-            except FileNotFoundError:
-                print('Cannot find authentication file. So, we do not use authentication.')
-                return None
+                auth_pass = _read_authentication_password_file(auth_pass_file)
+            except:
+                raise AuthenticationError('Authentication information is given, but password file is missing!')
 
-            try:
-                return auth_json['user'], auth_json['pass']
-            except KeyError:
-                raise AuthenticationError('Authentication information format is wrong.')
-
-        return None
+            self._auth = (auth_user, auth_pass)
+        else:
+            self._auth = None
 
     @property
     def base_url(self):

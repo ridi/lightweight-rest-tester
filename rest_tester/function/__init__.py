@@ -78,6 +78,8 @@ class TestFunctionBuilder(object):
     def _send_request(method, url, params, timeout, data, auth):
         headers = {'Content-Type': 'application/json'}
 
+        print(str(auth))
+
         if method == TestMethod.GET:
             return requests.get(url=url, params=params, timeout=timeout, auth=auth)
         elif method == TestMethod.PUT:
