@@ -14,7 +14,7 @@ class TestsContainer(unittest.TestCase):
 @click.command()
 @click.argument('test_suites_dir', type=click.Path(exists=True))
 @click.option('--base_url', default=None, type=str, help='Base URL of API.')
-@click.option('--auth', default=None, type=str, help='Authentication information.')
+@click.option('--auth', default=None, type=str, help='Authentication information: "user:pass"')
 def main(test_suites_dir, base_url, auth):
     options = Options(base_url=base_url, auth=auth)
 
