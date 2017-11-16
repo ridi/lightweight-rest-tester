@@ -13,9 +13,10 @@ class TestsContainer(unittest.TestCase):
 
 @click.command()
 @click.argument('test_suites_dir', type=click.Path(exists=True))
-@click.option('--base_url', default=None, type=str, help='The base URL of API.')
-def main(test_suites_dir, base_url):
-    options = Options(base_url=base_url)
+@click.option('--base_url', default=None, type=str, help='Base URL of API.')
+@click.option('--auth_file', default=None, type=str, help='File containing authentication information in JSON format')
+def main(test_suites_dir, base_url, auth_file):
+    options = Options(base_url=base_url, auth_file=auth_file)
 
     generate_test_functions(TestsContainer, test_suites_dir, options)
     was_successful = run_test_functions(TestsContainer)
