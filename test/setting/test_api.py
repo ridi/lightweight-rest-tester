@@ -49,6 +49,20 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(base_url + api_data['url'], api.url)
         self.assertEqual(api_data['method'], api.method)
 
+    def test_add_auth(self):
+        user = 'user'
+        password = 'pass'
+        api_data = {
+            "url": "/comments",
+            "method": "get"
+        }
+
+        api = API(api_data, Options(auth=user + ':' + password))
+
+        expected = (user, password)
+
+        self.assertEqual(expected, api.auth)
+
     def test_missing_information(self):
         api_data = {
             "params": {
