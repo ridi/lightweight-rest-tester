@@ -1,5 +1,5 @@
 class AuthenticationError(Exception):
-    """Test types are not supported"""
+    """Wrongly defined authentication information"""
     def __init__(self, value):
         self.value = value
 
@@ -7,24 +7,21 @@ class AuthenticationError(Exception):
         return str(self.value)
 
 
-def _read_authentication_password_file(file_path):
-    with open(file=file_path) as file:
-        return file.read().splitlines()[0]
-
-
 class Options(object):
-    def __init__(self, base_url=None, auth_user=None, auth_pass_file=None):
+    def __init__(self, base_url=None, auth=None):
         self._base_url = base_url
+        self._auth = self._read_authentication(auth)
 
-        if auth_user and auth_pass_file:
-            try:
-                auth_pass = _read_authentication_password_file(auth_pass_file)
-            except:
-                raise AuthenticationError('Authentication information is given, but password file is missing!')
+    @staticmethod
+    def _read_authentication(auth):
+        if auth is not None:
+            auth_decomp = auth.split(':')
+            if len(auth_decomp) != 2:
+                raise AuthenticationError('Authentication information is wrong.')
 
-            self._auth = (auth_user, auth_pass)
-        else:
-            self._auth = None
+            return auth_decomp[0], auth_decomp[1]
+
+        return None
 
     @property
     def base_url(self):
