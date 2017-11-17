@@ -46,6 +46,23 @@ The following example makes **GET** (`get`) API call to `http://json-server:3000
 
 You can find some samples in [here](/samples) and [there](/test/function/resources). For the details, please read the below.
 
+### Options
+**lightweight-rest-tester** provides some useful options.
+
+#### Base URL
+You may want to run identical test case on different servers (e.g., production and staging servers.). In this case, use `--base_url` option:
+```bash
+lw_rest_tester ${JSON_FILE_DIRECTORY} --base_url ${BASE_URL}
+```
+
+The base url will be added to the `url` in test cases.
+
+#### Authentication
+Your API server may require the authentication on API calls. It supports HTTP basic authentication. To add it, use `--auth` option:
+```bash
+lw_rest_tester ${JSON_FILE_DIRECTORY} --auth "username:password"
+```
+
 ## 2. API
 
 The `api` part consists of `url`, `method`, `params` and `data`. `url` and `method` are essential, but `params` and `data` are optional.
@@ -123,7 +140,7 @@ Unlike the single-method test, **Write-and-Read** test builds always one test ca
 
 ## 5. Test Case Name
 
-This framework uses [URL query string format](https://en.wikipedia.org/wiki/Query_string) to make test case name. However, it starts with JSON file name instead of `url`. It helps you understand which parameter-set fails a test if exists. For example, `json_file.json?postId=1&id=2` is the name of the following test case:
+This framework uses [URL query string format](https://en.wikipedia.org/wiki/Query_string) to make test case name. However, it starts with `test_` to be recognized as a test case in unittest. It helps you understand which parameter-set fails a test if exists. For example, `test_http://json-server:3000/comments?postId=1&id=2` is the name of the following test case:
 
 ```json
 {
@@ -137,7 +154,7 @@ This framework uses [URL query string format](https://en.wikipedia.org/wiki/Quer
 }
 ```
 
-Unlike the single-method test, **Write-and-Read** test uses only JSON file name for its name.
+Unlike the single-method test, **Write-and-Read** test uses only `url` for its name.
 
 ## 6. Contributions to This Project
 

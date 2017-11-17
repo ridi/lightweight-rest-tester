@@ -71,22 +71,23 @@ class TestFunctionBuilder(object):
     def _get_response(self, api, params, timeout):
         data = json.dumps(api.data) if api.data else None
 
-        return self._send_request(method=api.method, url=api.url, params=params, timeout=timeout, data=data)
+        return self._send_request(method=api.method, url=api.url, params=params, timeout=timeout, data=data,
+                                  auth=api.auth)
 
     @staticmethod
-    def _send_request(method, url, params, timeout, data=None):
+    def _send_request(method, url, params, timeout, data, auth):
         headers = {'Content-Type': 'application/json'}
 
         if method == TestMethod.GET:
-            return requests.get(url=url, params=params, timeout=timeout)
+            return requests.get(url=url, params=params, timeout=timeout, auth=auth)
         elif method == TestMethod.PUT:
-            return requests.put(url=url, params=params, timeout=timeout, data=data, headers=headers)
+            return requests.put(url=url, params=params, timeout=timeout, data=data, headers=headers, auth=auth)
         elif method == TestMethod.POST:
-            return requests.post(url=url, params=params, timeout=timeout, data=data, headers=headers)
+            return requests.post(url=url, params=params, timeout=timeout, data=data, headers=headers, auth=auth)
         elif method == TestMethod.PATCH:
-            return requests.patch(url=url, params=params, timeout=timeout, data=data, headers=headers)
+            return requests.patch(url=url, params=params, timeout=timeout, data=data, headers=headers, auth=auth)
         elif method == TestMethod.DELETE:
-            return requests.delete(url=url, params=params, timeout=timeout)
+            return requests.delete(url=url, params=params, timeout=timeout, auth=auth)
         else:
             raise UnsupportedMethodError('Unsupported method: %s' % method)
 
