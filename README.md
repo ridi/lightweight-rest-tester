@@ -63,6 +63,12 @@ Your API server may require the authentication on API calls. It supports HTTP ba
 lw_rest_tester ${JSON_FILE_DIRECTORY} --auth "username:password"
 ```
 
+#### Skip Certificate Verification
+You may want to skip certificate verification. To skip it, use `--insecure` option:
+```bash
+lw_rest_tester ${JSON_FILE_DIRECTORY} --insecure
+```
+
 ## 2. API
 
 The `api` part consists of `url`, `method`, `params` and `data`. `url` and `method` are essential, but `params` and `data` are optional.

@@ -63,6 +63,17 @@ class TestAPI(unittest.TestCase):
 
         self.assertEqual(expected, api.auth)
 
+    def test_add_insecure(self):
+        insecure = True
+        api_data = {
+            "url": "/comments",
+            "method": "get"
+        }
+
+        api = API(api_data, Options(insecure=insecure))
+
+        self.assertTrue(api.insecure)
+
     def test_missing_information(self):
         api_data = {
             "params": {

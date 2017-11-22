@@ -53,5 +53,18 @@ class TestOptions(unittest.TestCase):
         with self.assertRaises(AuthenticationError):
             Options._read_authentication(user + password)
 
+    def test_insecure(self):
+        insecure = True
+        options = Options(insecure=insecure)
+
+        expected = insecure
+
+        self.assertEqual(expected, options.insecure)
+
+    def test_insecure_default(self):
+        options = Options()
+
+        self.assertFalse(options.insecure)
+
 if __name__ == '__main__':
     unittest.main()
