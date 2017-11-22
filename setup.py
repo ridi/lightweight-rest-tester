@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='lightweight-rest-tester',
-      version='1.4.0',
+      version='1.5.0',
       description='A lightweight REST API testing framework.',
       url='https://github.com/ridibooks/lightweight-rest-tester',
       author='Jeehoon Yoo',
