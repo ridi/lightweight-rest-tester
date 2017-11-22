@@ -8,9 +8,10 @@ class AuthenticationError(Exception):
 
 
 class Options(object):
-    def __init__(self, base_url=None, auth=None):
+    def __init__(self, base_url=None, auth=None, insecure=False):
         self._base_url = base_url
         self._auth = self._read_authentication(auth)
+        self._insecure = insecure
 
     @staticmethod
     def _read_authentication(auth):
@@ -30,3 +31,7 @@ class Options(object):
     @property
     def auth(self):
         return self._auth
+
+    @property
+    def insecure(self):
+        return self._insecure

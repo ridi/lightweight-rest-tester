@@ -15,8 +15,9 @@ class TestsContainer(unittest.TestCase):
 @click.argument('test_suites_dir', type=click.Path(exists=True))
 @click.option('--base_url', default=None, type=str, help='Base URL of API.')
 @click.option('--auth', default=None, type=str, help='Authentication information: "user:pass"')
-def main(test_suites_dir, base_url, auth):
-    options = Options(base_url=base_url, auth=auth)
+@click.option('--insecure', is_flag=True)
+def main(test_suites_dir, base_url, auth, insecure):
+    options = Options(base_url=base_url, auth=auth, insecure=insecure)
 
     generate_test_functions(TestsContainer, test_suites_dir, options)
     was_successful = run_test_functions(TestsContainer)

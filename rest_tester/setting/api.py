@@ -9,17 +9,17 @@ class API(object):
 
     def __init__(self, api_data, options):
         self._url = api_data[self.KEY_URL]
-        if options.base_url is not None:
-            self._url = options.base_url + self._url
-
         self._method = TestMethod(api_data[self.KEY_METHOD])
         self._params = api_data.get(self.KEY_PARAMS, {})
         self._data = api_data.get(self.KEY_DATA)
 
-        self._auth = options.auth
+        self._options = options
 
     @property
     def url(self):
+        if self._options.base_url is not None:
+            return self._options.base_url + self._url
+
         return self._url
 
     @property
@@ -40,4 +40,8 @@ class API(object):
 
     @property
     def auth(self):
-        return self._auth
+        return self._options.auth
+
+    @property
+    def insecure(self):
+        return self._options.insecure
