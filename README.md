@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/ridi/lightweight-rest-tester.svg?branch=master)](https://travis-ci.org/ridi/lightweight-rest-tester)
-[![Coverage Status](https://coveralls.io/repos/github/ridi/lightweight-rest-tester/badge.svg?branch=master)](https://coveralls.io/github/ridi/lightweight-rest-tester?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/ridi/lightweight-rest-tester/badge.svg?branch=HEAD)](https://coveralls.io/github/ridi/lightweight-rest-tester?branch=HEAD)
 
 # lightweight-rest-tester
 A lightweight REST API testing framework written in Python (working with 2.7 ~ 3.6). It reads [JSON Schema](http://json-schema.org) test-cases from JSON files and then generates and executes unittest of Python. 
